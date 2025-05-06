@@ -1,20 +1,26 @@
-import {FaLinkedin,FaGithub } from "react-icons/fa";
+import {FaLinkedin,FaGithub,FaSquareXTwitter } from "react-icons/fa";
+import Sociais from "../footer/icons_/index";
 
 import "./footer.css";
 
-
-
- const icons_Midia =
+ const icons_midia =
         [
             { 
+              
               icon: <FaLinkedin size={24} />, 
-              name: "LinkedIn" 
+              id:"icon_sociais"
+               
             },
             { 
               icon: <FaGithub size={24} />, 
-              name: "GitHub" 
+              id:"icon_sociais"
+             
+            },
+            {
+                icon: <FaSquareXTwitter size={24} />,
+                id:"icon_sociais"
             }
-          ];
+        ];
     
 
 
@@ -23,17 +29,12 @@ import "./footer.css";
 
 export default function Footer(){
     return(
-        <footer className="FOOTER">  
+        <footer className="footer">  
 
-            <ul className="icons-lista">
-                {icons_Midia.map((item, index) => (
-                 < li key={index} className="icon-item">
-                    <a href="#" aria-label={item.name}>
-                        {item.icon}
-                    </a>
-                 </li>
-                ))}
-            </ul>
+
+           {icons_midia.map((icon, key) => (
+            <Sociais id={icon.id} icon={icon.icon} key={key} />
+           ))}
           
         </footer>
         
