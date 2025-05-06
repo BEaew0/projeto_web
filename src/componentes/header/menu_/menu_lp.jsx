@@ -10,10 +10,9 @@ import  { faSun } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
 import "./menu.css";
 
-
 const temas = [
-  { icon: sol, classe: "tema-claro" },
-  { icon: lua, classe: "tema-escuro" }
+  { icon: lua, classe: "tema-claro" },
+  { icon: sol, classe: "tema-escuro" }
 ];
 
 export default function Menu() {
@@ -30,24 +29,21 @@ export default function Menu() {
 
   return (
     <div className="menu__">
+
       <div className="links_esquerda">
-        <Link to="/" id="link__">
-          <img className="icon_header" src={Logo} alt="Logo" />
-        </Link>
+        <Link to="/" id="link__"><img className="icon_header" src={Logo} alt="Logo" /></Link>
         <Link to="/download" id="link__">Download</Link>
         <Link to="/planos" id="link__">Planos</Link>
         <Link to="/devs" id="link__">Desenvolvedores</Link> 
-        
+        <Link to="/devs" id="link__">Sobre</Link> 
       </div>
      
       <div className="links_direita">
-         {/* Usando spread operator para passar todas as props */}
-        <Btn_tema  {...temas[temaAtivo]} 
-          onClick={alternarTema}/>
-        
+        <Btn_tema  {...temas[temaAtivo]} onClick={alternarTema}/>
         <Link to="/login" id="link__">Login</Link>
         <Link to="/cadastro" id="link__">Cadastro</Link>
       </div>
+
     </div> 
   );
 }

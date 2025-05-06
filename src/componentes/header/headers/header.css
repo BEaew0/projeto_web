@@ -1,7 +1,15 @@
-
-
-.header_landing_page{
+.header_landing_page {
     background-color: rgb(77, 122, 189);
-    height: fit-content;
     width: 100%;
+    height: fit-content;
+    margin: 0;
+    box-sizing: border-box; /* Isso resolve o problema principal */
+    position: relative; /* Ou 'fixed' se quiser header fixo */
+    overflow: hidden; 
+    padding: 0px 0.5rem;
+}
+
+
+.header_landing_page * {
+    max-width: 100%;
 }

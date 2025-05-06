@@ -2,30 +2,66 @@
 .menu__ {
     display: flex;
     justify-content: space-between;
-    gap: 540px;
-    font-size:large;
-
+    align-items: center; /* Centraliza verticalmente */
+    margin: 0;
+    padding:0 0;
+    font-size:1.2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
 
 }
 
-.links_direita, .links_esquerda  {
+.links_esquerda {
     display: flex;
-    gap: 20px;
-    
-
+    gap: 1rem; 
     align-items: center;
-    justify-content: space-between;
-
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
 }
 
-.links_direita, .links_esquerda,a{
+.links_esquerda a{
     color: white;
     text-decoration: none;
+    padding: 0.5rem 1.4rem; 
+
+}
+.links_esquerda a:hover{
+    background-color: rgb(16, 44, 80);
+    padding: 0.5rem 1.4rem;
+    margin: 0;
+    border-radius: 0.6rem;
+}
+
+.links_direita a{
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1.4rem;
+}
+
+
+.links_direita{
+    display: flex;
+    gap: 2rem; 
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+}
+.links_direita a:hover{
+    background-color: rgb(16, 44, 80);
+    padding: 0.5rem 1.4rem;
+    margin: 0;
+    border-radius: 0.6rem;
+
 }
 
 
 
 .icon_header {
-    height: 60px;
-    width: 70px;
+    height: 4.9rem;
+    width: 4.9rem;
+    padding: 0;
+    margin: 0;
 }

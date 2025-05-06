@@ -1,8 +1,55 @@
-footer{
-    background-color:  rgb(77, 122, 189);
-    height: fit-content;
-    font-size: larger;
-    height:calc(100vh-150px);
-
+footer {
+    display: flex;
+    background-color: rgb(77, 122, 189);
+    justify-content: space-between; 
+    align-items: center;
+    height: 100px;
+    font-size:1.3em;
+    padding: 10px 5rem; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
+    box-sizing: border-box;
+}
+.menu_footer {
+    display: flex;
+    width: 100%; 
+    color: white;
+}
+.redes_sociais {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.redes_sociais li:hover{
+    background-color: rgb(16, 44, 80);
+    padding: 0.5rem 0.4rem;
+    margin: 0;
+    border-radius: 0.6rem;
+
+}
+
+
+.links_footer{
+    margin-left: 0;
+    gap: 1rem;
+}
+
+.links_footer a{
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1.4rem; 
+}
+
+
+
+
+.links_footer a:hover{
+    background-color: rgb(16, 44, 80);
+    padding: 0.5rem 1.4rem;
+    margin: 0;
+    border-radius: 0.6rem;
 }
