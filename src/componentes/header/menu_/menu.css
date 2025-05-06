@@ -1,0 +1,31 @@
+/* Container principal (já existente) */
+.menu__ {
+    display: flex;
+    justify-content: space-between;
+    gap: 540px;
+    font-size:large;
+
+
+}
+
+.links_direita, .links_esquerda  {
+    display: flex;
+    gap: 20px;
+    
+
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.links_direita, .links_esquerda,a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.icon_header {
+    height: 60px;
+    width: 70px;
+}

@@ -1,0 +1,7 @@
+.FOOTER{
+    background-color: aqua;
+    height: fit-content;
+    font-size: larger;
+
+    width: 100vh;
+}
