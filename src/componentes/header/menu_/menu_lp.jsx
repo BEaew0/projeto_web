@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
 import Logo from "../../../assets/Imagens/logo_tcc1.png";
-import sol from "../../../assets/Imagens/sun-solid.svg";
-import lua from "../../../assets/Imagens/moon-solid.svg";
-import Btn_tema from "../btn_tema/index";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import  { faSun } from '@fortawesome/free-solid-svg-icons'
+import Btn_tema from "../btn_tema/index";
+import { FaSun,FaMoon } from "react-icons/fa";
+
 
 import React, { useState } from 'react';
 import "./menu.css";
 
 const temas = [
-  { icon: lua, classe: "tema-claro" },
-  { icon: sol, classe: "tema-escuro" }
+  {id:"icon_tema", icon: <FaSun size={24}/>, classe: "tema-claro" },
+  {id:"icon_tema", icon: <FaMoon size={24}/>, classe: "tema-escuro" }
 ];
 
 export default function Menu() {
@@ -33,6 +31,7 @@ export default function Menu() {
       <div className="links_esquerda">
         <Link to="/" id="link__"><img className="icon_header" src={Logo} alt="Logo" /></Link>
         <Link to="/download" id="link__">Download</Link>
+      
         <Link to="/planos" id="link__">Planos</Link>
         <Link to="/devs" id="link__">Desenvolvedores</Link> 
         <Link to="/devs" id="link__">Sobre</Link> 

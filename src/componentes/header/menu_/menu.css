@@ -9,7 +9,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
     box-sizing: border-box;
-
 }
 
 .links_esquerda {
@@ -22,20 +21,20 @@
 }
 
 .links_esquerda a{
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     padding: 0.5rem 1.4rem; 
 
 }
 .links_esquerda a:hover{
-    background-color: rgb(16, 44, 80);
+    background-color: rgb(94, 169, 231);
     padding: 0.5rem 1.4rem;
     margin: 0;
     border-radius: 0.6rem;
 }
 
 .links_direita a{
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     padding: 0.5rem 1.4rem;
 }
@@ -50,14 +49,11 @@
     margin: 0;
 }
 .links_direita a:hover{
-    background-color: rgb(16, 44, 80);
+    background-color: rgb(94, 169, 231);
     padding: 0.5rem 1.4rem;
     margin: 0;
     border-radius: 0.6rem;
-
 }
-
-
 
 .icon_header {
     height: 4.9rem;

@@ -54,14 +54,12 @@ export default function Footer(){
       <div className="menu_footer">
 
         <div className="links_footer">
-                {links_footer.map((link, key) => 
-                (
-                    <Links__f link={link.link} desc={link.nome} key={key} />
-                ))}
+            {links_footer.map((link, key) => 
+            (<Links__f link={link.link} desc={link.nome} key={key} /> ))}
         </div>
 
         <ul className="redes_sociais">
-             <p>@Tesouroazul@gmail.com</p>
+            <p>Tesouroazul@gmail.com</p>
             {icons_midia.map((icon, key) => 
             (<Sociais id={icon.id} icon={icon.icon} key={key} />))}
         </ul>
