@@ -30,7 +30,7 @@ export default function Menu() {
 
       <div className="links_esquerda">
         <Link to="/" id="link__"><img className="icon_header" src={Logo} alt="Logo" /></Link>
-        <Link to="/download" id="link__">Download</Link>
+        <Link to="/cd" id="link__">Download</Link>
       
         <Link to="/planos" id="link__">Planos</Link>
         <Link to="/devs" id="link__">Desenvolvedores</Link> 
