@@ -1,0 +1,20 @@
+.btn-tema {
+    background-color: transparent;
+    border: 0;
+    padding: 0.5rem 0.5rem;
+    cursor: pointer;
+
+  }
+
+
+  
+.btn-tema:hover {
+    background-color: rgb(174, 212, 243);
+    padding: 0;
+    padding: 0.5rem 0.5rem;
+    margin: 0;
+    border-radius: 0.5rem;
+
+    transition: background-color 0.3s ease; 
+  }
+  
