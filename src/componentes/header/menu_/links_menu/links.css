@@ -1,17 +1,25 @@
-
-a{ 
+a { 
     color: rgb(0, 0, 0);
     text-decoration: none;
     padding: 0.5rem 1.4rem;
+    display: inline-block; /* Adicionado para melhor alinhamento */
 }
 
-#itens_h:hover{
+#itens_h {
+    display: flex; /* Já está definido no hover, mas deve estar aqui também */
+    gap: 1rem;
+    align-items: center; /* Para alinhar verticalmente */
+}
+
+#itens_h:hover {
     background-color: rgb(174, 212, 243);
     padding: 0.5rem 1.4rem;
     margin: 0;
     border-radius: 0.6rem;
 }
 
-li{
-    font-size:1.8rem;
+li {
+    font-size: 1.1rem;
+    display: inline; /* Isso fará com que os LIs fiquem em linha */
+    list-style-type: none; /* Remove os bullets da lista */
 }

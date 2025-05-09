@@ -1,41 +1,47 @@
-/* Container principal (já existente) */
 .menu__ {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
     margin: 0;
-    padding:0 0;
-   
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
     box-sizing: border-box;
 }
 
-.itens_esquerda {
+.links_esquerda {
     display: flex;
-    gap: 1rem; 
     align-items: center;
-    justify-content: flex-start;
+    gap: 1rem; /* Espaçamento entre os itens */
     padding: 0;
     margin: 0;
 }
 
-
-
-.itens_direita{
+.links_direita {
     display: flex;
-    gap: 2rem; 
     align-items: center;
-    justify-content: flex-end;
+    gap: 1rem; /* Espaçamento entre os itens */
     padding: 0;
     margin: 0;
 }
 
-#icon-r{
-    font-size:2rem;
- 
+/* Estilo dos links (já existente) */
+#itens_h {
+    display: inline-flex; /* Alterado de 'flex' para 'inline-flex' */
+    align-items: center;
+    padding: 0.5rem 1.4rem;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
 }
 
-.header.logo:hover{
-    background-color: transparent;
+#itens_h:hover {
+    background-color: rgb(174, 212, 243);
+    border-radius: 0.6rem;
+}
+
+/* Remove os bullets da lista e força display inline */
+li {
+    list-style: none;
+    display: inline;
+    font-size: 1.1rem;
 }

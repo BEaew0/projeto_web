@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 import LogoTS from './logo/index';
 import Btn_tema from "./btn_tema/index";
-import Menu_header from "../menu_/links_menu/index";
+import Menu_links from "../menu_/links_menu/index";
 import { FaSun, FaMoon } from "react-icons/fa";
 import "./menu.css";
 
@@ -38,18 +38,17 @@ export default function Menu() {
     <div className="menu__">
 
       <div className="links_esquerda">
-        <Link to="/" id="link__"><img className="icon_header" src={Logo} alt="Logo" /></Link>
-        <Link to="/download" id="link__">Download</Link>
-      
-        <Link to="/planos" id="link__">Planos</Link>
-        <Link to="/devs" id="link__">Desenvolvedores</Link> 
-        <Link to="/devs" id="link__">Sobre</Link> 
+        <LogoTS link={"/"} logo={Logo_ts}/>
+         {links_esquerda.map((link,key)=> 
+         <Menu_links key={key} link={link.link} text={link.text}/>)}
+
       </div>
      
       <div className="links_direita">
         <Btn_tema  {...temas[temaAtivo]} onClick={alternarTema}/>
-        <Link to="/login" id="link__">Login</Link>
-        <Link to="/cadastro" id="link__">Cadastro</Link>
+        {links_direita.map((link,key)=> 
+         <Menu_links key={key} link={link.link} text={link.text}/>)}
+     
       </div>
 
 

@@ -1,6 +1,7 @@
-img{
-    height:6vh;
-    width: 8rem;
+img {
+    height: 80px; /* Mantém a proporção */
+/* Limita a altura máxima */
+    width: 4.5rem;
     padding: 0;
     margin: 0;
 }

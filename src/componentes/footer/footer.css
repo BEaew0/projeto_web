@@ -1,21 +1,25 @@
+/* Footer Container */
 footer {
     display: flex;
-    background-color:rgba(180, 216, 255, 0.918);
-    justify-content: space-between; 
+    background-color: rgba(180, 216, 255, 0.918);
+    justify-content: space-between;
     align-items: center;
-    height: 100px;
-    font-size: 1.5rem;
-    padding: 19px 5rem; 
+    min-height: 100px;
+    padding: 19px 5rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
-
     box-sizing: border-box;
+    margin-top: auto; /* Mantém o footer no final */
+    flex-shrink: 0; /* Impede que o footer encolha */
+    position: relative;
+    z-index: 2;
 }
 
+/* Restante do seu CSS existente... */
 .menu_footer {
     display: flex;
     align-items: center;
-    width: 100%; 
+    width: 100%;
     color: rgb(0, 0, 0);
 }
 
@@ -23,30 +27,62 @@ footer {
     display: flex;
     gap: 1.5rem;
     justify-content: flex-end;
-    list-style: none; 
-    align-items: center; 
-    padding: 5px 4px; 
+    list-style: none;
+    align-items: center;
+    padding: 5px 4px;
     margin: 0;
- 
 }
 
 .links_footer {
     display: flex;
     margin-left: 0;
     gap: 1rem;
-   
+    justify-content: flex-start;
 }
 
-
-
-/* ----- Ícones Sociais ----- */
-.redes_sociais #icon_sociais {  /* CORREÇÃO: id singular (sem 's') */
+/* Ícones Sociais */
+.redes_sociais #icon_sociais {
     padding: 0.5rem;
     border-radius: 0.6rem;
-    transition: all 0.3s ease; /* Transição suave para hover */
+    transition: all 0.3s ease;
 }
 
 .redes_sociais #icon_sociais:hover {
-    background-color:rgb(145, 198, 248);
+    background-color: rgb(145, 198, 248);
     cursor: pointer;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    footer {
+        padding: 19px 1.5rem;
+        height: auto;
+        min-height: 100px;
+    }
+
+    .menu_footer {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .links_footer {
+        order: 1;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    .redes_sociais {
+        order: 2;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .redes_sociais p {
+        text-align: right;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
 }

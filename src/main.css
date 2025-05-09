@@ -1,9 +1,13 @@
-*{
-  margin: 0 auto;
+html, body {
+  margin: 0;
+  padding: 0;
 
+
+  display: flex;
+  flex-direction: column;
 }
 
-
-main{
-  height: 100vh;
+main {
+  flex: 1 0 auto; /* Cresce, não encolhe, tamanho base automático */
+  padding-bottom: 0;
 }

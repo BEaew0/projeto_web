@@ -3,6 +3,7 @@
     border: 0;
     padding: 0.5rem 0.5rem;
     cursor: pointer;
+    font-size: 25px;
 
   }
 
@@ -17,4 +18,6 @@
 
     transition: background-color 0.3s ease; 
   }
+
+
   
