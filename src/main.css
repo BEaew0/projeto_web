@@ -1,13 +1,73 @@
-html, body {
+:root {
+  /* Cores Base - Tema Claro (default) */
+  --cor-de-fundo: rgb(242, 248, 255);
+  --cor-texto: black;                 /* Texto principal */
+  --cor-header: rgb(203, 231, 255);
+  --footer-bg: rgb(0, 0, 0);
+  
+  --footer-link: rgb(255, 255, 255);
+  --footer-icon: rgb(255, 255, 255);
+}
+
+/* Tema Escuro */
+[data-theme="dark"] {
+  --cor-de-fundo: #121212;
+  --cor-texto: #f0f0f0;
+  --cor-header: #1a365d;
+  --footer-bg: #0d1b2a;
+  --footer-texto: #e0e0e0;
+  --footer-link: #7fb8ff;
+  --footer-icon: #e0e0e0;
+}
+
+/* Reset e Estrutura */
+* {
+  color: var(--cor-texto); /* Herda do tema ativo */
+  transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+body {
+  background-color: var(--cor-de-fundo);
   margin: 0;
   padding: 0;
-
-
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
-  flex: 1 0 auto; /* Cresce, não encolhe, tamanho base automático */
-  padding-bottom: 0;
+  flex: 1 0 auto;
+  padding: 10px 50px;
 }
+
+/* Header */
+.main-header {
+  background-color: var(--cor-header);
+  width: 100%;
+  height: fit-content;
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  padding: 0 0.5rem;
+}
+
+footer{
+  color: var(--footer-texto);
+}
+/* Footer */
+footer.footer_main {
+  background-color: var(--footer-bg);
+  color: var(--footer-texto);
+}
+
+/* Links do Footer */
+footer.footer_main a {
+  color: var(--footer-link) !important;
+  text-decoration: none;
+}
+
+footer.footer_main a:hover {
+  opacity: 0.8;
+}
+
