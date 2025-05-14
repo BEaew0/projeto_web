@@ -9,21 +9,25 @@ import Planos from "./paginas/planos";
 import Devs from "./paginas/devs";
 
 
+
+
 function App() {
   return (
     <>
 
+    <body>
       <Header/> 
-
-        <main>
         <Routes>
           <Route path="/" element={<Pag_inicial />} />
            <Route path="/download" element={<Download/>}/>    
            <Route path="/planos" element={<Planos/>}/>
            <Route path="/devs" element={<Devs/>}/>
         </Routes>
-      </main>  
+        <main>
+        </main>  
      <Footer/>
+    </body>
+      
     </>
   );
 }

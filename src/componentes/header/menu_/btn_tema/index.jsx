@@ -1,10 +1,17 @@
+import "./botoes.css";
+import { useTema } from "../../contexts/ThemeContext";
+import { FaSun, FaMoon } from "react-icons/fa";
 
-import "./botoes.css"
+export default function BtnTema(icon,tema,id) {
+  const { tema, alternarTema } = useTema();
 
-export default function Btn_tema({ icon, classe, id, onClick }) {
+
   return (
-    <button className={`btn-tema ${classe}`} onClick={onClick}>
-      <span id={id}>{icon}</span>
+    <button className={`btn-tema ${tema}`} onClick={alternarTema}>
+      <span id={id}>
+        {tema === 'light' ? <FaMoon /> : <FaSun />}
+      </span>
     </button>
   );
 }
+icon, classe, id, onClick 

@@ -1,8 +1,6 @@
-/* Footer Container */
 footer * {
-  color: inherit;
+  color: inherit; /* Isso está causando o problema */
 }
-
 footer {
     display: flex;
     justify-content: space-between;
@@ -10,7 +8,7 @@ footer {
     min-height: 100px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
-    background-color:var(--footer-bg);
+    background-color: var(--footer-bg); /* ADICIONADO */
     box-sizing: border-box;
     margin-top: auto;
     flex-shrink: 0;
@@ -23,57 +21,57 @@ footer {
     align-items: center;
     justify-content: space-between;
     width: 100%;
- 
+    color: var(--footer-texto);
 }
 
-/* Alterado para flex-start para mover para a esquerda */
 .redes_sociais {
     display: flex;
     gap: 1.5rem;
-    justify-content: flex-start; /* Alterado de flex-end para flex-start */
+    justify-content: flex-start;
     list-style: none;
     align-items: center;
     padding: 5px 4px;
- 
     margin: 0;
+    color: var(--footer-texto);
 }
 
 .footer-link {
     display: flex;
     margin-left: 0;
     gap: 1rem;
-    
-    justify-content: flex-end; /* Alterado de flex-start para flex-end */
+
+    justify-content: flex-end;
 }
 
-/* Ícones Sociais */
+/* Ícones Sociais - MODIFICADO */
 .redes_sociais #icon_sociais {
     padding: 0.5rem;
     border-radius: 0.6rem;
     transition: all 0.3s ease;
+    color: var(--footer-texto) !important; /* !important adicionado */
 }
 
 .redes_sociais #icon_sociais:hover {
-    background-color: rgb(145, 198, 248);
+    background-color: rgba(145, 198, 248, 0.3); /* Alterado para rgba */
     cursor: pointer;
 }
 
-
-
-a {
+/* Links - MODIFICADO */
+.links_footer a {
+    color: var(--footer-texto) !important; /* !important adicionado */
     text-decoration: none;
-    padding: 0.5rem 1.4rem; 
+    padding: 0.5rem 1.4rem;
     border-radius: 0.8rem;
     font-size: large;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .links_footer a:hover {
-    background-color: rgb(145, 198, 248);
+    background-color: rgba(145, 198, 248, 0.3); /* Alterado para rgba */
+    color: var(--footer-texto); /* Garantindo a cor durante hover */
 }
 
-
-/* Responsivo */
+/* RESPONSIVO (mantido igual) */
 @media (max-width: 768px) {
     footer {
         padding: 19px 1.5rem;
@@ -83,32 +81,28 @@ a {
 
     .menu_footer {
         flex-direction: column;
-        align-items: flex-start; /* Alterado de flex-end para flex-start */
+        align-items: flex-start;
     }
 
     .links_footer {
         order: 1;
         width: 100%;
-        justify-content: flex-start; /* Alterado de flex-end para flex-start */
+        justify-content: flex-start;
         margin-top: 1rem;
-
     }
 
     .redes_sociais {
         order: 2;
-        flex-direction:column; /* Mantido como row para manter os ícones em linha */
-        align-items: flex-start; /* Alterado de flex-end para flex-start */
-    
+        flex-direction: column;
+        align-items: flex-start;
         width: 100%;
         gap: 0.5rem;
     }
 
     .redes_sociais p {
-        text-align:justify; /* Alterado de right para left */
+        text-align: justify;
         width: 100%;
         margin-bottom: 0.5rem;
-        font-size:large;
-
+        font-size: large;
     }
-    
 }

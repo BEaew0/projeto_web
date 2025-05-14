@@ -3,10 +3,9 @@
   --cor-de-fundo: rgb(242, 248, 255);
   --cor-texto: black;                 /* Texto principal */
   --cor-header: rgb(203, 231, 255);
-  --footer-bg: rgb(0, 0, 0);
-  
-  --footer-link: rgb(255, 255, 255);
-  --footer-icon: rgb(255, 255, 255);
+  --footer-bg: rgb(73, 163, 223);
+  --footer-texto: #000000;            /* Adicionado aqui */
+
 }
 
 /* Tema Escuro */
@@ -15,9 +14,9 @@
   --cor-texto: #f0f0f0;
   --cor-header: #1a365d;
   --footer-bg: #0d1b2a;
-  --footer-texto: #e0e0e0;
-  --footer-link: #7fb8ff;
-  --footer-icon: #e0e0e0;
+  --footer-texto: #ffffff;            /* Versão para tema escuro */
+
+
 }
 
 /* Reset e Estrutura */
@@ -53,7 +52,7 @@ main {
 }
 
 footer{
-  color: var(--footer-texto);
+  color: var(--footer-texto)cd projeto_web;
 }
 /* Footer */
 footer.footer_main {
