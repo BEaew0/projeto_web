@@ -1,11 +1,11 @@
+
 .menu__ {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0;
-    padding: 0;
+    padding: auto 1.6rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 100%;
     box-sizing: border-box;
 }
 
@@ -29,14 +29,16 @@
 #itens_h {
     display: inline-flex; /* Alterado de 'flex' para 'inline-flex' */
     align-items: center;
-    padding: 0.5rem 1.4rem;
-    color: rgb(0, 0, 0);
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    color:var(--cor-texto);
     text-decoration: none;
 }
 
 #itens_h:hover {
-    background-color: rgb(174, 212, 243);
-    border-radius: 0.6rem;
+    background-color:var(--cor-hover);
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
 }
 
 /* Remove os bullets da lista e força display inline */

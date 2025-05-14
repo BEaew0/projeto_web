@@ -1,18 +1,10 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 import LogoTS from './logo/index';
-import Btn_tema from "./btn_tema/index";
+import BtnTema from "./btn_tema/index"; // Importe o BtnTema corrigido
 import Menu_links from "../menu_/links_menu/index";
-import { FaSun, FaMoon } from "react-icons/fa";
 import "./menu.css";
-
-const temas =
-  [
-    { id: "icon_tema", icon: <FaSun id="icon-r"/>, classe: "tema-claro" },
-    { id: "icon_tema", icon: <FaMoon id="icon-r" />, classe: "tema-escuro" }
-  ];
-
+import { useTema } from './mudar_tema/mudar_tema'; 
 const links_esquerda =
   [
     { link: "/download", classe: "link_esquerda", text: "Download" },
@@ -27,12 +19,8 @@ const links_direita =
   ];
 
 export default function Menu() {
-  const temaClaro = 0;
-  const temaEscuro = 1;
-  const [temaAtivo, setTemaAtual] = useState(temaClaro);
-  const alternarTema = () => {
-    setTemaAtual(temaAtivo === temaClaro ? temaEscuro : temaClaro);
-  };
+
+
 
   return (
     <div className="menu__">
@@ -45,7 +33,7 @@ export default function Menu() {
       </div>
      
       <div className="links_direita">
-        <Btn_tema  {...temas[temaAtivo]} onClick={alternarTema}/>
+      <BtnTema /> {}
         {links_direita.map((link,key)=> 
          <Menu_links key={key} link={link.link} text={link.text}/>)}
      

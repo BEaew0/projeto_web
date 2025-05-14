@@ -2,25 +2,28 @@
     padding: 0.4rem 3rem;
     font-size:1.5rem;
     text-align:left;
-    width: 80vh;
+    width: 50vh;
     border-radius: 20px;
     font-style: normal;
+    height:40rem;
 
-    height:27rem;
-
-    
 }
+
 h1{
     text-align:left;
-    margin-bottom: 10vh;
-    font-size: xxx-large;
+    margin-bottom: 2vh;
+    font-size:3.5rem;
+}
+
+p{
+    font-size: large;
 }
 
 .card-cinza{
-    background-color: gray;
+    background-color:gray;
 
 }
 
 .card-azul{
-    background-color: rgb(230, 241, 252);
+    background-color:var(--cor-de-card);
 }

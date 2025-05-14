@@ -1,45 +1,44 @@
-import React, {createContext,useState,useContext} from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
-const criarContexto=createContext();
+const TemaContext = createContext();
 
-export const  mudarTema= ({children})=>
+
+export const TemaProvider = ({ children }) => 
 {
-    const[tema,setTema]=useState(() =>
+    const [tema, setTema] = useState(() => 
     {
-        const temaSalvo =localStorage.getItem('theme');
+        const temaSalvo = localStorage.getItem('theme');
         return temaSalvo ? temaSalvo : 'light';
     });
 
-     useEffect(() => 
+    //  Aplica o tema ao documento
+    useEffect(() => 
     {
         document.documentElement.setAttribute('data-theme', tema);
+        
     }, [tema]);
 
-
-   
-    const mudarTema = () => 
+    //  Função para alternar entre temad
+    const alternarTema = () => 
     {
-        setTheme(temaSalvo => 
-            {
-                const novoTema = temaSalvo === 'light' ? 'dark' : 'light';
-                localStorage.setItem('theme', novoTema);
-                setTema(novoTema);
-            });
-        };
+        const novoTema = tema == 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', novoTema);
+        setTema(novoTema);
+    };
 
-     return (
+    return (
         <TemaContext.Provider value={{ tema, alternarTema }}>
             {children}
         </TemaContext.Provider>
-        );
-
+    );
 };
-//exporta o tema
- export const useTema = () => {
-    const context = useContext(TemaContext);
-    if (!context) {
 
-        throw new Error('Tema nãocarregado');
+export const useTema = () => 
+{
+    const context = useContext(TemaContext);
+    if (!context) 
+    {
+        throw new Error('tema não encontrado');
     }
     return context;
- };
+};

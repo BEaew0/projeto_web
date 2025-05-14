@@ -1,28 +1,28 @@
 :root {
   /* Cores Base - Tema Claro (default) */
   --cor-de-fundo: rgb(242, 248, 255);
-  --cor-texto: black;                 /* Texto principal */
+  --cor-texto: black;
   --cor-header: rgb(203, 231, 255);
+  --cor-de-card: rgb(230, 241, 252);
   --footer-bg: rgb(73, 163, 223);
-  --footer-texto: #000000;            /* Adicionado aqui */
-
+  --footer-texto: #000000;
+  --cor-hover:rgba(23, 73, 119, 0.349);
 }
 
-/* Tema Escuro */
 [data-theme="dark"] {
   --cor-de-fundo: #121212;
   --cor-texto: #f0f0f0;
   --cor-header: #1a365d;
+  --cor-de-card: rgb(75, 94, 114);
   --footer-bg: #0d1b2a;
-  --footer-texto: #ffffff;            /* Versão para tema escuro */
-
-
+  --footer-texto: #ffffff;
+  --cor-hover:rgb(34, 98, 151);
 }
 
-/* Reset e Estrutura */
 * {
-  color: var(--cor-texto); /* Herda do tema ativo */
-  transition: background-color 0.3s, color 0.3s; /* Transição suave */
+  color: var(--cor-texto);
+  transition: background-color 0.3s, color 0.3s;
+  box-sizing: border-box; /* Adicionado para melhor dimensionamento */
 }
 
 body {
@@ -34,39 +34,40 @@ body {
   min-height: 100vh;
 }
 
-main {
-  flex: 1 0 auto;
-  padding: 10px 50px;
-}
-
-/* Header */
 .main-header {
   background-color: var(--cor-header);
   width: 100%;
-  height: fit-content;
-  margin: 0;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  padding: 0 0.5rem;
+  padding: 1rem 7rem;
+
 }
 
-footer{
-  color: var(--footer-texto)cd projeto_web;
+main {
+  flex: 1; 
+  padding: 10px 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
+  width: 100%; /* Alterado de 100vh para 100% */
+  max-width: 1200px; /* Limite máximo de largura */
+  margin: 0 auto; /* Centraliza o conteúdo */
 }
-/* Footer */
+
 footer.footer_main {
   background-color: var(--footer-bg);
   color: var(--footer-texto);
+  padding: 1rem;
+  width: 100%;
 }
 
-/* Links do Footer */
 footer.footer_main a {
-  color: var(--footer-link) !important;
+  color: var(--footer-texto) ; 
   text-decoration: none;
+  margin: 0 10px; 
 }
 
 footer.footer_main a:hover {
-  opacity: 0.8;
-}
 
+  background-color: var(--cor-hover);
+}

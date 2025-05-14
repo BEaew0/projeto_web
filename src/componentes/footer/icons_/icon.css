@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    border-radius: 50%;
+    border-radius: 20%;
     min-width: 2.5rem;
     height: 2.5rem;
     transition: all 0.3s ease;
@@ -13,8 +13,8 @@
 
 /* Efeito hover (adicionado de volta) */
 .social-icon:hover {
-    background-color: rgb(145, 198, 248);
-    transform: scale(1.1);
+    background-color:var(--cor-hover);
+
     cursor: pointer;
 }
 

@@ -14,19 +14,13 @@ const cards=[{
 export default  function Pag_inicial(){
     return(
         <div className="main_pag_inicial">
-            
             {cards.map((card,key)=>
                 {
                     return(
-                    <Card key={key.key}cinza={card.cinza} titulo={card.titulo}texto={card.texto}/>
-                    
-
+                    <Card key={key}cinza={card.cinza} titulo={card.titulo}texto={card.texto}/>
                     );
-                }
-             
-            )}
-            
-           
+                }     
+            )}  
                 
             <div className="card-img-exemplo">
             

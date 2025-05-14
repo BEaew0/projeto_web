@@ -1,108 +1,109 @@
-footer * {
-  color: inherit; /* Isso está causando o problema */
-}
+/* FOOTER FIXO - VERSÃO OTIMIZADA */
 footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 100px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
-    background-color: var(--footer-bg); /* ADICIONADO */
+    background-color: var(--footer-bg);
     box-sizing: border-box;
-    margin-top: auto;
+    padding: 1.5rem 1rem;
     flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-}
-
-.menu_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+  }
+  
+  .menu_footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     color: var(--footer-texto);
-}
-
-.redes_sociais {
+  }
+  
+  .redes_sociais {
     display: flex;
     gap: 1.5rem;
     justify-content: flex-start;
     list-style: none;
     align-items: center;
-    padding: 5px 4px;
+    padding: 0;
     margin: 0;
-    color: var(--footer-texto);
-}
-
-.footer-link {
+  }
+  
+  .footer-link {
     display: flex;
-    margin-left: 0;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  /* Ícones Sociais */
+  .icon_sociais {
+    transition: all 0.3s ease;
+    color: var(--footer-texto);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+  }
+  
+  .redes_sociais .icon_sociais:hover {
+    background-color: var(--cor-hover);
+  }
+  
+  /* Links */
+  .links_footer {
+    display: flex;
     gap: 1rem;
-
-    justify-content: flex-end;
-}
-
-/* Ícones Sociais - MODIFICADO */
-.redes_sociais #icon_sociais {
-    padding: 0.5rem;
-    border-radius: 0.6rem;
-    transition: all 0.3s ease;
-    color: var(--footer-texto) !important; /* !important adicionado */
-}
-
-.redes_sociais #icon_sociais:hover {
-    background-color: rgba(145, 198, 248, 0.3); /* Alterado para rgba */
-    cursor: pointer;
-}
-
-/* Links - MODIFICADO */
-.links_footer a {
-    color: var(--footer-texto) !important; /* !important adicionado */
+  }
+  
+  .links_footer a {
+    color: var(--footer-texto);
     text-decoration: none;
-    padding: 0.5rem 1.4rem;
-    border-radius: 0.8rem;
-    font-size: large;
+    padding: 0.5rem 1rem;
+    border-radius:20px;
+    font-size: 1.2rem;
+    font-weight: 500;
     transition: all 0.3s ease;
-}
-
-.links_footer a:hover {
-    background-color: rgba(145, 198, 248, 0.3); /* Alterado para rgba */
-    color: var(--footer-texto); /* Garantindo a cor durante hover */
-}
-
-/* RESPONSIVO (mantido igual) */
-@media (max-width: 768px) {
+  }
+  
+  .links_footer a:hover {
+    background-color: var(--cor-hover);
+  }
+  
+  /* RESPONSIVO */
+  @media (max-width: 768px) {
     footer {
-        padding: 19px 1.5rem;
-        height: auto;
-        min-height: 100px;
+      padding: 1rem;
+      position: relative; /* Muda para relativo em mobile se preferir */
     }
-
+    
     .menu_footer {
-        flex-direction: column;
-        align-items: flex-start;
+      flex-direction: column;
+      gap: 1rem;
     }
-
-    .links_footer {
-        order: 1;
-        width: 100%;
-        justify-content: flex-start;
-        margin-top: 1rem;
-    }
-
+    
     .redes_sociais {
-        order: 2;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        gap: 0.5rem;
+      justify-content: center;
+      width: 100%;
+      order: 1;
     }
-
-    .redes_sociais p {
-        text-align: justify;
-        width: 100%;
-        margin-bottom: 0.5rem;
-        font-size: large;
+    
+    .links_footer {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      order: 2;
+      gap: 0.5rem;
     }
-}
+    
+    .footer-link {
+      justify-content: center;
+      width: 100%;
+    }
+  }
