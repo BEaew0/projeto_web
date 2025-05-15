@@ -8,7 +8,6 @@ footer {
   color: var(--footer-texto);
   padding: 1.5rem 1rem;
   flex-shrink: 0;
-  height: 25vh;
   bottom: 0;
   left: 0;
   margin-top: auto;
@@ -75,13 +74,15 @@ footer {
     padding: 1.2rem;
     height: auto;
     min-height: 25vh;
+    overflow-y: auto;
+
   }
 }
 
 /* RESPONSIVO - TELAS PEQUENAS */
 @media (max-width: 768px) {
   footer {
-    padding: 1rem;
+    padding: 0.4rem;
   }
   
   .menu_footer {
@@ -105,7 +106,7 @@ footer {
   
   .footer-link {
     justify-content: center;
-    width: 100%;
+    
   }
 
   .redes_sociais p,
