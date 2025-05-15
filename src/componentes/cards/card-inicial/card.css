@@ -2,10 +2,10 @@
     padding: 0.4rem 3rem;
     font-size:1.5rem;
     text-align:left;
-    width: 50vh;
+    width:40rem;
     border-radius: 20px;
     font-style: normal;
-    height:40rem;
+    height:30rem;
 
 }
 
@@ -16,7 +16,8 @@ h1{
 }
 
 p{
-    font-size: large;
+    font-size:xx-large;
+    text-align:left;
 }
 
 .card-cinza{

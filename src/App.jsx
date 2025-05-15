@@ -20,7 +20,7 @@ function App() {
           <Route path="/devs" element={<Devs/>}/>
         </Routes>
         <main>
-          {/* Conteúdo principal pode ser adicionado aqui */}
+          {}
         </main>  
         <Footer/>
       </div>

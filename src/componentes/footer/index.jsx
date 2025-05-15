@@ -39,6 +39,10 @@ import "./footer.css";
                 nome:"Entre em contato"
         
             },
+            {
+                link:"/suporte_ver",
+                nome:"Suporte da versão"
+            }
             
         ]
  

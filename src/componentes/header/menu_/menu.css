@@ -1,49 +1,76 @@
-
 .menu__ {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0;
-    padding: auto 1.6rem;
+    padding: 0 1.6rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
+    font-size: clamp(1rem, 1.5vw, 1.5rem); /* Fonte responsiva */
 }
 
-.links_esquerda {
+.links_esquerda, .links_direita {
     display: flex;
     align-items: center;
-    gap: 1rem; /* Espaçamento entre os itens */
+    gap: clamp(0.5rem, 1vw, 1rem); /* Espaçamento responsivo */
     padding: 0;
     margin: 0;
+    flex-wrap: nowrap; /* Impede quebra de linha */
 }
 
-.links_direita {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* Espaçamento entre os itens */
+/* Estilo da logo - ajustado para ser responsivo */
+.logo-container img {
+    height: auto;
+    width: clamp(3.5rem, 8vw, 4.5rem); /* Largura responsiva */
+    max-height: 80px;
     padding: 0;
     margin: 0;
+    object-fit: contain; /* Garante que a imagem mantenha proporções */
 }
 
-/* Estilo dos links (já existente) */
+/* Estilo dos links */
 #itens_h {
-    display: inline-flex; /* Alterado de 'flex' para 'inline-flex' */
+    display: inline-flex;
     align-items: center;
-    padding: 0.6rem 1.2rem;
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem); /* Padding responsivo */
     border-radius: 0.5rem;
-    color:var(--cor-texto);
+    color: var(--cor-texto);
     text-decoration: none;
+    white-space: nowrap; /* Impede quebra de texto */
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem); /* Fonte responsiva */
 }
 
 #itens_h:hover {
-    background-color:var(--cor-hover);
-    padding: 0.6rem 1.2rem;
-    border-radius: 0.5rem;
+    background-color: var(--cor-hover);
 }
 
-/* Remove os bullets da lista e força display inline */
+/* Remove os bullets da lista */
 li {
     list-style: none;
     display: inline;
-    font-size: 1.1rem;
+}
+
+/* Media Query para telas menores */
+@media (max-width: 768px) {
+    .menu__ {
+        flex-direction: column;
+        padding: 0.2rem;
+        gap: 1rem;
+    }
+    
+    .links_esquerda, .links_direita {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap; /* Permite quebra em telas muito pequenas */
+    }
+    
+    .logo-container img {
+        width: 3.5rem; /* Tamanho fixo para mobile */
+        margin-bottom: 0.5rem;
+    }
+    
+    #itens_h {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.9rem;
+    }
 }

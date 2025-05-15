@@ -7,8 +7,12 @@ import"./pag.css"
 const cards=[{
     cinza:false,
     titulo:"Controle seu estoque sem complicação!",
-    texto:"O TesouroAzul simplifica o controle do seu estoque, evitando perdas e desorganização. Com ferramentas intuitivas, você gerencia produtos, acompanha entradas e saídas e mantém seu negócio sempre no azul – sem dor de cabeça!"
-
+     texto: "O TesouroAzul simplifica o controle do seu estoque.\n" +
+           "Evita perdas\n"+
+           "e desorganização.\n" +
+           "Com ferramentas intuitivas\n"+
+            "você gerencia produtos.\n" +
+           "Mantém seu negócio sempre no azul – sem dor de cabeça!"
 }]
 
 export default  function Pag_inicial(){

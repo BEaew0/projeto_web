@@ -1,109 +1,119 @@
-/* FOOTER FIXO - VERSÃO OTIMIZADA */
 footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 100%;
-    background-color: var(--footer-bg);
-    box-sizing: border-box;
-    padding: 1.5rem 1rem;
-    flex-shrink: 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  background-color: var(--footer-bg);
+  color: var(--footer-texto);
+  padding: 1.5rem 1rem;
+  flex-shrink: 0;
+  height: 25vh;
+  bottom: 0;
+  left: 0;
+  margin-top: auto;
+}
+
+.menu_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.redes_sociais {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-start;
+  list-style: none;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.redes_sociais p {
+  font-size: clamp(0.9rem, 2vw, 1.3rem); /* Texto responsivo */
+}
+
+.footer-link {
+  display: flex;
+  gap: clamp(0.8rem, 1.5vw, 1.5rem); /* Gap responsivo */
+  align-items: center;
+}
+
+.icon_sociais {
+  transition: all 0.3s ease;
+  color: var(--footer-texto);
+  font-size: clamp(1rem, 1.8vw, 1.5rem); /* Ícone responsivo */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.links_footer {
+  display: flex;
+  text-align: center;
+  gap: clamp(0.5rem, 1vw, 1rem); /* Gap responsivo */
+}
+
+.links_footer a {
+  color: var(--footer-texto);
+  text-decoration: none;
+  padding: 0.3rem 0.1rem;
+  border-radius: 10px;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem); /* Texto responsivo */
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* RESPONSIVO - TELAS MÉDIAS/PEQUENAS */
+@media (max-width: 992px) {
+  footer {
+    padding: 1.2rem;
     height: auto;
+    min-height: 25vh;
+  }
+}
+
+/* RESPONSIVO - TELAS PEQUENAS */
+@media (max-width: 768px) {
+  footer {
+    padding: 1rem;
   }
   
   .menu_footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: var(--footer-texto);
-  }
-  
-  .redes_sociais {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: flex-start;
-    list-style: none;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .footer-link {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  
-  /* Ícones Sociais */
-  .icon_sociais {
-    transition: all 0.3s ease;
-    color: var(--footer-texto);
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content:flex-end;
-  }
-  
-  .redes_sociais .icon_sociais:hover {
-    background-color: var(--cor-hover);
-  }
-  
-  /* Links */
-  .links_footer {
-    display: flex;
+    flex-direction: column;
     gap: 1rem;
   }
   
+  .redes_sociais {
+    justify-content: center;
+    width: 100%;
+    order: 1;
+  }
+  
+  .links_footer {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    order: 2;
+    gap: 0.5rem;
+  }
+  
+  .footer-link {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .redes_sociais p,
   .links_footer a {
-    color: var(--footer-texto);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius:20px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: clamp(0.8rem, 3vw, 1rem); /* Texto maior em telas pequenas */
   }
-  
-  .links_footer a:hover {
-    background-color: var(--cor-hover);
+
+  .icon_sociais {
+    font-size: clamp(1rem, 3vw, 1.3rem); /* Ícones maiores em telas pequenas */
   }
-  
-  /* RESPONSIVO */
-  @media (max-width: 768px) {
-    footer {
-      padding: 1rem;
-      position: relative; /* Muda para relativo em mobile se preferir */
-    }
-    
-    .menu_footer {
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .redes_sociais {
-      justify-content: center;
-      width: 100%;
-      order: 1;
-    }
-    
-    .links_footer {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      order: 2;
-      gap: 0.5rem;
-    }
-    
-    .footer-link {
-      justify-content: center;
-      width: 100%;
-    }
-  }
+}
