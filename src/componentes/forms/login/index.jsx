@@ -29,7 +29,7 @@ const LogInputs=[
 
 
 
-export default function Login({}){
+export default function LogForm(){
     return (
         <>
             {LogInputs.map((input, key) => (

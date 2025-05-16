@@ -6,7 +6,10 @@ import Pag_inicial from "./paginas/pag_inicial/index";
 import Download from "./paginas/download";
 import Planos from "./paginas/planos";
 import Devs from "./paginas/devs";
+import Login from "./paginas/login";
+import Cadastro from "./paginas/cadastro";
 import { TemaProvider } from "./componentes/header/menu_/mudar_tema/mudar_tema"; // Importe o TemaProvider
+import LayoutLC from "./Layout_Auth";
 
 function App() {
   return (
@@ -18,9 +21,16 @@ function App() {
           <Route path="/download" element={<Download/>}/>    
           <Route path="/planos" element={<Planos/>}/>
           <Route path="/devs" element={<Devs/>}/>
+
+          <Route element={<LayoutLC/>}>
+             <Route path="/login" element={<Login/>}/>
+            <Route path="/cadastro" element={<Cadastro/>}/>
+          </Route>
+         
+          
         </Routes>
         <main>
-          {}
+   
         </main>  
         <Footer/>
       </div>
