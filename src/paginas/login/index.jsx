@@ -1,5 +1,6 @@
 import Login_form from "../../componentes/forms/login";
 import "./login.css";
+
 export default function Login(){
     return(
       
@@ -7,10 +8,6 @@ export default function Login(){
             <Login_form className/>
             <button type="submit" className="btn_logar" name="logar">Logar</button>
         </form>
-        
-          
-      
-        
         
     );
 

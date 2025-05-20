@@ -59,7 +59,7 @@ const inputs_cad=[
         required:true
     }
 ]
-export default function CadForm(){
+export default function CadForm({ dadosForm, setFormData }){
     return(
         <>
         {inputs_cad.map((input,key)=>(
