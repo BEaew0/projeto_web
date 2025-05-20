@@ -1,8 +1,16 @@
 import Login_form from "../../componentes/forms/login";
-
+import "./login.css";
 export default function Login(){
     return(
-        <Login_form/>
+      
+        <form >
+            <Login_form className/>
+            <button type="submit" className="btn_logar" name="logar">Logar</button>
+        </form>
+        
+          
+      
+        
         
     );
 

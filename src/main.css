@@ -80,3 +80,8 @@ footer.footer_main a {
 footer.footer_main a:hover {
   background-color: var(--cor-hover);
 }
+
+.auth-layout{
+  background-color:var(--cor-de-fundo);
+  padding: 10rem 30vh;
+}

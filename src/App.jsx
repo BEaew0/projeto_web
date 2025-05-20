@@ -1,40 +1,31 @@
 import { Routes, Route } from "react-router-dom";
-import Header from "./componentes/header/headers/index";
-import "./main.css";
-import Footer from "./componentes/footer/index";
-import Pag_inicial from "./paginas/pag_inicial/index";
+import Layout_i from "./Layout_Inicial"; // Layout com Header + Footer
+import LayoutLC from "./Layout_Auth"; // Layout sem Header/Footer (para Login/Cadastro)
+import Pag_inicial from "./paginas/pag_inicial";
 import Download from "./paginas/download";
 import Planos from "./paginas/planos";
 import Devs from "./paginas/devs";
 import Login from "./paginas/login";
 import Cadastro from "./paginas/cadastro";
-import { TemaProvider } from "./componentes/header/menu_/mudar_tema/mudar_tema"; // Importe o TemaProvider
-import LayoutLC from "./Layout_Auth";
+import "./main.css"; // Corrigido: removi a barra no início
 
 function App() {
   return (
-    <TemaProvider> {}
-      <div className="app"> {/* Substitui a tag body por div - mais adequado para React */}
-        <Header/>
-        <Routes>
-          <Route path="/" element={<Pag_inicial />} />
-          <Route path="/download" element={<Download/>}/>    
-          <Route path="/planos" element={<Planos/>}/>
-          <Route path="/devs" element={<Devs/>}/>
+    <Routes>
+      
+      <Route element={<Layout_i />}>
+        <Route path="/" element={<Pag_inicial />} />
+        <Route path="/download" element={<Download />} />
+        <Route path="/planos" element={<Planos />} />
+        <Route path="/devs" element={<Devs />} />
+      </Route>
 
-          <Route element={<LayoutLC/>}>
-             <Route path="/login" element={<Login/>}/>
-            <Route path="/cadastro" element={<Cadastro/>}/>
-          </Route>
-         
-          
-        </Routes>
-        <main>
-   
-        </main>  
-        <Footer/>
-      </div>
-    </TemaProvider>
+      
+      <Route element={<LayoutLC />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
+      </Route>
+    </Routes>
   );
 }
 
