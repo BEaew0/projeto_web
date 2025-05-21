@@ -5,16 +5,14 @@
     padding: 0.5rem;
     border-radius: 20%;
     min-width: 2.5rem;
-    height: 2.5rem;
     transition: all 0.3s ease;
-    font-size: 1.2rem;
+    font-size: 2rem;
     flex-shrink: 0;
 }
 
 /* Efeito hover (adicionado de volta) */
 .social-icon:hover {
     background-color:var(--cor-hover);
-
     cursor: pointer;
 }
 

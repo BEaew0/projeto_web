@@ -1,10 +1,11 @@
 import React from 'react';
 import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 import LogoTS from './logo/index';
-import BtnTema from "./btn_tema/index"; // Importe o BtnTema corrigido
+import BtnTema from "./../botoes/btn_tema";
 import Menu_links from "../menu_/links_menu/index";
+
 import "./menu.css";
-import { useTema } from './mudar_tema/mudar_tema'; 
+
 const links_esquerda =
   [
     { link: "/download", classe: "link_esquerda", text: "Download" },
@@ -20,25 +21,20 @@ const links_direita =
 
 export default function Menu() {
 
-
-
   return (
     <div className="menu__">
 
-      <div className="links_esquerda">
-        <LogoTS link={"/"} logo={Logo_ts}/>
-         {links_esquerda.map((link,key)=> 
-         <Menu_links key={key} link={link.link} text={link.text}/>)}
-
-      </div>
+        <div className="links_esquerda">
+            <LogoTS link={"/pag_inicial"} logo={Logo_ts}/>
+              {links_esquerda.map((link,key)=> 
+              <Menu_links key={key} link={link.link} text={link.text}/>)}
+        </div>
      
-      <div className="links_direita">
-      <BtnTema /> {}
-        {links_direita.map((link,key)=> 
-         <Menu_links key={key} link={link.link} text={link.text}/>)}
-     
-      </div>
-
+        <div className="links_direita">
+            <BtnTema /> {}
+            {links_direita.map((link,key)=> 
+              <Menu_links key={key} link={link.link} text={link.text}/>)}
+        </div>
 
     </div>
   );

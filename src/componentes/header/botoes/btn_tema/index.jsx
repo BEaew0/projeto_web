@@ -1,5 +1,5 @@
 import "./botoes.css";
-import { useTema } from "../mudar_tema/mudar_tema";
+import { useTema } from "../../menu_/mudar_tema/mudar_tema";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 export default function BtnTema({id,tema_nome}) {

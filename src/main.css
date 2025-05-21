@@ -10,6 +10,8 @@
   --cor-de-form:rgb(255, 255, 255);
   --cor-de-botao:rgb(129, 204, 255);
   --cor-de-hover:rgb(75, 173, 238);
+  --sombreamento:rgba(29, 29, 29, 0.1);
+  --seg_cor_gradiente: rgba(117, 176, 204, 0.63);
 }
 
 [data-theme="dark"] {
@@ -21,7 +23,9 @@
   --footer-texto: #ffffff;
   --cor-hover:rgb(34, 98, 151);
   --cor-de-form:rgb(44, 44, 44);
-  --cor-de-botao:rgb(64, 195, 235);
+  --cor-de-botao:rgb(51, 170, 206);
+  --sombreamento:rgba(19, 19, 19, 0.897);  
+  --seg_cor_gradiente: rgba(75, 100, 134, 0.705);
 }
 
 * {
@@ -87,6 +91,15 @@ footer.footer_main a:hover {
 }
 
 .auth-layout{
+  display: flex;
+  height: 100vh;
   background-color:var(--cor-de-fundo);
+  background-image: linear-gradient(to top, var(--seg_cor_gradiente )40%,var(--cor-de-fundo)80%);
+  background-repeat:round;
+  background-attachment: fixed;
+  justify-content: center;
+  padding: 0 auto;
+  align-items: center;
+
 
 }

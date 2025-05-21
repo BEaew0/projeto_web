@@ -14,7 +14,7 @@ function App() {
     <Routes>
       
       <Route element={<Layout_i />}>
-        <Route path="/" element={<Pag_inicial />} />
+        <Route path="/pag_inicial" element={<Pag_inicial />} />
         <Route path="/download" element={<Download />} />
         <Route path="/planos" element={<Planos />} />
         <Route path="/devs" element={<Devs />} />

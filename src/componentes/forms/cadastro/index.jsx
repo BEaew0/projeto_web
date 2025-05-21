@@ -12,14 +12,14 @@ const inputs_cad=[
     {
         texto:"CPF",
         name:"CPF_usuario",
-        id:"CPF",
+        id:"identificador",
         type:"texto",
         required:true
     },
     {
         texto:"CNPJ",
         name:"CNPJ_usuario",
-        id:"CNPJ",
+        id:"identificador",
         type:"texto",
         required:false
     },
