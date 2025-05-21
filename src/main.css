@@ -7,16 +7,21 @@
   --footer-bg: rgb(99, 180, 235);
   --footer-texto: #000000;
   --cor-hover:rgba(23, 73, 119, 0.349);
+  --cor-de-form:rgb(255, 255, 255);
+  --cor-de-botao:rgb(129, 204, 255);
+  --cor-de-hover:rgb(75, 173, 238);
 }
 
 [data-theme="dark"] {
-  --cor-de-fundo: #121212;
+  --cor-de-fundo: #424242;
   --cor-texto: #f0f0f0;
   --cor-header: #1a365d;
   --cor-de-card: rgb(75, 94, 114);
   --footer-bg: #0d1b2a;
   --footer-texto: #ffffff;
   --cor-hover:rgb(34, 98, 151);
+  --cor-de-form:rgb(44, 44, 44);
+  --cor-de-botao:rgb(64, 195, 235);
 }
 
 * {
@@ -83,5 +88,5 @@ footer.footer_main a:hover {
 
 .auth-layout{
   background-color:var(--cor-de-fundo);
-  padding: 10rem 30vh;
+
 }

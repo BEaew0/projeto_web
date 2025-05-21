@@ -7,9 +7,7 @@ import CadForm from "../../componentes/forms/Cadastro";
 
 export default function Cadastro(){
     const[dadosForm, setDadosForm] = useState({});
-    const [carregar, setCarregar] = useState(false);
-    const[erro,setErro]=useState(null);
-    const[sucesso,setSucesso]=useState(false);
+
 
     //pega os dados do formulario
     const formData=(data)=>{
@@ -25,8 +23,8 @@ export default function Cadastro(){
 
     return(
             <form>
-             <CadForm/>
-             <button className="btn_cadastro" name="cadastro">Cadastro</button>
+                <CadForm/>
+                 <button className="btn_cadastro" name="cadastro">Cadastro</button>
             </form>
            
     )
