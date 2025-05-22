@@ -37,9 +37,11 @@ export default function Login() {
                     <Link to="/recuperar-senha" className="link-style">Esqueci minha senha</Link>
                     <button type="submit" className="btn_logar" name="logar">Logar</button>
         
-                    <p> Não possui conta? 
+                    <p> 
+                        Não possui conta? 
                         <span onClick={() => navigate("/cadastro")} className="link_cadastro">
-                        Cadastre-se</span>
+                            Cadastre-se
+                        </span>
                     </p>
         
                      <div className="login_option">

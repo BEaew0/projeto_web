@@ -6,7 +6,7 @@ export default function BtnVoltar() {
     
     return (
         <div className="btnVoltar_container">
-            <button onClick={() => navigate("/pag_inicial")} className="voltar_pag" >
+            <button onClick={() => navigate("/")} className="voltar_pag" >
             <GoArrowLeft /> 
         </button>
         </div>

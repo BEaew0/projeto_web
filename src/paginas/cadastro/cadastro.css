@@ -4,6 +4,7 @@
     justify-content:flex-start;
     align-items: center;
     padding: 0 auto;
+    color:var(--cor-texto);
 
 }
 
@@ -24,7 +25,8 @@
 .form_cadastro{
     display: flex;
     background-color: var(--cor-de-form);
-    width: 100%;
+    width: 120%;
+    font-family: Helvetica, sans-serif;
     font-size: 18px;
     padding: 2.5rem 2.5rem;
     flex-direction: column;
@@ -40,6 +42,10 @@
 
 
         }
+        p{
+            font-size: smaller;
+            cursor: pointer;
+        }
 
 }
 
@@ -51,4 +57,20 @@
     border-radius: 4px;
     font-size: 1rem;
     background-color: var(--cor-de-fundo);
+}
+
+.btn_cad{
+    background-color: var(--cor-de-botao);
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight:bolder;
+    margin-top: 2rem;
+    transition: background-color 0.3s;
+ 
+}
+
+.btn_cad:hover{
+    background-color:var(--cor-de-hover);
 }
