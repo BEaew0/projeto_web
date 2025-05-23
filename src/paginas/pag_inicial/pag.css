@@ -1,7 +1,9 @@
 
 .main_pag_inicial{
     display: flex;
-    padding: 20vh 10rem;
+    min-height: 100vh;
+    padding: 0vh 2rem;
+
   
  
 }

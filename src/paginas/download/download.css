@@ -1,1 +1,14 @@
-
+.container-imagem{
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    padding: 0 auto;
+    margin: 0;
+    background-color: aqua;
+    width: fit-content;
+    
+    img{
+           height: 80vh;
+           width: auto;
+    }
+}

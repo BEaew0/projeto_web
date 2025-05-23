@@ -25,7 +25,7 @@ export default function Menu() {
     <div className="menu__">
 
         <div className="links_esquerda">
-            <LogoTS link={"/pag_inicial"} logo={Logo_ts}/>
+            <LogoTS link={"/"} logo={Logo_ts}/>
               {links_esquerda.map((link,key)=> 
               <Menu_links key={key} link={link.link} text={link.text}/>)}
         </div>
