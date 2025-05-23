@@ -3,8 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+
+
   color: var(--cor-texto);
   font-size: 18px;
 
@@ -12,6 +12,7 @@
 
 /* Botão de voltar */
 .btnVoltar_container {
+  margin: 10vh;
   position: fixed;
   top: 20px;
   left: 20px;

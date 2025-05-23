@@ -19,7 +19,6 @@ function App() {
         <Route path="/planos" element={<Planos />} />
         <Route path="/devs" element={<Devs />} />
       </Route>
-
       
       <Route element={<LayoutLC />}>
         <Route path="/login" element={<Login />} />

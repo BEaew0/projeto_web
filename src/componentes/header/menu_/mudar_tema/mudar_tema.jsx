@@ -12,13 +12,9 @@ export const TemaProvider = ({ children }) =>
     });
 
     //  Aplica o tema ao documento
-    useEffect(() => 
-    {
-        document.documentElement.setAttribute('data-theme', tema);
-        
-    }, [tema]);
+    useEffect(() => { document.documentElement.setAttribute('data-theme', tema);}, [tema]);
 
-    //  Função para alternar entre temad
+    //  Função para alternar entre tema
     const alternarTema = () => 
     {
         const novoTema = tema == 'light' ? 'dark' : 'light';

@@ -20,10 +20,8 @@ export default function Cadastro(){
 
                 <img src={Logo_ts}/>
                 <form className="form_cadastro">
-                        <CadForm/>
-                        
+                    <CadForm/>
                         <button className="btn_cad" name="cadastro">Cadastro</button>
-
                         <p>
                             Já possui conta?
                             <span onClick={() => navigate("/login")}className="link_login">

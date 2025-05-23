@@ -1,14 +1,64 @@
+.container-pag-download{
+    display: flex;
+    margin: 0 20vh;
+    width: 100%;
+    background-color: aqua;
+}
+   
 .container-imagem{
     display: flex;
     align-items: flex-start;
     justify-content: left;
-    padding: 0 auto;
+    padding: 0 20px ;
     margin: 0;
-    background-color: aqua;
+    width: fit-content;
+    background-color: rgb(154, 220, 231);
+    box-shadow: -100px 40px  rgb(38, 67, 100);
+    border-radius: 40px;
+    border: solid  2px  rgb(154, 220, 231);
     width: fit-content;
     
     img{
-           height: 80vh;
+
+           height: 70rem;
            width: auto;
+           z-index: 1;
+
+          
     }
 }
+
+
+.container-texto-desc{
+    margin:  0 90px;
+    text-align: left;
+    padding: 10px;
+   
+    
+    
+    p{
+        font-family: "Bebas Neue", sans-serif;
+        text-align:left;
+        font-weight: 900;
+        font-size:4.3rem;
+    }
+
+    ul{
+        margin: 2rem 3rem;
+        gap: 3rem;
+    }
+   
+
+     li{
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        list-style: circle solid;
+        display: flex;
+        text-align:left;
+        font-size:2.5rem;
+      
+       
+        
+
+    }
+}
+

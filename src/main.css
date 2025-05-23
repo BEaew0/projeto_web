@@ -1,6 +1,6 @@
 :root {
   /* Cores Base - Tema Claro (default) */
-  --cor-de-fundo: rgb(242, 248, 255);
+  --cor-de-fundo: rgb(241, 241, 241);
   --cor-texto: black;
   --cor-header: rgba(44, 165, 221, 0.137);
   --cor-de-card: rgb(230, 241, 252);
@@ -15,7 +15,7 @@
 }
 
 [data-theme="dark"] {
-  --cor-de-fundo: #424242;
+  --cor-de-fundo: rgb(27, 27, 27);
   --cor-texto: #f0f0f0;
   --cor-header: #1a365d;
   --cor-de-card: rgb(75, 94, 114);
@@ -64,10 +64,11 @@ main {
   height: 100vh;
   justify-content: center; 
 
+
   text-align: center;
   width: 100%;
   margin: 0 auto;
-  padding:0 auto;
+  padding: auto;
   overflow-y: auto;
 }
 
