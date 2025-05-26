@@ -1,4 +1,6 @@
 import ImgAparelhos from"../../assets/Imagens/img_cel_note.svg"
+import { IoMdCheckmarkCircle } from "react-icons/io";
+import { FaDownload } from "react-icons/fa";
 import "./download.css"
 
 const texto=[
@@ -38,9 +40,14 @@ return(
                                 <ul>
                                     {item.funcionalidades.map((func,index)=>
                                     (
-                                    <li key={index}>● {func.item}</li> 
+                                    <li key={index}><IoMdCheckmarkCircle />{func.item}</li> 
                                     ))}
                                 </ul>
+                                <div className="container-opções-dowload">
+                                    <button> <FaDownload /> Baixe gratis</button>
+                                   
+
+                                </div>
                         </div>
                     )
                 }
@@ -48,4 +55,4 @@ return(
     </div>
 
     )
-};
+}

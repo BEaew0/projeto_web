@@ -6,7 +6,7 @@ function LayoutLC() {
   return (
      <TemaProvider> {}
       <div className="auth-layout">
-        <Outlet /> {/* Isso renderizará o Login ou Cadastro */}
+        <Outlet /> {}
       </div>
     </TemaProvider>
   );

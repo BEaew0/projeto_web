@@ -19,7 +19,7 @@
 }
 
 .logo-container img {
-    height: 10px;
+    height: px;
     width: clamp(3.5rem, 8vw, 4.5rem); 
     max-height: 80px;
     padding: 0;
@@ -64,7 +64,8 @@ li {
     }
     
     .logo-container img {
-        width: 3.5rem; /* Tamanho fixo para mobile */
+        height: 5px;
+        width:max-content;
         margin-bottom: 0.5rem;
     }
     
