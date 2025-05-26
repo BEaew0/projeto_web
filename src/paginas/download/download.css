@@ -4,8 +4,8 @@
     background-color: rgb(248, 248, 248);
     background-image: linear-gradient(to right, rgb(117, 184, 230), rgb(183, 235, 248));
     align-items: center; 
-    gap: 4rem; /* Add gap between image and text */
-    padding: 2rem 0; /* Add some vertical padding */
+    gap: 4rem; 
+    padding: 2rem 0; 
 }
 
 .container-imagem {
@@ -24,6 +24,7 @@
         height: 60rem;
         width: auto;
         z-index: 1;
+        border-radius: 40px;
     }
 }
 
@@ -32,7 +33,7 @@
     flex-direction: column; /* Change to column layout */
     justify-content: center; /* Center content vertically */
     text-align: left;
-    padding: 10px;
+    padding: 2.5rem;
     flex: 1; /* Allow it to take available space */
     
     p {

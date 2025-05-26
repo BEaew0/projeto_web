@@ -1,5 +1,6 @@
 
 import Card from "../../componentes/cards/card-inicial";
+
 import"./pag.css"
 
 
@@ -22,6 +23,7 @@ export default  function Pag_inicial(){
                 {
                     return(
                     <Card key={key}cinza={card.cinza} titulo={card.titulo}texto={card.texto}/>
+                    
                     );
                 }     
             )}  

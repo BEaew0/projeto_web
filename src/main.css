@@ -3,7 +3,7 @@
   --cor-de-fundo: rgb(255, 255, 255);
   --cor-texto: black;
   --cor-header: rgba(44, 165, 221, 0.137);
-  --cor-de-card: rgb(230, 241, 252);
+  --cor-de-card: rgba(133, 205, 235, 0.922);
   --footer-bg: rgb(130, 191, 231);
   --footer-texto: #000000;
   --cor-hover: rgba(23, 73, 119, 0.445);
@@ -63,14 +63,12 @@ main {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: center; 
-
-
+  justify-content:right; 
   text-align: center;
   width: 100%;
-  margin: 0 auto;
-  padding: auto;
-  overflow-y: auto;
+  margin: 10px auto;
+  padding: 50px 10px;
+
 }
 
 footer.footer_main {
@@ -106,7 +104,6 @@ footer.footer_main a:hover {
   background-attachment: fixed;
   background-size: cover; 
   justify-content: center;
-
   margin: 0;
   align-items: center;
   width: 100%;

@@ -1,23 +1,37 @@
 .card-inicial{
-    padding: 0.4rem 3rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 2.1rem 70px;
     font-size:1.5rem;
     text-align:left;
+    margin: 2rem 30rem;
     width:40rem;
     border-radius: 20px;
     font-style: normal;
-    height:30rem;
+    height:fit-content;
 
 }
 
 h1{
     text-align:left;
-    margin-bottom: 2vh;
+    margin-bottom: 2.4vh;
     font-size:3.5rem;
 }
 
 p{
     font-size:xx-large;
     text-align:left;
+}
+
+.btn_planos{
+    color: rgb(0, 0, 0);
+    margin-top: 40px;
+    background-color: rgb(65, 147, 241);
+    border: none;
+    border-radius: 10px;
+    font-size:1.5rem;
+    padding: 14px 20px;
+    height: 4rem;
+    width: auto;
 }
 
 .card-cinza{
