@@ -1,0 +1,30 @@
+.card-inicial{
+    padding: 0.4rem 3rem;
+    font-size:1.5rem;
+    text-align:left;
+    width:40rem;
+    border-radius: 20px;
+    font-style: normal;
+    height:30rem;
+
+}
+
+h1{
+    text-align:left;
+    margin-bottom: 2vh;
+    font-size:3.5rem;
+}
+
+p{
+    font-size:xx-large;
+    text-align:left;
+}
+
+.card-cinza{
+    background-color:gray;
+
+}
+
+.card-azul{
+    background-color:var(--cor-de-card);
+}

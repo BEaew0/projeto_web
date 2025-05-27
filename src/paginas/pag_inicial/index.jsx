@@ -1,5 +1,6 @@
 
 import Card from "../../componentes/cards/card-inicial";
+
 import"./pag.css"
 
 

@@ -1,4 +1,4 @@
-import ImgAparelhos from"../../assets/Imagens/img_cel_note.svg"
+import ImgAparelhos from"../../assets/Imagens/img1.jpg"
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { FaDownload } from "react-icons/fa";
 import "./download.css"
