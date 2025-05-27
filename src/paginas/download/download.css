@@ -1,124 +1,128 @@
 .container-pag-download {
     display: flex;
-    margin: 0 1vh;
+    flex-direction: column;
+    margin: 0;
     background-color: rgb(248, 248, 248);
     background-image: linear-gradient(to right, rgb(117, 184, 230), rgb(183, 235, 248));
-    align-items: center; 
-    gap: 4rem; 
-    padding: 2rem 0; 
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100vh; /* Garante que o container ocupe a altura total */
 }
 
 .container-imagem {
     display: flex;
-    align-items: flex-start;
-    justify-content: left;
-    padding: 0 20px;
+    align-items: center;
+    justify-content: center;
+    padding:2px; /* Adicionado padding interno */
     margin: 0;
-    width: fit-content;
+    width:fit-content;
+    max-width: 600px;
     background-color: rgb(247, 247, 247);
-    box-shadow: -100px 40px rgb(44, 95, 153);
+    box-shadow: -20px 20px rgb(44, 95, 153);
     border-radius: 40px;
     border: solid 2px rgb(38, 90, 139);
-    
-    img {
-        height: 60rem;
-        width: auto;
-        z-index: 1;
-        border-radius: 40px;
-    }
+}
+
+.container-imagem img {
+    width: 100%;
+    height: auto;
+    max-height: 400px; /* Reduzido para telas menores */
+    object-fit: contain;
+    border-radius: 30px;
 }
 
 .container-texto-desc {
     display: flex;
-    flex-direction: column; /* Change to column layout */
-    justify-content: center; /* Center content vertically */
+    flex-direction: column;
+    justify-content: center;
     text-align: left;
-    padding: 2.5rem;
-    flex: 1; /* Allow it to take available space */
-    
-    p {
-      font-family: 'Bebas Neue', sans-serif; /* Para títulos */
-        text-align: left;
-        font-weight: 900;
-        font-size: 4.3rem;
-        color: rgb(1, 28, 46);
-        margin-bottom: 2rem; /* Add space below heading */
-    }
+    padding: 1rem; /* Reduzido o padding */
+    width: 100%;
+    max-width: 800px;
+}
 
-    ul {
-        margin: 1.5rem 0; /* Adjust margin */
-        gap: 3rem;
-        padding-left: 0;
-        color: rgb(1, 28, 46); /* Remove default padding */
-    }
+.container-texto-desc p {
+    font-family: 'Bebas Neue', sans-serif;
+    text-align: left;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem); /* Ajustado o tamanho */
+    color: rgb(1, 28, 46);
+    margin-bottom: 1rem;
+    line-height: 1.2; /* Melhora a legibilidade */
+    word-break: break-word; /* Evita overflow de texto */
+}
 
-    li {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        list-style: none; /* Remove default list style */
-        display: flex;
-        color: rgb(0, 17, 53);
-        align-items: center; /* Align checkmark with text */
-        gap: 1rem; /* Space between checkmark and text */
-        text-align: left;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem; /* Space between list items */
-    }
+.container-texto-desc ul {
+    margin: 1rem 0;
+    padding-left: 1rem; /* Adicionado padding para alinhamento */
+    color: rgb(1, 28, 46);
+}
+
+.container-texto-desc li {
+    font-family: system-ui, -apple-system, sans-serif;
+    list-style: none;
+    display: flex;
+    color: rgb(0, 17, 53);
+    align-items: center;
+    gap: 1rem;
+    font-size: clamp(1rem, 2vw, 1.8rem); /* Reduzido o tamanho */
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
 }
 
 .container-opções-dowload {
     display: flex;
-    margin-top: 2rem; /* Add more space above button */
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: flex-start; /* Alinhado à esquerda */
+}
 
-    button {
-        color: black;
-        margin-top: 0; /* Remove previous margin-top */
-        background-color: rgb(65, 147, 241);
-        width: 15rem;
-        height: fit-content;
-        padding: 20px;
-        font-size: 25px;
-        border-radius: 6px;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem; /* Space between icon and text */
-    }
-
-   
-    
-    button:hover {
-        background-color:  rgb(38, 92, 163);
-        color: white;
-    }
+.container-opções-dowload button {
+    color: black;
+    background-color: rgb(65, 147, 241);
+    width: 100%;
+    max-width: 180px; /* Reduzido o tamanho */
+    padding: 12px;
+    font-size: clamp(0.9rem, 1.8vw, 1.3rem); /* Ajustado o tamanho */
+    border-radius: 6px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 @media (min-width: 768px) {
     .container-pag-download {
-        font-size: small;
-        padding: 50px;
-        margin: 0rem 8vh;
-     
+        flex-direction: row;
+        padding: 2rem;
+        gap: 3rem;
     }
-       
+    
     .container-imagem {
-        padding: 0 2px;
-        box-shadow: -20px 20px rgb(44, 95, 153);
-
-        img {
-            height: 30rem;
-        }
+        max-width: 45%;
+        padding: 1.5rem;
     }
     
     .container-texto-desc {
-        p {
-            font-size: 2.8rem;
-        }
-        
-        li {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 2px;
-        }
+        padding: 1.5rem;
+    }
+    
+    .container-imagem img {
+        max-height: 450px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-pag-download {
+        padding: 3rem 4rem;
+    }
+    
+    .container-imagem img {
+        max-height: 500px;
     }
 }
