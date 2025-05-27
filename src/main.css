@@ -2,7 +2,7 @@
   /* Cores Base - Tema Claro (default) */
   --cor-de-fundo: rgb(255, 255, 255);
   --cor-texto: black;
-  --cor-header: rgba(44, 165, 221, 0.137);
+  --cor-header: rgba(138, 199, 223, 0.267);
   --cor-de-card: rgb(230, 241, 252);
   --footer-bg: rgb(130, 191, 231);
   --footer-texto: #000000;
@@ -64,8 +64,6 @@ main {
   flex-direction: column;
   height: 100vh;
   justify-content: center; 
-
-
   text-align: center;
   width: 100%;
   margin: 0 auto;
@@ -141,7 +139,7 @@ footer.footer_main a:hover {
   }
   
   main {
-    padding: 1.2rem 3%;
+    padding: 0.2rem 3%;
   }
   
   footer.footer_main {
@@ -165,7 +163,7 @@ footer.footer_main a:hover {
   }
   
   main {
-    padding: 1rem 2%;
+    padding:0 2%;
   }
   
   footer.footer_main {

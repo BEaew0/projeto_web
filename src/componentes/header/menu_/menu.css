@@ -19,7 +19,7 @@
 }
 
 .logo-container img {
-    height: px;
+    height: 10px;
     width: clamp(3.5rem, 8vw, 4.5rem); 
     max-height: 80px;
     padding: 0;
@@ -64,7 +64,7 @@ li {
     }
     
     .logo-container img {
-        height: 5px;
+        height: 2px;
         width:max-content;
         margin-bottom: 0.5rem;
     }
