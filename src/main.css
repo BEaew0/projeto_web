@@ -1,5 +1,7 @@
+
+
+  /* Cores default do sistema*/
 :root {
-  /* Cores Base - Tema Claro (default) */
   --cor-de-fundo: rgb(255, 255, 255);
   --cor-texto: black;
   --cor-header: rgba(44, 165, 221, 0.137);
@@ -15,6 +17,8 @@
   --seg_cor_gradiente: rgba(173, 222, 245, 0.329);
 }
 
+
+  /* Cores  para o tema escuro */
 [data-theme="dark"] {
   --cor-de-fundo: rgb(4, 23, 39);
   --cor-texto: #f0f0f0;
@@ -29,6 +33,7 @@
   --seg_cor_gradiente: rgba(19, 58, 112, 0.705);
 }
 
+/*resetando os e setando configurações globais*/
 * {
   color: var(--cor-texto);
   transition: background-color 0.3s, color 0.3s;
@@ -42,6 +47,8 @@ html, body {
   width: 100%;
 }
 
+
+
 body {
   background-color: var(--cor-de-fundo);
   display: flex;
@@ -49,9 +56,10 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+
 }
 
+//header principal
 .main-header {
   background-color: var(--cor-header);
   width: 100%;
@@ -97,6 +105,7 @@ footer.footer_main a:hover {
   background-color: var(--cor-hover);
 }
 
+//layout para páginas de cadastro e login
 .auth-layout {
   display: flex;
   min-height: 100vh;
@@ -111,7 +120,7 @@ footer.footer_main a:hover {
   width: 100%;
 }
 
-/* Container responsivo para conteúdo */
+
 .container {
   width: 100%;
   max-width: 1200px;
