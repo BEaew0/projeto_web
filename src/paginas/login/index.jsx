@@ -1,71 +1,75 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Login_form from "../../componentes/forms/login";
-import RecForm from "../../componentes/forms/Recuperação/inde";
-
+import LoginForm from "../../componentes/forms/login";
+import RecForm from "../../componentes/forms/Recuperação";
 import { FcGoogle } from "react-icons/fc";
-
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Sociais from "../../componentes/footer/icons_";
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
-
 import "./login.css";
 
-const IconsSociais = [
+const socialIcons = [
     {
         icon: <FcGoogle />,
         id: "icon_social"
     }
 ]
 
-export default function Login() {
-    const navigate = useNavigate(); 
-    const [form, setForm] = useState(false);
+export default function LoginPage() {
+    const navigate = useNavigate();
+    const [showRecovery, setShowRecovery] = useState(false);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+
+    // Efeito para focar no campo correto quando alternar
+    useEffect(() => {
+        const inputName = showRecovery ? "recoverEmail" : "email";
+        const inputElement = document.querySelector(`input[name="${inputName}"]`);
+        if (inputElement) inputElement.focus();
+    }, [showRecovery]);
 
     function handleSubmit(e) {
         e.preventDefault();
-        e.stopPropagation();
-        console.log(form ? "Recuperação enviada" : "Login enviado");
+        console.log(showRecovery ? "Recuperação enviada" : "Login enviado", formData);
+        // Aqui você adicionaria a lógica de autenticação/recuperação
     }
 
-
-
-
-      useEffect(())
-    function mostrarForm() {
-        setForm(!form);
+    function toggleForm() {
+        setShowRecovery(!showRecovery);
+        setFormData({ email: "", password: "" }); // Limpa os dados ao alternar
     }
 
     return (
         <div className="container_pg_login">
-            <BtnVoltar/>
+            <BtnVoltar />
             
             <div className="main_login">
-                <img src={Logo_ts} className="logo"/>
+                <img src={Logo_ts} alt="Logo" className="logo" />
 
                 <form className="login_form" onSubmit={handleSubmit}>
-                    {form ? 
-                      (
+                    {showRecovery ? (
                         <>
-                            <RecForm />
-                            <span onClick={mostrarForm} className="link-style">
+                            <RecForm
+                                email={formData.email}
+                                onChange={(e) => setFormData({...formData, email: e.target.value})}/>
+                            <span onClick={toggleForm} className="link-style">
                                 Voltar para login
                             </span>
-                            <button type="submit" className="btn_logar" name="recuperar">
+                            <button type="submit" className="btn_logar">
                                 Recuperar Senha
                             </button>
-                        </> 
-                      ):
-                      (
+                        </>
+                    ) : (
                         <>
-                            <Login_form />
-                            <span onClick={mostrarForm} className="link-style">
+                            <LoginForm formData={formData}onChange={(e) => setFormData({ ...formData,  [e.target.name]: e.target.value})}/>
+                            
+                            <span onClick={toggleForm} className="link-style">
                                 Esqueci minha senha
                             </span>
-                            <button type="submit" className="btn_logar" name="logar">
-                                Logar
-                            </button>
+
+                            <button type="submit" className="btn_logar"> Logar</button>
             
                             <p> 
                                 Não possui conta? 
@@ -75,9 +79,9 @@ export default function Login() {
                             </p>
             
                             <div className="login_option">
-                                {IconsSociais.map((icon, key) =>
-                                    (<Sociais id={icon.id} icon={icon.icon} key={key}/>))
-                                }
+                                {socialIcons.map((icon, index) => (
+                                    <Sociais id={icon.id} icon={icon.icon} key={index} />
+                                ))}
                             </div>
                         </>
                     )}

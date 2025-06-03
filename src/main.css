@@ -59,7 +59,7 @@ body {
 
 }
 
-//header principal
+
 .main-header {
   background-color: var(--cor-header);
   width: 100%;
@@ -105,7 +105,7 @@ footer.footer_main a:hover {
   background-color: var(--cor-hover);
 }
 
-//layout para páginas de cadastro e login
+
 .auth-layout {
   display: flex;
   min-height: 100vh;
