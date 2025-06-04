@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const apiTS= axios.create({
+const api= axios.create({
     baseURL: "https://localhost:7221/api",
     timeout: 10000,
     headers: {
@@ -11,4 +11,4 @@ const apiTS= axios.create({
 
 });
 
-export default apiTS;
+export default api;

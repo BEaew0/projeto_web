@@ -4,7 +4,6 @@
     justify-content: flex-start;
     align-items: center;
     padding: 0 auto;
-
     color: var(--cor-texto);
 }
 
@@ -85,32 +84,32 @@
     }
     
     .form_cadastro {
-        padding: 1.5rem 1.5rem; /* Reduz o padding lateral */
-        font-size: 16px; /* Reduz o tamanho da fonte */
+        padding: 1.5rem 1.5rem;
+        font-size: 16px; 
     }
     
     .form_cadastro input {
-        font-size: 0.9rem; /* Reduz o tamanho da fonte dos inputs */
+        font-size: 0.9rem; 
     }
 }
 
 @media (max-width: 480px) {
     .container_cadastro img {
         margin-top:40vh ;
-        height: 80px; /* Reduz o tamanho da imagem */
+        height: 80px;
     }
     
     .form_cadastro {
-        padding: 1rem; /* Reduz ainda mais o padding */
+        padding: 1rem; 
         font-size: 14px;
     }
     
     .form_cadastro input {
-        height: 1.2rem; /* Reduz a altura dos inputs */
+        height: 1.2rem; 
         font-size: 0.8rem;
     }
     
     .btn_cad {
-        padding: 0.6rem; /* Reduz o padding do botão */
+        padding: 0.6rem; 
     }
 }
