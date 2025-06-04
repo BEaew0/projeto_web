@@ -11,7 +11,7 @@ export const ContactUs = ({ formData, onChange }) => {
     },
     {
 
-      name: "message",
+      name: "messagem",
       type: "textarea",
       required: true
     }

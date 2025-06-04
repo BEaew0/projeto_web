@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Adicionamos useEffect
 import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 import LoginForm from "../../componentes/forms/login";
@@ -23,51 +23,56 @@ export default function LoginPage() {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-
         user_email: "",
         message: ""
     });
     const [emailEnviado, setEmailEnviado] = useState(false);
     const formRecovery = useRef();
 
+    // Inicialização do EmailJS
+    useEffect(() => {
+        emailjs.init('service_nbv9ufd')
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (showRecovery) 
-        {
+        if (showRecovery) {
             try {
-                await emailjs.sendForm
-                (
-                    'YOUR_SERVICE_ID',
-                    'YOUR_TEMPLATE_ID',
+                // Adicionamos await e tratamento correto da Promise
+                const result = await emailjs.sendForm(
+                   'service_nbv9ufd',
+                    'template_xrd3aep', 
                     formRecovery.current,
-                    'YOUR_PUBLIC_KEY'
+                    'TGGUjJjDOARZYz2ri'
                 );
                 
+                console.log("E-mail enviado com sucesso:", result);
                 setEmailEnviado(true);
+                
+                // Reset após 3 segundos
                 setTimeout(() => {
                     setShowRecovery(false);
                     setEmailEnviado(false);
                 }, 3000);
-            } 
-            catch (error) 
-            {
-                console.error("Falha ao enviar e-mail:", error);
-                alert("Erro ao enviar e-mail de recuperação. Tente novamente.");
+                
+            } catch (error) {
+                console.error("Detalhes do erro:", {
+                    status: error.status,
+                    text: error.text,
+                    message: error.message
+                });
+                alert(`Erro ao enviar e-mail: ${error.text || "Tente novamente mais tarde"}`);
             }
-        } 
-        else 
-        {
+        } else {
             console.log("Login enviado:", formData);
             // Lógica de autenticação aqui
         }
     };
 
-    const handleChange = (e) => 
-    {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => (
-            {...prev,[name]: value}));
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const toggleForm = () => {
@@ -75,9 +80,9 @@ export default function LoginPage() {
         setFormData({ 
             email: "", 
             password: "", 
-          
             user_email: "",
-            message: ""});
+            message: ""
+        });
         setEmailEnviado(false);
     };
 
@@ -90,31 +95,33 @@ export default function LoginPage() {
 
                 {showRecovery ? (
                     <form ref={formRecovery} onSubmit={handleSubmit} className="login_form">
-                        {
-                        emailEnviado ? 
-                        (
-                            <p className="mensagem-sucesso">E-mail de recuperação enviado com sucesso!</p>
-                        ) : 
-                        (
-                            <>
-                                <ContactUs  formData={formData} onChange={handleChange}/>
-                                <span onClick={toggleForm} className="link-style">
-                                    Voltar para login
-                                </span>
+                        {emailEnviado ? 
+                            (
+                                <p className="mensagem-sucesso">E-mail de recuperação enviado com sucesso!</p>
+                            ) : 
+                            (
+                                <>
+                                    <ContactUs formData={formData} onChange={handleChange}/>
 
-                                <button type="submit" className="btn_logar">
-                                    Recuperar Senha
-                                </button>
-                            </>
+                                    <span onClick={toggleForm} className="link-style">
+                                        Voltar para login
+                                    </span>
+
+                                    <button type="submit" className="btn_logar">
+                                         Recuperar Senha
+                                    </button>
+                                </>
                         )}
                     </form>
                 ) : (
+
                     <form className="login_form" onSubmit={handleSubmit}>
+                        <LoginForm formData={formData} onChange={handleChange}/>
                         
-                        <LoginForm formData={formData}onChange={handleChange}/>
                         <span onClick={toggleForm} className="link-style">
                             Esqueci minha senha
                         </span>
+                        
                         <button type="submit" className="btn_logar">Logar</button>
         
                         <p> 
@@ -129,7 +136,9 @@ export default function LoginPage() {
                                 <Sociais id={icon.id} icon={icon.icon} key={index} />
                             ))}
                         </div>
+
                     </form>
+
                 )}
             </div>
         </div>
