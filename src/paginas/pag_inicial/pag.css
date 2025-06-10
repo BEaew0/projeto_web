@@ -12,6 +12,7 @@
 .card-inicial {
     display: flex;
     flex-direction: column;
+    
     background-color: var(--cor-de-card);
     border-radius: 20px;
     padding: 2.5rem;

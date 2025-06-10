@@ -17,7 +17,8 @@ const socialIcons = [
     }
 ]
 
-export default function LoginPage() {
+export default function LoginPage() 
+{
     const navigate = useNavigate();
     const [showRecovery, setShowRecovery] = useState(false);
     const [formData, setFormData] = useState({

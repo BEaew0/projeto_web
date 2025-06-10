@@ -1,4 +1,5 @@
-.container-pag-download {
+.container-pag-download 
+{
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -9,10 +10,11 @@
     padding: 2rem 1rem;
     width: 100%;
     box-sizing: border-box;
-    min-height: 100vh; /* Garante que o container ocupe a altura total */
+    min-height:fit-content;
 }
 
-.container-imagem {
+.container-imagem 
+{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,7 +28,8 @@
     border: solid 2px rgb(38, 90, 139);
 }
 
-.container-imagem img {
+.container-imagem img 
+{
     width: 100%;
     height: auto;
     max-height: 400px; /* Reduzido para telas menores */
@@ -34,7 +37,8 @@
     border-radius: 30px;
 }
 
-.container-texto-desc {
+.container-texto-desc 
+{
     display: flex;
     flex-direction: column;
     justify-content: center;

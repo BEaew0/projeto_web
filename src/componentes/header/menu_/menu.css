@@ -6,21 +6,20 @@
     padding: 0 1.6rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
-    font-size: clamp(1rem, 1.5vw, 1.5rem); /* Fonte responsiva */
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
 }
 
 .links_esquerda, .links_direita {
     display: flex;
     align-items: center;
-    gap: clamp(0.5rem, 1vw, 1rem); /* Espaçamento responsivo */
+    gap: clamp(0.5rem, 1vw, 1rem);
     padding: 0;
     margin: 0;
-    flex-wrap: nowrap; /* Impede quebra de linha */
+    flex-wrap: nowrap;
 }
 
-/* ADICIONADO: Faz o container da direita se empurrar para a direita */
 .links_direita {
-    margin-left: auto; /* Empurra para extrema direita dentro do flex container */
+    margin-left: auto;
 }
 
 .logo-container img {
@@ -29,34 +28,46 @@
     max-height: 80px;
     padding: 0;
     margin: 0;
-    object-fit: contain; 
+    object-fit: contain;
 }
 
-/* Estilo dos links */
+/* Link items - keeping original hover */
 #itens_h {
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem); /* Padding responsivo */
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem);
     border-radius: 0.5rem;
     color: var(--cor-texto);
     text-decoration: none;
-    white-space: nowrap; /* Impede quebra de texto */
-    font-size: clamp(0.9rem, 1.2vw, 1.2rem); /* Fonte responsiva */
+    white-space: nowrap;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
 }
 
 #itens_h:hover {
     background-color: var(--cor-hover);
-    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem); /* Padding responsivo */
-    
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem);
 }
 
-/* Remove os bullets da lista */
+/* Icon styles - only this section modified */
+.icon {
+    height: 24px; 
+    width: 24px; 
+    color: var(--cor-texto);
+}
+
+.icons_container {
+    display: flex;
+    gap: 1rem; /* Slightly increased gap */
+    align-items: center;
+}
+
+/* List items */
 li {
     list-style: none;
     display: inline;
 }
 
-/* Media Query para telas menores */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .menu__ {
         flex-direction: column;
@@ -67,18 +78,23 @@ li {
     .links_esquerda, .links_direita {
         width: 100%;
         justify-content: center;
-        flex-wrap: wrap; /* Permite quebra em telas muito pequenas */
-        margin-left: 0; /* Reseta o margin-left para evitar conflito na vertical */
+        flex-wrap: wrap;
+        margin-left: 0;
     }
     
     .logo-container img {
         height: 2px;
-        width:max-content;
+        width: max-content;
         margin-bottom: 0.5rem;
     }
     
     #itens_h {
         padding: 0.2rem 0.8rem;
         font-size: 0.9rem;
+    }
+    
+    .icon {
+        height: 20px; /* Adjusted for mobile */
+        width: 20px;
     }
 }

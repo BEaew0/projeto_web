@@ -3,20 +3,21 @@ import React, { createContext, useState, useContext } from "react";
 
 const AuthContext = createContext();
 
-export  function Auth({ children }) {
-  const [Logado, setLogado] = useState(false);
+// Changed from AuthProvider to just Auth
+export function Auth({ children }) {
+  const [logado, setLogado] = useState(false);
 
   const login = () => setLogado(true);
   const logout = () => setLogado(false);
 
   return (
-    <AuthContext.Provider value={{ Logado, login, logout }}>
+    <AuthContext.Provider value={{ logado, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 // Hook para acessar o contexto
-export default function useAuth() {
-  return useContext(Logado);
+export function useAuth() {
+  return useContext(AuthContext);
 }

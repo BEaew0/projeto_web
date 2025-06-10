@@ -7,23 +7,22 @@ import BtnTema from "./../botoes/btn_tema";
 import Menu_links from "../menu_/links_menu/index";
 import "./menu.css";
 
-const links_esquerda = [
+const links_esquerda =[
   { link: "/download", classe: "link_esquerda", text: "Download" },
   { link: "/planos", classe: "link_esquerda", text: "Planos" },
   { link: "/devs", classe: "link_esquerda", text: "Desenvolvedores" },
 ];
 
-const links_direita = [
+const links_direita =[
   { link: "/login", classe: "link_direita", text: "Login" },
   { link: "/cadastro", classe: "link_direita", text: "Cadastro" },
 ];
 
-const icons_home = [
-  { icon: <IoIosNotifications className="icon_notification" />, link: "/notificacoes", classe: "icon_link" },
-  { icon: <FaUserCircle className="icon_user" />, link: "/perfil", classe: "icon_link" },
-];
 
-export default function Menu({ isLogged = false }) {
+
+
+export default function Menu({ isLogged = false }) 
+{
   return (
     <div className="menu__">
       
@@ -32,14 +31,10 @@ export default function Menu({ isLogged = false }) {
         <LogoTS link={"/"} logo={Logo_ts}/>
 
       {isLogged ? 
-        (
-          <div className="icons_container">
-          {icons_home.map((item, key) => (
-            <a key={key} href={item.link} className={item.classe}>
-              {item.icon}
-            </a>))
-          }
-        </div>
+      (
+          <>
+            <IoIosNotifications className="icon_not" />
+          </>
         ) : (
           <>
             {links_esquerda.map((link, key) => (
@@ -56,13 +51,9 @@ export default function Menu({ isLogged = false }) {
         <BtnTema />
 
         {isLogged ? (// Se logado, mostra os ícones
-          <div className="icons_container">
-            {icons_home.map((item, key) => (
-              <a key={key} href={item.link} className={item.classe}>
-                {item.icon}
-              </a>))
-            }
-          </div>
+            <>
+              <FaUserCircle className="icon_user"/>
+            </>
           ): 
           (
           // Se não logado, mostra os links normais
