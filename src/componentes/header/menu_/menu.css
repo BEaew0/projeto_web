@@ -41,6 +41,8 @@
 
 #itens_h:hover {
     background-color: var(--cor-hover);
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem); /* Padding responsivo */
+    
 }
 
 /* Remove os bullets da lista */

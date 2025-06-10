@@ -88,12 +88,15 @@ export default function Cadastro() {
 
             if (response.success) {
                 navigate("/login", { 
-                    state: {
+                    state: 
+                    {
                         registro: true,
                         email: form.email_usuario
                     }
                 });
-            } else {
+            }
+             else 
+             {
                 setApiErro(response.message || "Erro ao cadastrar");
             }
         } catch (e) {
@@ -111,28 +114,20 @@ export default function Cadastro() {
                 <img src={Logo_ts} alt="Logo" />
 
                 <form className="form_cadastro" onSubmit={enviarDados}>
-                    <CadForm 
-                        formData={form} 
-                        onInputChange={inputChange} 
-                        errors={erros} 
-                    />
+                    <CadForm formData={form}  onInputChange={inputChange} errors={erros}  />
 
                     {apiErro && <div className="menssagem_erro">{apiErro}</div>}
 
                     <button 
                         className="btn_cad" 
                         type="submit" 
-                        disabled={loading}
-                    >
+                        disabled={loading}>
                         {loading ? "Cadastrando..." : "Cadastrar"}
                     </button>
 
                     <p>
                         Já possui conta?
-                        <span 
-                            onClick={() => navigate("/login")} 
-                            className="link_login"
-                        >
+                        <span onClick={() => navigate("/login")} className="link_login">
                             Faça Login.
                         </span>
                     </p>

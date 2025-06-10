@@ -15,31 +15,28 @@ const inputs= [
       required: true
     },
     {
-
-      name: "messagem",
-      type: "textarea",
-      required: true
+      texto:"Tipo de problema",
+      name:"user_problema",
+      type:"select",
+      required: true,
+      options:['Problemas no app','Produtos não aparecem',]
     }
+
   ];
 
 
-  export default function Contato(){
+  export default function Campos(){
 
     return(
-        <>
-        {inputs.map((Input,key)=>(
+      <>
+        {inputs.map((input,key)=>(
             <Input
                 key={key}
                 type={input.type}
-                texto={input.texto}
-            />
-
-
-
+                texto={input.texto} 
+                options={input.options} />
             ))
-        
-        
         }
-        </>
+      </>
     )
   }

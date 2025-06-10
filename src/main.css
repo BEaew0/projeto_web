@@ -1,27 +1,24 @@
-
-
-  /* Cores default do sistema*/
+/* Cores default do sistema*/
 :root {
-  --cor-de-fundo: rgb(255, 255, 255);
+  --cor-de-fundo: rgb(250, 250, 250);
   --cor-texto: black;
   --cor-header: rgba(44, 165, 221, 0.137);
   --cor-de-card: rgb(230, 241, 252);
   --footer-bg: rgb(130, 191, 231);
   --footer-texto: #000000;
   --cor-hover: rgba(23, 73, 119, 0.445);
-  --cor-de-form: rgb(255, 255, 255);
+  --cor-de-form: rgba(252, 252, 252, 0.945);
   --cor-de-botao: rgb(129, 204, 255);
-  --cor-de-botao-grande:rgb(22, 70, 141);
+  --cor-de-botao-grande: rgb(22, 70, 141);
   --cor-de-hover: rgb(80, 144, 204);
   --sombreamento: rgba(29, 29, 29, 0.1);
   --seg_cor_gradiente: rgba(173, 222, 245, 0.329);
 }
 
-
-  /* Cores  para o tema escuro */
+/* Cores para o tema escuro */
 [data-theme="dark"] {
   --cor-de-fundo: rgb(4, 23, 39);
-  --cor-texto: #f0f0f0;
+  --cor-texto: #ffffff;
   --cor-header: #1a365d;
   --cor-de-card: rgb(75, 94, 114);
   --footer-bg: #062242;
@@ -33,21 +30,20 @@
   --seg_cor_gradiente: rgba(19, 58, 112, 0.705);
 }
 
-/*resetando os e setando configurações globais*/
+/* Resetando e setando configurações globais */
 * {
   color: var(--cor-texto);
   transition: background-color 0.3s, color 0.3s;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 html, body {
   height: 100%;
   width: 100%;
 }
-
-
 
 body {
   background-color: var(--cor-de-fundo);
@@ -56,29 +52,26 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-
 }
-
 
 .main-header {
   background-color: var(--cor-header);
   width: 100%;
-  padding: 0.8rem 5%;
+  height: fit-content;
+  padding: 0.2rem 5%;
 }
 
+/* MAIN adaptado do segundo CSS */
 main {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  justify-content: center; 
-
-
-  text-align: center;
+  align-items: center;
+  gap: 2rem;
   width: 100%;
-  margin: 10px auto;
-  padding: 50px 10px;
-
+  min-height: calc(100vh - 140px);
+  position: relative;
+  padding: 2rem;
+  flex: 1;
 }
 
 footer.footer_main {
@@ -87,7 +80,6 @@ footer.footer_main {
   width: 100%;
   height: auto;
   margin-top: auto;
-
   padding: 1.5rem 5%;
 }
 
@@ -97,7 +89,6 @@ footer.footer_main a {
   margin: 0 0.8rem; 
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
-
   transition: all 0.3s ease;
 }
 
@@ -105,12 +96,11 @@ footer.footer_main a:hover {
   background-color: var(--cor-hover);
 }
 
-
-.auth-layout {
+.auth-layout{
   display: flex;
   min-height: 100vh;
   background-color: var(--cor-de-fundo);
-  background-image: radial-gradient( var(--seg_cor_gradiente) 40%, var(--cor-de-fundo) 80%);
+  background-image: radial-gradient(var(--seg_cor_gradiente) 40%, var(--cor-de-fundo) 80%);
   background-repeat: no-repeat; 
   background-attachment: fixed;
   background-size: cover; 
@@ -120,6 +110,13 @@ footer.footer_main a:hover {
   width: 100%;
 }
 
+.usuario-layout{
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--cor-de-fundo);
+    width: 100%;
+
+}
 
 .container {
   width: 100%;
@@ -128,10 +125,12 @@ footer.footer_main a:hover {
   padding: 0 1.5rem;
 }
 
-/* Media Queries para ajustes em diferentes tamanhos de tela */
+
+/* Media Queries - Versão Corrigida */
 @media (max-width: 1024px) {
   .main-header {
     padding: 0.7rem 4%;
+    height: auto; /* Garante altura automática */
   }
   
   main {
@@ -146,47 +145,35 @@ footer.footer_main a:hover {
 @media (max-width: 768px) {
   .main-header {
     padding: 0.6rem 3%;
+    min-height: 80px; /* Altura mínima reduzida */
   }
   
   main {
-    padding: 0.2rem 3%;
+    padding: 1rem 3%;
   }
   
   footer.footer_main {
     padding: 1rem 3%;
-    
-    a {
-      margin: 0 0.5rem;
-      padding: 0.2rem 0.3rem;
-      font-size: 0.9rem;
-    }
   }
   
-  .auth-layout {
-    padding: 1.5rem 3%;
+  footer.footer_main a {
+    margin: 0 0.5rem;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .main-header {
     padding: 0.5rem 2%;
+    min-height: 60px; /* Altura ainda menor para mobile */
   }
   
   main {
-    padding:0 2%;
+    padding: 0.8rem 2%;
   }
   
   footer.footer_main {
     padding: 0.8rem 2%;
-    text-align: center;
-    
-    a {
-      display: inline-block;
-      margin: 0.3rem;
-    }
-  }
-  
-  .auth-layout {
-    padding: 1rem 2%;
   }
 }

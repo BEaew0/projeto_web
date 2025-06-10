@@ -19,8 +19,8 @@ const planos=[
             "Acesso básico aos recursos principais",
             "Limite de rojetos ativos",
             "Suporte por email com resposta em até 48h",
-            "Armazenamento de 1GB",
-            "Relatórios básicos de desempenho"
+            "Armazenamento de 10GB",
+            "Relatórios avançados de desempenho"
         ],
         button:true
     }

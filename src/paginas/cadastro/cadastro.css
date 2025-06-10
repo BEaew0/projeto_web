@@ -34,7 +34,6 @@
     padding: 1.5rem 2.5rem;
     flex-direction: column;
     gap: 1rem;
-
     border-radius: 8px;
     box-shadow: 0 6px 10px var(--sombreamento);
     box-sizing: border-box; /* Garante que o padding não some à largura total */

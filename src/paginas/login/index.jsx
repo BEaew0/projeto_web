@@ -122,7 +122,7 @@ export default function LoginPage() {
                             Esqueci minha senha
                         </span>
                         
-                        <button type="submit" className="btn_logar">Logar</button>
+                        <button type="submit" className="btn_logar" onClick={() => navigate("/home")}>Logar</button>
         
                         <p> 
                             Não possui conta? 

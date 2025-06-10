@@ -1,11 +1,15 @@
 import {FaLinkedin,FaGithub} from "react-icons/fa";
 import { FaSquareXTwitter, FaBluesky } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 import Links__f from "./links_footer/index";
 import Sociais from "../footer/icons_/index";
 
 import "./footer.css";
 
- const icons_midia =
+ 
+
+export default function Footer(){
+    const icons_midia =
         [
             { 
               icon: <FaLinkedin size={24} />, 
@@ -33,10 +37,12 @@ import "./footer.css";
             {
                 link:"/politica_priv",
                 nome:"Politica de privacidade"
+       
             },
             { 
                 link:"/contato",
-                nome:"Entre em contato"
+                nome:"Entre em contato",
+                 onClick: () => navigate("/cadastro")
         
             },
             {
@@ -45,9 +51,9 @@ import "./footer.css";
             }
             
         ]
- 
+    
 
-export default function Footer(){
+    const navigate = useNavigate();
     
     return(
     <footer className="footer_main">  
@@ -56,7 +62,7 @@ export default function Footer(){
 
         <div className="links_footer">
             {links_footer.map((link, key) => 
-            (<Links__f link={link.link} desc={link.nome} key={key} /> ))}
+            (<Links__f link={link.link}  onClick={link.onClick}  desc={link.nome} key={key} /> ))}
         </div>
 
         <ul className="redes_sociais">

@@ -82,8 +82,7 @@ export default function CadForm({ formData, onInputChange, errors }) {
                     required={input.required}
                     value={formData[input.name] || ""}
                     onChange={onInputChange}
-                    error={errors[input.name]}
-                />
+                    error={errors[input.name]}/>
             ))}
         </>
     );
