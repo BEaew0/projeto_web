@@ -18,6 +18,11 @@
     flex-wrap: nowrap; /* Impede quebra de linha */
 }
 
+/* ADICIONADO: Faz o container da direita se empurrar para a direita */
+.links_direita {
+    margin-left: auto; /* Empurra para extrema direita dentro do flex container */
+}
+
 .logo-container img {
     height: 10px;
     width: clamp(3.5rem, 8vw, 4.5rem); 
@@ -63,6 +68,7 @@ li {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap; /* Permite quebra em telas muito pequenas */
+        margin-left: 0; /* Reseta o margin-left para evitar conflito na vertical */
     }
     
     .logo-container img {

@@ -36,7 +36,7 @@ export default function App() {
         </Route>
 
         {/* Rotas Privadas */}
-        <Route element={<PrivateRoute><Layout_user /></PrivateRoute>}>
+        <Route element={<Layout_user />}>
           <Route path="/home" element={<Home />} />
           {/* Adicione outras rotas privadas aqui */}
         </Route>

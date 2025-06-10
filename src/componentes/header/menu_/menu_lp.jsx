@@ -29,9 +29,25 @@ export default function Menu({ isLogged = false }) {
       
       {/* Lado Esquerdo (sempre mostra os mesmos links) */}
       <div className="links_esquerda">
-        <LogoTS link={"/"} logo={Logo_ts} />
-        {links_esquerda.map((link, key) => (
-          <Menu_links key={key} link={link.link} text={link.text} />))}
+        <LogoTS link={"/"} logo={Logo_ts}/>
+
+      {isLogged ? 
+        (
+          <div className="icons_container">
+          {icons_home.map((item, key) => (
+            <a key={key} href={item.link} className={item.classe}>
+              {item.icon}
+            </a>))
+          }
+        </div>
+        ) : (
+          <>
+            {links_esquerda.map((link, key) => (
+              <Menu_links key={key} link={link.link} text={link.text} />
+            ))}      
+          </>     
+        )
+      }
       </div>
 
       {/* Lado Direito (condicional) */}
@@ -44,16 +60,19 @@ export default function Menu({ isLogged = false }) {
             {icons_home.map((item, key) => (
               <a key={key} href={item.link} className={item.classe}>
                 {item.icon}
-              </a>))}
+              </a>))
+            }
           </div>
-        ): 
-        (
+          ): 
+          (
           // Se não logado, mostra os links normais
-          links_direita.map((link, key) => (
-            <Menu_links key={key} link={link.link} text={link.text} />
-          ))
-        )}
+            <>
+              {links_direita.map((link, key) => (
+              <Menu_links key={key} link={link.link} text={link.text} />
+            ))}
+            </>
 
+        )}
       </div>
     </div>
   );

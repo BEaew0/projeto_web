@@ -1,35 +1,22 @@
-// src/context/AuthContext.js
-import { createContext, useState, useContext } from 'react';
+// componentes/auth_teste.jsx
+import React, { createContext, useState, useContext } from "react";
 
-// 1. Criar o contexto
 const AuthContext = createContext();
 
-// 2. Criar o provedor (Provider)
-export function Auth({ children }) {
-  const [isLogged, setIsLogged] = useState(false);
-  const [user, setUser] = useState(null);
+export  function Auth({ children }) {
+  const [Logado, setLogado] = useState(false);
 
-  // Função de login (simulada)
-  const login = (userData) => 
-  {
-    setIsLogged(true);
-    setUser(userData);
-  };
-
-  // Função de logout
-  const logout = () => {
-    setIsLogged(false);
-    setUser(null);
-  };
+  const login = () => setLogado(true);
+  const logout = () => setLogado(false);
 
   return (
-    <AuthContext.Provider value={{ isLogged, user, login, logout }}>
+    <AuthContext.Provider value={{ Logado, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// 3. Hook personalizado para usar o contexto
-export function useAuth() {
-  return useContext(AuthContext);
+// Hook para acessar o contexto
+export default function useAuth() {
+  return useContext(Logado);
 }
