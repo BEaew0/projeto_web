@@ -22,7 +22,6 @@ export default function Menu({ isLogged = false })
 {
   return (
     <div className="menu__">
-      
 
       {/* Lado Esquerdo (sempre mostra os mesmos links) */}
       <div className="links_esquerda">
@@ -33,12 +32,15 @@ export default function Menu({ isLogged = false })
             <IoIosNotifications className="icon" />
              <LogoTS link={"/"} logo={Logo_ts}/>
           </>
-        ) : (
+        ) : 
+        (
           <>
             <LogoTS link={"/"} logo={Logo_ts}/>
-            {links_esquerda.map((link, key) => (
-              <Menu_links key={key} link={link.link} text={link.text} />
-            ))}      
+            {links_esquerda.map((link, key) => 
+              (
+               <Menu_links key={key} link={link.link} text={link.text} />
+              ))
+            }      
           </>     
         )
       }
@@ -64,8 +66,8 @@ export default function Menu({ isLogged = false })
               <Menu_links key={key} link={link.link} text={link.text} />
             ))}
             </>
-
         )}
+
       </div>
     </div>
   );
