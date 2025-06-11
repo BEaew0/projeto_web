@@ -1,132 +1,137 @@
-.container-pag-download 
-{
+/* Container principal */
+.container-pag-download {
     display: flex;
     flex-direction: column;
-    margin: 0;
-    background-color: rgb(248, 248, 248);
-    background-image: linear-gradient(to right, rgb(117, 184, 230), rgb(183, 235, 248));
-    align-items: center;
-    gap: 2rem;
-    padding: 2rem 1rem;
     width: 100%;
+   height: 100vh;
+    margin: 0;
+    
     box-sizing: border-box;
-    min-height:fit-content;
 }
 
-.container-imagem 
-{
+/* Desktop: divisão 50/50 */
+@media (min-width: 768px) {
+    .container-pag-download {
+        flex-direction: row;
+    }
+}
+
+/* Seção da imagem */
+.container-imagem {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding:2px; /* Adicionado padding interno */
-    margin: 0;
-    width:fit-content;
-    max-width: 600px;
-    background-color: rgb(247, 247, 247);
-    box-shadow: -20px 20px rgb(44, 95, 153);
-    border-radius: 40px;
-    border: solid 2px rgb(38, 90, 139);
-}
-
-.container-imagem img 
-{
+    background-color: rgb(89, 170, 224);
+    border-right: 5px solid darkblue;
     width: 100%;
-    height: auto;
-    max-height: 400px; /* Reduzido para telas menores */
-    object-fit: contain;
-    border-radius: 30px;
+    height: 50vh; /* Altura reduzida em mobile */
+    overflow: hidden; /* Garante que a imagem não vaze */
 }
 
-.container-texto-desc 
-{
+@media (min-width: 768px) {
+    .container-imagem {
+        width: 50%;
+        height: 100vh;
+        border-right: 9px solid rgb(6, 46, 73);
+    }
+}
+
+/* Imagem responsiva */
+.container-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantém proporção sem cortar */
+    margin-top: 5%;
+    padding: 2rem; /* Espaço interno */
+}
+
+/* Seção de conteúdo */
+.container-texto-desc {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: left;
-    padding: 1rem; /* Reduzido o padding */
+    justify-content: center; 
+    align-items: center; 
+    padding: 2rem;
     width: 100%;
-    max-width: 800px;
+    gap: 2rem;
+    text-align: center; /* Centraliza o texto */
 }
 
+@media (min-width: 768px) {
+    .container-texto-desc {
+        width: 50%;
+        padding: 1rem 2px; /* Mais espaço em desktop */
+    }
+}
+
+/* Título */
 .container-texto-desc p {
+    display: flex;
     font-family: 'Bebas Neue', sans-serif;
-    text-align: left;
-    font-weight: 900;
-    font-size: clamp(2rem, 4vw, 3.5rem); /* Ajustado o tamanho */
-    color: rgb(1, 28, 46);
-    margin-bottom: 1rem;
-    line-height: 1.2; /* Melhora a legibilidade */
-    word-break: break-word; /* Evita overflow de texto */
+    font-size: 3rem;
+    margin: 20px 40px;
+   
+    color: var(--cor-texto);
+    padding: 0 70px;
+    margin: 0;
+    line-height: 1.2;
 }
 
+/* Lista de tópicos (coluna) */
 .container-texto-desc ul {
-    margin: 1rem 0;
-    padding-left: 1rem; /* Adicionado padding para alinhamento */
-    color: rgb(1, 28, 46);
+    display: flex;
+    flex-direction: column;
+    color: var(--cor-texto);
+    gap: 1.5rem; /* Espaço entre itens */
+    padding: 0;
+    margin: 0;
 }
 
 .container-texto-desc li {
-    font-family: system-ui, -apple-system, sans-serif;
-    list-style: none;
     display: flex;
-    color: rgb(0, 17, 53);
     align-items: center;
     gap: 1rem;
-    font-size: clamp(1rem, 2vw, 1.8rem); /* Reduzido o tamanho */
-    margin-bottom: 0.8rem;
-    line-height: 1.4;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: inherit;
+    list-style: none;
 }
 
-.container-opções-dowload {
+/* Ícone de check */
+.container-texto-desc li svg {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    justify-content: flex-start; /* Alinhado à esquerda */
+    color: rgb(65, 147, 241);
+    font-size: 1.5em;
+}
+
+/* Botão grande */
+.container-opções-dowload {
+    margin-top: 2rem;
 }
 
 .container-opções-dowload button {
-    color: black;
     background-color: rgb(65, 147, 241);
+    color: white;
     width: 100%;
-    max-width: 180px; /* Reduzido o tamanho */
-    padding: 12px;
-    font-size: clamp(0.9rem, 1.8vw, 1.3rem); /* Ajustado o tamanho */
-    border-radius: 6px;
+    max-width: 300px; /* Largura máxima */
+    padding: 1.2rem;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    border-radius: 8px;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-@media (min-width: 768px) {
-    .container-pag-download {
-        flex-direction: row;
-        padding: 2rem;
-        gap: 3rem;
-    }
-    
-    .container-imagem {
-        max-width: 45%;
-        padding: 1.5rem;
-    }
-    
-    .container-texto-desc {
-        padding: 1.5rem;
-    }
-    
-    .container-imagem img {
-        max-height: 450px;
-    }
+.container-opções-dowload button:hover {
+    background-color: rgb(44, 95, 153);
+    transform: scale(1.02);
 }
 
-@media (min-width: 1024px) {
-    .container-pag-download {
-        padding: 3rem 4rem;
-    }
-    
-    .container-imagem img {
-        max-height: 500px;
-    }
+/* Ícone do botão */
+.container-opções-dowload button svg {
+    font-size: 1.2em;
 }

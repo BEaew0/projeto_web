@@ -1,0 +1,55 @@
+.main_sobre {
+    display: flex;
+    gap: 2rem;
+    height: 100vh;
+
+
+}
+
+.topicos-sobre {
+    display: flex;
+    flex-direction: column;
+    width:300px;
+    padding: 1rem;
+    margin: 0 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Rolagem vertical */
+    max-height: 100vh;
+}
+
+/* Estilizando a barra de rolagem */
+.topicos-sobre::-webkit-scrollbar {
+    width: 8px;
+}
+
+.topicos-sobre::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.topicos-sobre::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.topicos-sobre::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.main-sobre {
+    flex: 1;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y:scroll; /* Rolagem vertical */
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+p {
+    line-height: 1.6;
+    color: #34495e;
+}

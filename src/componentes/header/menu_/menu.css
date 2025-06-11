@@ -50,7 +50,7 @@
 
 /* Icon styles - only this section modified */
 .icon {
-    height: 24px; 
+    height: 60px; 
     width: 24px; 
     color: var(--cor-texto);
 }

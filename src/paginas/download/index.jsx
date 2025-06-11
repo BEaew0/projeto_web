@@ -1,4 +1,5 @@
-import ImgAparelhos from"../../assets/Imagens/img1.jpg"
+import ImgAparelhos from "../../assets/Imagens/aparelhos.png"
+
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { FaDownload } from "react-icons/fa";
 import "./download.css"
@@ -43,10 +44,10 @@ return(
                                     <li key={index}><IoMdCheckmarkCircle />{func.item}</li> 
                                     ))}
                                 </ul>
+
                                 <div className="container-opções-dowload">
                                     <button> <FaDownload /> Baixe gratis</button>
-                                   
-
+                                
                                 </div>
                         </div>
                     )

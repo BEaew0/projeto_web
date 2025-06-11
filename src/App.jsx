@@ -9,7 +9,7 @@ import Contato from "./paginas/contato";
 import Pag_inicial from "./paginas/pag_inicial";
 import Download from "./paginas/download";
 import Planos from "./paginas/planos";
-import Devs from "./paginas/devs";
+import Sobre from "./paginas/Sobre";
 import Login from "./paginas/login";
 import Cadastro from "./paginas/cadastro";
 import Home from "./paginas/home";
@@ -25,7 +25,7 @@ export default function App() {
           <Route path="/" element={<Pag_inicial />} />
           <Route path="/download" element={<Download />} />
           <Route path="/planos" element={<Planos />} />
-          <Route path="/devs" element={<Devs />} />
+          <Route path="/sobre" element={<Sobre />} />
           <Route path="/contato" element={<Contato/>}/>
         </Route>
 

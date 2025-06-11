@@ -10,7 +10,7 @@ import "./menu.css";
 const links_esquerda =[
   { link: "/download", classe: "link_esquerda", text: "Download" },
   { link: "/planos", classe: "link_esquerda", text: "Planos" },
-  { link: "/devs", classe: "link_esquerda", text: "Desenvolvedores" },
+  { link: "/sobre", classe: "link_esquerda", text: "Sobre" },
 ];
 
 const links_direita =[
@@ -18,31 +18,31 @@ const links_direita =[
   { link: "/cadastro", classe: "link_direita", text: "Cadastro" },
 ];
 
-
-
-
 export default function Menu({ isLogged = false }) 
 {
   return (
     <div className="menu__">
       
+
       {/* Lado Esquerdo (sempre mostra os mesmos links) */}
       <div className="links_esquerda">
-        <LogoTS link={"/"} logo={Logo_ts}/>
 
       {isLogged ? 
       (
           <>
-            <IoIosNotifications className="icon_not" />
+            <IoIosNotifications className="icon" />
+             <LogoTS link={"/"} logo={Logo_ts}/>
           </>
         ) : (
           <>
+            <LogoTS link={"/"} logo={Logo_ts}/>
             {links_esquerda.map((link, key) => (
               <Menu_links key={key} link={link.link} text={link.text} />
             ))}      
           </>     
         )
       }
+     
       </div>
 
       {/* Lado Direito (condicional) */}
@@ -52,7 +52,9 @@ export default function Menu({ isLogged = false })
 
         {isLogged ? (// Se logado, mostra os ícones
             <>
-              <FaUserCircle className="icon_user"/>
+              <button>
+                <FaUserCircle className="icon"/>
+              </button>
             </>
           ): 
           (
