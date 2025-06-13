@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react"; // Adicionamos useEffect
+import { useState, useEffect, useRef } from "react"; 
 import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 import LoginForm from "../../componentes/forms/login";
-import React, { useRef } from 'react';
-import {ContactUs} from "../../componentes/forms/Recuperação";
+import { ContactUs } from "../../componentes/forms/Recuperação";
 import { FcGoogle } from "react-icons/fc";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Sociais from "../../componentes/footer/icons_";
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
+import { loginUser } from "../../services/login.js";
 import "./login.css";
 
 const socialIcons = [
@@ -21,26 +21,37 @@ export default function LoginPage()
 {
     const navigate = useNavigate();
     const [showRecovery, setShowRecovery] = useState(false);
+
+    // Mantém name no estado para o input, mas não envia no login
     const [formData, setFormData] = useState({
+        name: "",
         email: "",
-        password: "",
+        senha: ""
+    });
+
+    const [recoveryData, setRecoveryData] = useState({
         user_email: "",
         message: ""
     });
+
     const [emailEnviado, setEmailEnviado] = useState(false);
+    const [errorLogin, setErrorLogin] = useState("");
     const formRecovery = useRef();
 
-    // Inicialização do EmailJS
     useEffect(() => {
         emailjs.init('service_nbv9ufd')
     }, []);
 
+    const validateEmail = (email) => 
+    {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (showRecovery) {
             try {
-                // Adicionamos await e tratamento correto da Promise
                 const result = await emailjs.sendForm(
                    'service_nbv9ufd',
                     'template_xrd3aep', 
@@ -51,14 +62,16 @@ export default function LoginPage()
                 console.log("E-mail enviado com sucesso:", result);
                 setEmailEnviado(true);
                 
-                // Reset após 3 segundos
-                setTimeout(() => {
+                setTimeout(() => 
+                {
                     setShowRecovery(false);
                     setEmailEnviado(false);
+                    setRecoveryData({ user_email: "", message: "" });
                 }, 3000);
                 
             } catch (error) {
-                console.error("Detalhes do erro:", {
+                console.error("Detalhes do erro:", 
+                {
                     status: error.status,
                     text: error.text,
                     message: error.message
@@ -66,25 +79,48 @@ export default function LoginPage()
                 alert(`Erro ao enviar e-mail: ${error.text || "Tente novamente mais tarde"}`);
             }
         } else {
-            console.log("Login enviado:", formData);
-            // Lógica de autenticação aqui
+            setErrorLogin("");
+
+            if (!validateEmail(formData.email)) 
+            {
+                setErrorLogin("E-mail inválido");
+                return;
+            }
+
+            // ** Alteração importante: enviar somente email e senha para login **
+            const response = await loginUser({
+                email: formData.email,
+                senha: formData.senha
+            });
+
+            if (response.success) 
+            {
+                setErrorLogin("");
+                navigate("/home");
+            } 
+            else 
+            {
+                setErrorLogin(response.message || "Erro ao tentar logar");
+            }
         }
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
+
+        if (showRecovery) {
+            setRecoveryData(prev => ({ ...prev, [name]: value }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const toggleForm = () => {
         setShowRecovery(!showRecovery);
-        setFormData({ 
-            email: "", 
-            password: "", 
-            user_email: "",
-            message: ""
-        });
+        setFormData({ name: "", email: "", senha: "" });
+        setRecoveryData({ user_email: "", message: "" });
         setEmailEnviado(false);
+        setErrorLogin("");
     };
 
     return (
@@ -102,7 +138,7 @@ export default function LoginPage()
                             ) : 
                             (
                                 <>
-                                    <ContactUs formData={formData} onChange={handleChange}/>
+                                    <ContactUs formData={recoveryData} onChange={handleChange} />
 
                                     <span onClick={toggleForm} className="link-style">
                                         Voltar para login
@@ -117,13 +153,15 @@ export default function LoginPage()
                 ) : (
 
                     <form className="login_form" onSubmit={handleSubmit}>
-                        <LoginForm formData={formData} onChange={handleChange}/>
-                        
+                        <LoginForm formData={formData} onChange={handleChange} />
+
+                        {errorLogin && <p className="error_message">{errorLogin}</p>}
+
                         <span onClick={toggleForm} className="link-style">
                             Esqueci minha senha
                         </span>
                         
-                        <button type="submit" className="btn_logar" onClick={() => navigate("/home")}>Logar</button>
+                        <button type="submit" className="btn_logar">Logar</button>
         
                         <p> 
                             Não possui conta? 
@@ -139,7 +177,6 @@ export default function LoginPage()
                         </div>
 
                     </form>
-
                 )}
             </div>
         </div>
