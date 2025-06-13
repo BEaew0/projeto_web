@@ -1,49 +1,84 @@
 import "./sobre.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Topico from "../../componentes/textos/tópicos";
-import Texto from "../../componentes/textos/textos";
+import Subtopico from "../../componentes/textos/subtopicos";
 
 const topicos = [
     {id:"sobre", texto:"Sobre o TesouroAzul"},
-    {id:"como-usar", texto:"Como usar"},
+    {id:"como-usar", texto:"Como usar", hasSubtopics: true},
     {id:"como-foi-feito", texto:"Como foi feito"},
     {id:"futuro", texto:"Futuro do Projeto"},
     {id:"desenvolvedores", texto:"Desenvolvedores"}
+];
+
+const subtopicos = [
+    {id:"iniciando", texto:"Iniciando"},
+    {id:"entrar", texto:"Entrar no App"},
+    {id:"produtos", texto:"Cadastrando produtos"},
+    {id:"graficos", texto:"Gerar gráficos"},
+    {id:"relatorios", texto:"Relatório"}
 ];
 
 const textos = {
     sobre: [
         {
             titulo: "Sobre o Tesouro Azul",
-            subtitulo: false,
             nome: "sobre-TesouroAzul",
-            texto: [
+            conteudo: [
                 {
                     paragrafo: "O Tesouro Azul é um aplicativo para mobile e desktop focado em gestão de estoque e lucro, desenvolvido especialmente para pequenos negócios, como mercados, lojas, restaurantes e microempreendedores individuais (MEIs). Com uma interface intuitiva e funcionalidades essenciais, ele foi pensado para quem não tem grande expertise em gestão, permitindo o cadastro de produtos, o monitoramento de entradas e saídas, a geração de relatórios de vendas e o cálculo automatizado de margens de lucro."
                 },
                 {
-                    paragrafo: "Ideal para comerciantes que buscam praticidade, o Tesouro Azul elimina a necessidade de planilhas manuais ou sistemas complexos, ajudando a reduzir perdas, evitar faltas de estoque e tomar decisões estratégicas com base em dados precisos - tudo de forma acessível e adaptada à realidade de pequenos empreendimentos."
-                },
+                    paragrafo: "Ideal para pequenos e médios negócios que buscam praticidade, o Tesouro Azul elimina a necessidade de planilhas manuais ou sistemas complexos, ajudando a reduzir perdas, evitar faltas de estoque e tomar decisões estratégicas com base em dados precisos - tudo de forma acessível e adaptada à realidade de pequenos empreendimentos."
+                }
             ]
-        },
+        }
     ],
     "como-usar": [
         {
             titulo: "Como usar o Tesouro Azul",
-            subtitulo: false,
             nome: "como-usar",
-            texto: [
+            conteudo: [
                 {
-                    paragrafo: "1. Cadastro de Produtos: Na aba 'Estoque', clique em 'Adicionar Produto' para cadastrar novos itens. Preencha nome, código, preço de custo, preço de venda e quantidade inicial."
+                    id: "iniciando",
+                    subtítulo: "Iniciando",
+                    texto: "Para inicializar no aplicativo você precisa instalá-lo em seu computador ou celular!",
                 },
                 {
-                    paragrafo: "2. Controle de Vendas: Na seção 'Vendas', registre cada transação selecionando os produtos vendidos. O sistema calcula automaticamente o lucro e atualiza o estoque."
+                    id: "entrar",
+                    subtítulo: "Entrar no App",
+                    texto: "1. Na tela inicial, insira seu e-mail e senha cadastrados\n2. Clique em 'Entrar' para acessar seu painel\n3. Caso tenha esquecido sua senha, clique em 'Recuperar senha'"
                 },
                 {
-                    paragrafo: "3. Relatórios: Acesse 'Relatórios' para visualizar gráficos de desempenho, histórico de vendas e projeções de lucro. Você pode filtrar por período específico."
+                    id: "produtos",
+                    subtítulo: "Cadastrando produtos",
+                    texto: "1. Navegue até a seção 'Estoque'\n2. Clique em 'Adicionar Produto'\n3. Preencha todas as informações necessárias\n4. Clique em 'Salvar' para armazenar o produto"
                 },
                 {
-                    paragrafo: "4. Alertas: Configure notificações para quando produtos estiverem com baixo estoque ou quando metas de vendas forem alcançadas."
+                    id: "graficos",
+                    subtítulo: "Gerar gráficos",
+                    texto: "1. Acesse a seção 'Relatórios'\n2. Selecione o período desejado\n3. Escolha o tipo de gráfico que deseja visualizar\n4. Clique em 'Gerar' para ver a visualização"
+                },
+                {
+                    id: "relatorios",
+                    subtítulo: "Relatórios",
+                    texto: "1. Na seção 'Relatórios', selecione o tipo de documento\n2. Defina os filtros necessários\n3. Clique em 'Gerar Relatório'\n4. Escolha entre visualizar na tela ou exportar para PDF"
+                },
+                {
+                    subtítulo: "📦 Cadastro de Produtos",
+                    texto: "Na aba 'Estoque', clique em 'Adicionar Produto' para cadastrar novos itens. Preencha nome, código, preço de custo, preço de venda e quantidade inicial."
+                },
+                {
+                    subtítulo: "Gerar gráficos",
+                    texto: "Na seção 'Vendas', registre cada transação selecionando os produtos vendidos. O sistema calcula automaticamente o lucro e atualiza o estoque."
+                },
+                {
+                    subtítulo: "📊 Relatórios",
+                    texto: "Acesse 'Relatórios' para visualizar gráficos de desempenho, histórico de vendas e projeções de lucro. Você pode filtrar por período específico."
+                },
+                {
+                    subtítulo: "🔔 Alertas",
+                    texto: "Configure notificações para quando produtos estiverem com baixo estoque ou quando metas de vendas forem alcançadas."
                 }
             ]
         }
@@ -51,17 +86,13 @@ const textos = {
     "como-foi-feito": [
         {
             titulo: "Como foi desenvolvido",
-            subtitulo: false,
             nome: "como-foi-feito",
-            texto: [
+            conteudo: [
                 {
-                    paragrafo: "O Tesouro Azul foi desenvolvido utilizando React.js para o frontend e Node.js com Express para o backend. O banco de dados escolhido foi o MongoDB pela sua flexibilidade e escalabilidade."
+                    paragrafo: "O Tesouro Azul foi desenvolvido utilizando React.js JavaScript, HTML e CSS para o frontend, Node.js, API .net para o backend. O banco de dados utilizado foi MySqLServer."
                 },
                 {
-                    paragrafo: "A interface foi projetada seguindo os princípios de UX Design, com testes de usabilidade realizados com pequenos comerciantes para garantir a intuitividade. Utilizamos a biblioteca Chart.js para as visualizações de dados e React Native para a versão mobile."
-                },
-                {
-                    paragrafo: "O desenvolvimento levou 8 meses, incluindo fase de pesquisa, prototipagem, testes com usuários reais e implementação das funcionalidades principais."
+                    paragrafo: "O site foi feito com o princípio de carregar vários itens em uma só página."
                 }
             ]
         }
@@ -69,9 +100,8 @@ const textos = {
     "futuro": [
         {
             titulo: "Futuro do Projeto",
-            subtitulo: false,
             nome: "futuro-projeto",
-            texto: [
+            conteudo: [
                 {
                     paragrafo: "Para as próximas versões do Tesouro Azul, planejamos implementar:"
                 },
@@ -83,9 +113,6 @@ const textos = {
                 },
                 {
                     paragrafo: "- Sistema de gestão de clientes e fidelidade"
-                },
-                {
-                    paragrafo: "- Análise preditiva de vendas baseada em inteligência artificial"
                 }
             ]
         }
@@ -93,16 +120,23 @@ const textos = {
     "desenvolvedores": [
         {
             titulo: "Equipe de Desenvolvimento",
-            subtitulo: false,
             nome: "desenvolvedores",
-            texto: [
+            conteudo: [
                 {
-                    paragrafo: "O Tesouro Azul foi criado por uma equipe multidisciplinar de 4 desenvolvedores"
+                    paragrafo: "O Tesouro Azul foi criado por uma equipe multidisciplinar de 4 desenvolvedores da ETEC Lauro Gomes"
                 },
                 {
-                    paragrafo:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies."
+                   paragrafo: `Beatriz Souza Coli: Documentação, Front-End Site, Back-end Site, Banco de dados`
+                },
+                {
+                    paragrafo:"Carlos Eduardo de Lima: Desenvolvedor do APP no back-end e no front-end"
+                },
+                {
+                    paragrafo:"Miguel Fônseca Souza:Desenvolvedor  Back-end e banco de dados "
+                },
+                {
+                    paragrafo:"Victor Correia Giacomi:Desenvolvedor Back-end"
                 }
-               
             ]
         }
     ]
@@ -110,28 +144,76 @@ const textos = {
 
 export default function Sobre() {
     const [conteudoAtivo, setConteudoAtivo] = useState("sobre");
+    const [topicoAtivo, setTopicoAtivo] = useState("sobre");
+    const [subtopicoAtivo, setSubtopicoAtivo] = useState(null);
+    const sectionRefs = useRef([]);
+
+    const handleTopicoClick = (id) => {
+        setTopicoAtivo(id);
+        setConteudoAtivo(id);
+        setSubtopicoAtivo(null);
+        window.scrollTo(0, 0);
+    };
+
+    const handleSubtopicoClick = (index, id) => {
+        setConteudoAtivo("como-usar");
+        setSubtopicoAtivo(id);
+        setTimeout(() => {
+            sectionRefs.current[index]?.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 100);
+    };
 
     return (
         <div className="main_sobre">
             <aside className="topicos-sobre">
                 {topicos.map((topico) => (
-                    <div key={topico.id} onClick={() => setConteudoAtivo(topico.id)}>
-                        <Topico 
-                            texto={topico.texto}
-                        />
+                    <div key={topico.id}>
+                        <div 
+                            onClick={() => handleTopicoClick(topico.id)}
+                            className={`topico-item ${topicoAtivo === topico.id ? 'ativo' : ''}`}
+                        >
+                            <Topico texto={topico.texto} />
+                        </div>
+                        
+                        {topico.id === "como-usar" && (
+                            <ul className="subtopicos-container">
+                                {subtopicos.map((subtopico, index) => (
+                                    <li key={subtopico.id}className={`${subtopicoAtivo === subtopico.id ? 'subtopico-ativo' : ''}`}
+                                        onClick={() => handleSubtopicoClick(index, subtopico.id)}>
+                                        <Subtopico texto={subtopico.texto} />
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 ))}
             </aside>
             
             <main className="container-texto">
                 {textos[conteudoAtivo].map((item, index) => (
-                    <Texto 
-                        key={index}
-                        título={item.titulo}
-                        subtítulo={item.subtitulo}
-                        name={item.nome}
-                        paragrafo={item.texto}
-                    />
+                    <div key={index}>
+                        <h1>{item.titulo}</h1>
+                        {item.conteudo.map((secao, secaoIndex) => {
+
+                            const subtopicoIndex = subtopicos.findIndex(st => st.id === secao.id);
+                            return (
+
+                                <div key={secao.id || secaoIndex} ref={el => sectionRefs.current[subtopicoIndex] = el}id={secao.id}>
+                                    {secao.subtítulo && <h2>{secao.subtítulo}</h2>}
+                                    {secao.paragrafo ? 
+                                    (
+                                        <p>{secao.paragrafo}</p>
+                                    ) : 
+                                    (
+                                        <p style={{whiteSpace: "pre-line"}}>{secao.texto}</p>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 ))}
             </main>
         </div>

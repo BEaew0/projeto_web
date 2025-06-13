@@ -1,19 +1,20 @@
-// Componente Texto.jsx (versão sem ternário)
-export default function Texto({ título, subtítulo, paragrafo, name }) {
+export default function Texto({ título, name, conteudo,button,onClick }) {
   return (
-      <div className={`texto-${name}`}>
-        
-          <h1>{título}</h1>
-          
-          {subtítulo != false && <h3>{subtítulo}</h3>}
-          
-          <div className="paragrafos">
-              {paragrafo.map((item, index) => 
-              (
-                  <p key={index}>{item.paragrafo}</p>
-              ))
-              }
+    <div className={`texto-${name}`}>
+      <h1 className="titulo-secao">{título}</h1>
+      
+      <div className="conteudo-texto">
+        {conteudo.map((item, index) => (
+          <div key={index} className="bloco-texto">
+     
+            {item.subtitulo && <h2 className="subtitulo">{item.subtitulo}</h2>}
+
+            {item.paragrafo && <p className="paragrafo">{item.paragrafo}</p>}
+
+            {button && (<button className="btn_download" onClick={onClick}>Fazer download </button>)}
           </div>
+        ))}
       </div>
+    </div>
   );
 }

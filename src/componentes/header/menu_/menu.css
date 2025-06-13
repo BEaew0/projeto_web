@@ -31,7 +31,7 @@
     object-fit: contain;
 }
 
-/* Link items - keeping original hover */
+/* Link items */
 #itens_h {
     display: inline-flex;
     align-items: center;
@@ -48,7 +48,13 @@
     padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem);
 }
 
-/* Icon styles - only this section modified */
+.btn_usuario {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos dos icons */
 .icon {
     height: 60px; 
     width: 24px; 
@@ -57,7 +63,7 @@
 
 .icons_container {
     display: flex;
-    gap: 1rem; /* Slightly increased gap */
+    gap: 1rem;
     align-items: center;
 }
 
@@ -65,6 +71,53 @@
 li {
     list-style: none;
     display: inline;
+}
+
+/* Estilos do dropdown */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--cor-submenu);
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 18px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: var(--cor-texto);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-hover);
+    padding: 0 auto;
+     height: fit-content;
+
+}
+
+.dropdown-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    color: var(--cor-texto);
+    transition: color 0.2s ease;
 }
 
 /* Responsive adjustments */
@@ -94,7 +147,13 @@ li {
     }
     
     .icon {
-        height: 20px; /* Adjusted for mobile */
+        height: 20px;
         width: 20px;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        margin-top: 0.5rem;
     }
 }

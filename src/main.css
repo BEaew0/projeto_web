@@ -4,6 +4,8 @@
   --cor-texto: black;
   --cor-header: rgba(44, 165, 221, 0.137);
   --cor-de-card: rgb(230, 241, 252);
+  --cor-submenu:white;
+  --cor-destaque:grey;
   --footer-bg: rgb(130, 191, 231);
   --footer-texto: #000000;
   --cor-hover: rgba(23, 73, 119, 0.445);
@@ -20,7 +22,9 @@
   --cor-de-fundo: rgb(4, 23, 39);
   --cor-texto: #ffffff;
   --cor-header: #1a365d;
-  --cor-de-card: rgb(75, 94, 114);
+  --cor-submenu:rgb(59, 117, 194);
+  --cor-destaque:rgb(1, 37, 78);
+  --cor-de-card: rgb(72, 116, 163);
   --footer-bg: #062242;
   --footer-texto: #ffffff;
   --cor-hover: rgb(34, 98, 151);
@@ -70,7 +74,7 @@ main {
   width: 100%;
   min-height: calc(100vh - 140px);
   position: relative;
-
+  color: var(--cor-texto);
   flex: 1;
 }
 

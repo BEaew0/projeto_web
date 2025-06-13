@@ -118,10 +118,7 @@ export default function Cadastro() {
 
                     {apiErro && <div className="menssagem_erro">{apiErro}</div>}
 
-                    <button 
-                        className="btn_cad" 
-                        type="submit" 
-                        disabled={loading}>
+                    <button className="btn_cad"type="submit" disabled={loading}>
                         {loading ? "Cadastrando..." : "Cadastrar"}
                     </button>
 

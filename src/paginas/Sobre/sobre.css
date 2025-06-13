@@ -3,43 +3,79 @@
     gap: 2rem;
     height: 100vh;
     width: 100%;
-
 }
+
 
 .topicos-sobre {
     display: flex;
     flex-direction: column;
-    width:300px;
-    padding: 3rem 1rem;
+    width: 300px;
+    padding:0 0.1rem;
     margin: 0 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Rolagem vertical */
-    text-align:left;
-    gap: 1.5rem;
+    overflow-y: auto;
+    text-align: left;
+    gap: 0.2rem;
     max-height: 100vh;
 }
 
-.topicos-ancoragem ul{
-    display:flex;
+.topicos-ancoragem ul {
+    display: flex;
     flex-direction: column;
-    padding: 0; 
-    margin: 0; 
-    list-style: none; /* Remove os bullets (opcional) */
- }
-
-.topicos-ancoragem li{
-   padding: 0 0;
-   font-size: 1.5rem;
-   margin: 0 0;
-
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
-.topicos-ancoragem li:hover{
+.topicos-ancoragem li {
+    padding: 0 0;
+    font-size: 1.5rem;
+    margin: 0 0;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.topicos-ancoragem li:hover {
     background-color: #e0e0e0;
 }
 
+.topico-item {
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 4px;
+}
 
-/* Estilizando a barra de rolagem */
+.topico-item.ativo {
+    background-color: #e0e0e0;
+}
+
+.subtopicos-container{
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+    gap: 0.9rem;
+
+}
+
+.subtopicos-container li{
+    display: flex;
+    flex-direction: column;
+    padding:  0px 1rem;
+    font-size: 20px;
+
+     
+}
+
+
+.subtopico-ativo {
+    background-color: var(--cor-destaque);
+    font-weight: bold;
+   
+}
+
 .topicos-sobre::-webkit-scrollbar {
     width: 8px;
 }
@@ -60,25 +96,30 @@
 
 .container-texto {
     display: flex;
-    padding: 5rem 8vh;
-
+    padding: 5rem 20vh;
     flex: 1;
     gap: 5px;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y:scroll; /* Rolagem vertical */
+    overflow-y: auto;
 }
 
-h1 {
+.main_sobre h1 {
     color: #2c3e50;
     margin-bottom: 2.8rem;
 }
 
-p {
+.main_sobre h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.main_sobre p {
     text-align: justify;
     font-size: 1.5rem;
     line-height: 2.5rem;
     color: #34495e;
     margin-bottom: 2rem;
-    
 }

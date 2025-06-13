@@ -1,44 +1,37 @@
-
 import Card from "../../componentes/cards/card-inicial";
-import"./pag.css"
+import Exemplo from "../../assets/Imagens/undraw_data-trends_kv5v.svg";
+import "./pag.css";
 
-const cards=[{
-    cinza:false,
-    titulo:"Controle seu\n"+ "estoque sem complicação!",
-    texto: "O TesouroAzul simplifica o controle do seu estoque.\n" +
-           "Evita perdas\n"+
-           "e desorganização.\n" +
-           "Com ferramentas intuitivas\n"+
-            "você gerencia produtos.\n" +
+const cards = [{
+    cinza: false,
+    titulo: "Controle\n"+" seu estoque\n"+"sem complicação!",
+    texto: "O TesouroAzul simplifica o controle.\n" +
+           "Evita perdas e desorganização.\n" +
+           "Com ferramentas intuitivas você gerencia produtos.\n" +
            "Mantém seu negócio sempre no azul – sem dor de cabeça!",
-    button:true
-    
-    }   
-]
+    button: true,
+    buttonText: "Ver planos"
+}];
 
-export default function Pag_inicial(){
-    return(
-        <div className="main_pag_inicial">
-            {cards.map((card,key)=>
-                {
-                    return(
-                    <Card key={key}cinza={card.cinza} titulo={card.titulo}texto={card.texto} button={card.button}/>
-                    );
-                }     
-            )}  
-            <div className="card-img-exemplo">
+export default function Pag_inicial() {
+    return (
+        <div className="main-content">
+            <div className="cards-container">
+                {cards.map((card, key) => (
+                    <Card 
+                        key={key}
+                        cinza={card.cinza} 
+                        titulo={card.titulo}
+                        texto={card.texto} 
+                        button={card.button}
+                        buttonText={card.buttonText}/>
+                ))}
+            </div>  
             
+            <div className="image-container">
+                <p></p>
+                <img src={Exemplo} alt="" />
             </div>
-
-
-
         </div>
-
-
-        
-        
-    )
+    );
 }
-
-
-            

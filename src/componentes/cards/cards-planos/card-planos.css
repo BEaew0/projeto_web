@@ -66,7 +66,8 @@
 .beneficios-lista {
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
+
+    
     gap: 1.5rem; /* Aumentei o gap entre itens */
     padding: 1.5rem; /* Adicionei padding interno */
     border-radius: 8px; /* Bordas arredondadas */

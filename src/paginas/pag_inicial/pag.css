@@ -1,75 +1,73 @@
-.main_pag_inicial {
+
+.main-content {
     display: flex;
-    justify-content: flex-start; /* Alinha à esquerda */
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 0 3rem;
-    max-width: 1200px;
-    margin-right: auto; /* Empurra todo o conteúdo para a esquerda */
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    padding: 2rem 80px;
+    color: var(--cor-texto); /* Sua cor original */
 }
 
-.card-inicial {
+/* Container de texto - estilo Node-like */
+.cards-container {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    
-    background-color: var(--cor-de-card);
-    border-radius: 20px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 30rem;
-    height: 100%;
-    margin: 0; /* Remove margens laterais */
-    margin-right: auto; /* Empurra o card para a esquerda */
-    text-align: left;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    justify-content: center;
+    max-width: 800px; /* Largura controlada para melhor leitura */
 }
 
-.card-inicial h1 {
-    font-size: 2.8rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    padding-right: 2rem;
+/* Título principal (h1) */
+.cards-container h1 {
+    font-size: 2.5rem;
+    line-height: 1.3;
+
+    padding: 0;
 }
 
-.card-inicial p {
-    font-size: 1.4rem;
+/* Parágrafos - espaçamento similar ao Node */
+.cards-container p {
+    font-size: 1.5rem;
     line-height: 1.6;
-    margin-bottom: 2rem;
-    padding-right: 1rem;
+    padding: 0;
 }
 
-button {
-    background-color: rgb(114, 178, 238);
-    height: fit-content;
-    text-align: center;
-    padding: 10px;
-    width: max-content;
-    border: none;
-    font-size: large;
-    border-radius: 20px;
+
+
+/* Botão - ajuste de espaçamento */
+.cards-container button {
+    margin-top: 1rem;
+    width: fit-content; /* Não ocupar largura total */
+    padding: 12px 24px;
 }
 
+/* IMAGEM (mantenha seu estilo atual) */
+.image-container {
+    flex: 1;
+    background-color: aliceblue;
+    border-radius: 30px;
+    
+    img{
+        height: 60vh;
+    }
+    /* ... seu CSS existente ... */
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
-    .main_pag_inicial {
-        padding: 0 1.2rem;
-        gap: 1rem;
-        justify-content: center; /* Centraliza em mobile */
+    .main-content {
+        flex-direction: column;
+        padding: 2rem 20px;
     }
     
-    .card-inicial {
-        margin: 10px 0; /* Remove margem horizontal em mobile */
-        padding: 1.8rem;
-        border-radius: 15px;
-        width: 100%;
+    .cards-container {
+        max-width: 100%;
+        order: -1; /* Texto acima da imagem em mobile */
     }
+
+    .image-container img{
+          
+        height: 30vh;
+    }
+
     
-    .card-inicial h1 {
-        font-size: 2.2rem;
-        padding-right: 1rem;
-    }
-    
-    .card-inicial p {
-        font-size: 1.2rem;
-    }
 }
