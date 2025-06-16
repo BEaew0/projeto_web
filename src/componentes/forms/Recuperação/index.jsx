@@ -8,13 +8,8 @@ export const ContactUs = ({ formData, onChange }) => {
       name: "user_email",
       type: "email",
       required: true
-    },
-    {
-
-      name: "messagem",
-      type: "textarea",
-      required: true
     }
+ 
   ];
 
   return (

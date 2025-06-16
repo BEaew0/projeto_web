@@ -24,7 +24,7 @@ export const cadastrarUser = async (userData) =>
         };
 
         // Requisição com Axios
-        const response = await api.post( "/Usuarios/criar-usuario",  body, { 
+        const response = await api.post( "https://Usuarios/criar-usuario",  body, { 
             headers: { 'Content-Type': 'application/json' }
          });
 

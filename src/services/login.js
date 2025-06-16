@@ -7,7 +7,7 @@ export const loginUser = async (userData) => {
       senhA_USUARIO: userData.senha,
     };
 
-    const response = await api.post("/Usuarios/login", credentials, {
+    const response = await api.post("https://Usuarios/login", credentials, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

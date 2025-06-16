@@ -1,22 +1,24 @@
 .main_sobre {
     display: flex;
     gap: 2rem;
-    height: 100vh;
+    min-height: calc(100vh - altura-do-header - altura-do-footer); /* Ajuste conforme necessário */
     width: 100%;
+    box-sizing: border-box;
+    position: relative;
 }
-
 
 .topicos-sobre {
     display: flex;
     flex-direction: column;
     width: 300px;
-    padding:0 0.1rem;
-    margin: 0 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0 0.1rem;
+    box-shadow: 0 4px 6px var(--sombreamento);
     overflow-y: auto;
     text-align: left;
     gap: 0.2rem;
-    max-height: 100vh;
+    height: calc(100vh - altura-do-header); /* Ajuste conforme necessário */
+    position: sticky;
+    top: altura-do-header; /* Ajuste para a altura do seu header */
 }
 
 .topicos-ancoragem ul {
@@ -28,12 +30,11 @@
 }
 
 .topicos-ancoragem li {
-    padding: 0 0;
     font-size: 1.5rem;
-    margin: 0 0;
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 4px;
+    margin: 0;
 }
 
 .topicos-ancoragem li:hover {
@@ -52,30 +53,26 @@
     background-color: #e0e0e0;
 }
 
-.subtopicos-container{
+.subtopicos-container {
     display: flex;
     flex-direction: column;
     padding: 0 1rem;
     gap: 0.9rem;
-
 }
 
-.subtopicos-container li{
+.subtopicos-container li {
     display: flex;
     flex-direction: column;
-    padding:  0px 1rem;
+    padding: 0px 1rem;
     font-size: 20px;
-
-     
 }
-
 
 .subtopico-ativo {
     background-color: var(--cor-destaque);
     font-weight: bold;
-   
 }
 
+/* Estilização da scrollbar */
 .topicos-sobre::-webkit-scrollbar {
     width: 8px;
 }
@@ -96,21 +93,41 @@
 
 .container-texto {
     display: flex;
-    padding: 5rem 20vh;
+    padding: 2rem 5vw; /* Reduzi o padding para telas menores */
     flex: 1;
     gap: 5px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--cor-fundo);
+    box-shadow: 0 4px 6px var(--sombreamento);
     overflow-y: auto;
+    max-height: calc(100vh - altura-do-header - altura-do-footer); /* Ajuste */
+    margin-bottom: 2rem; /* Espaço para o footer */
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+    .main_sobre {
+        flex-direction: column;
+    }
+    
+    .topicos-sobre {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        position: static;
+    }
+    
+    .container-texto {
+        padding: 1rem;
+    }
 }
 
 .main_sobre h1 {
-    color: #2c3e50;
-    margin-bottom: 2.8rem;
+    color: var(--cor-texto);
+    margin-bottom: 2rem;
 }
 
 .main_sobre h2 {
-    color: #2c3e50;
+    color: var(--cor-texto);
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #eee;
@@ -118,8 +135,8 @@
 
 .main_sobre p {
     text-align: justify;
-    font-size: 1.5rem;
-    line-height: 2.5rem;
-    color: #34495e;
-    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    color: var(--cor-texto);
+    margin-bottom: 1.5rem;
 }

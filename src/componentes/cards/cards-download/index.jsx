@@ -1,8 +1,6 @@
 import "./card-download.css";
 
-export default function CardDonwload({
-    texto,
-    azul
+export default function CardDonwload({texto, azul
  }){
     return (
         //puxar o card e o texto com estilo

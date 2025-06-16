@@ -1,10 +1,9 @@
+//importanto funções, métodos do react,componentes e css
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { cadastrarUser } from "../../services/cadastro.js";
 import CadForm from "../../componentes/forms/cadastro";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
-
 import Logo_ts from "../../assets/Imagens/logo_tcc1.png";
 
 import "./cadastro.css";
@@ -12,6 +11,7 @@ import "./cadastro.css";
 export default function Cadastro() {
   const navigate = useNavigate();
 
+  //limpando os inputs dos forms
   const [form, setForm] = useState({
     nome_usuario: "",
     CPF_usuario: "",
@@ -41,6 +41,7 @@ export default function Cadastro() {
     }
   };
 
+  //validação do form
   const validarForm = () => {
     const Erros = {};
 
@@ -50,13 +51,17 @@ export default function Cadastro() {
 
     if (!form.email_usuario) {
       Erros.email_usuario = "Email é obrigatório";
-    } else if (!/\S+@\S+\.\S+/.test(form.email_usuario)) {
+    } 
+    else if (!/\S+@\S+\.\S+/.test(form.email_usuario)) 
+    {
       Erros.email_usuario = "Email inválido";
     }
 
-    if (!form.senha_cad) {
+    if (!form.senha_cad) 
+    {
       Erros.senha_cad = "Senha é obrigatória";
-    } else if (form.senha_cad.length < 6) {
+    } else if (form.senha_cad.length < 6) 
+    {
       Erros.senha_cad = "Senha deve ter pelo menos 6 caracteres";
     }
 
@@ -71,6 +76,7 @@ export default function Cadastro() {
     return Object.keys(Erros).length === 0;
   };
 
+//função assíncronapara enviar os dados
   const enviarDados = async (e) => {
     e.preventDefault();
     setApiErro(null);
@@ -80,6 +86,7 @@ export default function Cadastro() {
     setLoading(true);
 
     try {
+
       // Remove conf_email e senha_conf antes de enviar
       const { conf_email, senha_conf, ...formData } = form;
 
@@ -96,6 +103,7 @@ export default function Cadastro() {
 
       const response = await cadastrarUser(userData);
 
+      //se conseguir cadastrar ele manda o usuário para a páginade Login
       if (response.success) {
         navigate("/login", {
           state: {
@@ -103,16 +111,22 @@ export default function Cadastro() {
             email: form.email_usuario,
           },
         });
-      } else {
+      } else 
+      {
         setApiErro(response.message || "Erro ao cadastrar");
       }
-    } catch (e) {
+    } 
+    catch (e) 
+    {
       setApiErro("Erro na conexão com o servidor");
-    } finally {
+    } 
+    finally 
+    {
       setLoading(false);
     }
   };
 
+  //mostrando oscomponentes na telacom HTML
   return (
     <div className="main_cadastro">
       <BtnVoltar onClick={() => navigate(-1)} />

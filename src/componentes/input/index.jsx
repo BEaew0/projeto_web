@@ -23,14 +23,7 @@ export default function Input({ type, texto, name, id, required, options, value,
                 </select>
             ) : 
             (
-                <input
-                    type={type}
-                    id={id}
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    required={required}
-                    className={error ? "input-error" : ""}/>
+                <input type={type}id={id}name={name} value={value}onChange={onChange}required={required}className={error ? "input-error" : ""}/>
             )}
             
             {error && <span className="error-message">{error}</span>}

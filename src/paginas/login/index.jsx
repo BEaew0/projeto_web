@@ -10,12 +10,7 @@ import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
 import { loginUser } from "../../services/login.js";
 import "./login.css";
 
-const socialIcons = [
-    {
-        icon: <FcGoogle />,
-        id: "icon_social"
-    }
-]
+
 
 export default function LoginPage() 
 {
@@ -170,11 +165,6 @@ export default function LoginPage()
                             </span>
                         </p>
         
-                        <div className="login_option">
-                            {socialIcons.map((icon, index) => (
-                                <Sociais id={icon.id} icon={icon.icon} key={index} />
-                            ))}
-                        </div>
 
                     </form>
                 )}
