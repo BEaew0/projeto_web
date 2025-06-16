@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { cadastrarUser } from "../../services/cadastro.js";
 import CadForm from "../../componentes/forms/cadastro";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
+import Card_planos from "../../componentes/cards/cards-planos/index.jsx"; // import do componente dos planos
 import Logo_ts from "../../assets/Imagens/logo_tcc1.png";
 
 import "./cadastro.css";
@@ -11,7 +12,7 @@ import "./cadastro.css";
 export default function Cadastro() {
   const navigate = useNavigate();
 
-  //limpando os inputs dos forms
+  // Estado do formulário
   const [form, setForm] = useState({
     nome_usuario: "",
     CPF_usuario: "",
@@ -24,9 +25,13 @@ export default function Cadastro() {
     plano_user: "",
   });
 
+  // Controle de erros e loading
   const [erros, setErrors] = useState({});
   const [apiErro, setApiErro] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Controle de etapa: 1 = formulário, 2 = escolha do plano
+  const [etapa, setEtapa] = useState(1);
 
   const inputChange = (e) => {
     const { name, value } = e.target;
@@ -65,8 +70,6 @@ export default function Cadastro() {
       Erros.senha_cad = "Senha deve ter pelo menos 6 caracteres";
     }
 
-    if (!form.plano_user) Erros.plano_user = "Selecione um plano";
-
     if (form.email_usuario !== form.conf_email) Erros.conf_email = "Emails não coincidem";
 
     if (form.senha_cad !== form.senha_conf) Erros.senha_conf = "Senhas não coincidem";
@@ -76,21 +79,25 @@ export default function Cadastro() {
     return Object.keys(Erros).length === 0;
   };
 
-//função assíncronapara enviar os dados
-  const enviarDados = async (e) => {
+  // Função chamada no submit da etapa 1 (formulário)
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     setApiErro(null);
 
-    if (!validarForm()) return;
+    if (validarForm()) {
+      setEtapa(2); // passa para escolha do plano
+    }
+  };
 
+  // Função chamada ao escolher um plano (etapa 2)
+  const handleSelecionarPlano = async (planoId, isPremium) => {
+    setForm((prev) => ({ ...prev, plano_user: planoId }));
     setLoading(true);
+    setApiErro(null);
 
     try {
-
-      // Remove conf_email e senha_conf antes de enviar
       const { conf_email, senha_conf, ...formData } = form;
 
-      // Mapeia os campos para o formato esperado pela API
       const userData = {
         NOME_USUARIO: formData.nome_usuario,
         CPF_USUARIO: formData.CPF_usuario.replace(/\D/g, ""),
@@ -98,35 +105,28 @@ export default function Cadastro() {
         DATA_NASC_USUARIO: formData.dta_nascimento,
         EMAIL_USUARIO: formData.email_usuario,
         SENHA_USUARIO: formData.senha_cad,
-        ID_ASSINATURA_FK: Number(formData.plano_user) || 1,
+        ID_ASSINATURA_FK: Number(planoId),
       };
 
       const response = await cadastrarUser(userData);
 
-      //se conseguir cadastrar ele manda o usuário para a páginade Login
       if (response.success) {
-        navigate("/login", {
-          state: {
-            registro: true,
-            email: form.email_usuario,
-          },
-        });
-      } else 
-      {
+        if (isPremium) {
+          alert("Você terá 7 dias grátis para experimentar o plano premium!");
+        }
+        navigate("/home"); // Ou "/login" conforme preferir
+      } else {
         setApiErro(response.message || "Erro ao cadastrar");
+        setEtapa(1); // volta para o form se erro
       }
-    } 
-    catch (e) 
-    {
+    } catch (err) {
       setApiErro("Erro na conexão com o servidor");
-    } 
-    finally 
-    {
+      setEtapa(1);
+    } finally {
       setLoading(false);
     }
   };
 
-  //mostrando oscomponentes na telacom HTML
   return (
     <div className="main_cadastro">
       <BtnVoltar onClick={() => navigate(-1)} />
@@ -134,22 +134,48 @@ export default function Cadastro() {
       <div className="container_cadastro">
         <img src={Logo_ts} alt="Logo" />
 
-        <form className="form_cadastro" onSubmit={enviarDados}>
-          <CadForm formData={form} onInputChange={inputChange} errors={erros} />
+        {etapa === 1 ? (
+          <form className="form_cadastro" onSubmit={handleFormSubmit}>
+            <CadForm formData={form} onInputChange={inputChange} errors={erros} />
 
-          {apiErro && <div className="menssagem_erro">{apiErro}</div>}
+            {apiErro && <div className="menssagem_erro">{apiErro}</div>}
 
-          <button className="btn_cad" type="submit" disabled={loading}>
-            {loading ? "Cadastrando..." : "Cadastrar"}
-          </button>
+            <button className="btn_cad" type="submit" disabled={loading}>
+              {loading ? "Processando..." : "Continuar"}
+            </button>
 
-          <p>
-            Já possui conta?{" "}
-            <span onClick={() => navigate("/login")} className="link_login">
-              Faça Login.
-            </span>
-          </p>
-        </form>
+            <p>
+              Já possui conta?{" "}
+              <span onClick={() => navigate("/login")} className="link_login">
+                Faça Login.
+              </span>
+            </p>
+          </form>
+        ) : (
+          <div>
+            {/* Botão voltar para etapa 1 */}
+            <button
+              className="btn_voltar_etapa"
+              onClick={() => setEtapa(1)}
+              disabled={loading}
+              style={{
+                marginBottom: "15px",
+                backgroundColor: "#eee",
+                border: "none",
+                padding: "8px 12px",
+                cursor: "pointer",
+                borderRadius: "4px",
+              }}
+            >
+              ← Voltar
+            </button>
+
+            <h2>Escolha seu plano:</h2>
+            <Card_planos onSelecionarPlano={handleSelecionarPlano} />
+            {apiErro && <div className="menssagem_erro">{apiErro}</div>}
+            {loading && <p>Enviando cadastro...</p>}
+          </div>
+        )}
       </div>
     </div>
   );

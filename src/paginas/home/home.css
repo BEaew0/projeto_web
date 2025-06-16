@@ -1,1 +1,13 @@
+.container-home {
+    display: flex;
+    height: 100vh;
+    padding: 10px;
+    justify-content:right; /* empurra o conteúdo para direita */
 
+  }
+  
+  .mostrar-nome {
+    font-size: 3rem;
+    /* text-align: right; opcional aqui */
+  }
+  

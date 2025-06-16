@@ -1,6 +1,4 @@
 import Input from "../../input";
-
-
 const inputs= [
     {
         texto:"Nome",

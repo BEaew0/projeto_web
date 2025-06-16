@@ -1,3 +1,4 @@
+
 /* Estilos principais do card */
 .card-perfil {
   display: flex;
@@ -173,14 +174,19 @@
 
 .modal-container {
   background-color: var(--cor-de-fundo);
-  color: black;
+  color: var(--cor-texto);
   padding: 30px;
   border-radius: 15px;
+  border: solid 1px rgb(192, 192, 192);
   width: 90%;
   max-width: 450px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   position: relative;
   animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-container input{
+  background-color: var(--cor-de-fundo);
 }
 
 @keyframes modalFadeIn {
@@ -234,7 +240,7 @@
 }
 
 .btn-secundario {
-  background-color: var(--cor-de-form);
+  background-color: var(--cor-de-fundo);
   color: var(--cor-texto);
   border: 1px solid var(--cor-borda);
   padding: 10px 20px;

@@ -21,13 +21,23 @@ const mudarInfo = {
   ],
   "senha": [ // Alterado de "Mudar-Senha" para "senha" para consistência
     {
-      texto: "Email Cadastrado",
-      name: "emailRecuperacao",
+      texto: "Senha Antiga",
+      name: "senha_antiga",
       id: "email-recuperacao",
-      type: "email",
+      type: "text",
       required: true,
-      placeholder: "Digite o email da sua conta",
+      placeholder: "Digite sua senha",
       disabled: true
+    },
+    {
+      texto: "Senha nova",
+      name: "senha_nova",
+      id: "senha-nova",
+      type: "text",
+      required: true,
+      placeholder: "Digite sua senha",
+      disabled: true
+
     }
   ]
 };

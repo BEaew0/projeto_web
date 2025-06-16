@@ -1,7 +1,10 @@
+.container-pag-contato{
+    padding: 50px;
+}
 .form-contato {
     display: flex;
     flex-direction: column;
-    background-color:var(--cor-de-fundo);
+    background-color:var(--cor-de-form);
     border: 1px solid rgb(133, 133, 133);
     width: 500px;
     max-width: 800px;
@@ -28,6 +31,7 @@ input[type='select'] {
     border-radius: 10px;
     font-size: 1.1rem;
     margin-bottom: 1rem;
+    background-color: var(--cor-de-form)
 }
 
 /* Estilo específico para o textarea (Mensagem) */
@@ -51,7 +55,8 @@ select {
     border-radius: 10px;
     font-size: 1.1rem;
     margin-bottom: 1rem;
-    background-color: white;
+    color: var(--cor-de-texto);
+    background-color: var(--cor-de-form);
 }
 
 /* Efeitos de foco */
@@ -64,8 +69,8 @@ select:focus {
 }
 
 /* Botão de enviar */
-button[type='submit'] {
-    background-color: #4a90e2;
+.form-contato button {
+    background-color:var(--cor-de-botao);
     color: white;
     padding: 1rem 2rem;
     border: none;

@@ -57,17 +57,9 @@ const inputs_cad = [
         id: "senhacof",
         type: "password",
         required: true
-    },
-    {
-        texto: "Plano",
-        name: "plano_user",
-        id: "plano",
-        type: "select",  // Alterado de "text" para "select"
-        required: true,
-        options: ["Grátis", "Pago"]  // Opções para o select
     }
+ 
 ];
-
 export default function CadForm({ formData, onInputChange, errors }) {
     return (
         <>

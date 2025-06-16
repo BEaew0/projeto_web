@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { acharUsuario } from "../../services/usuario.js";
+import "./home.css";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
@@ -23,8 +24,8 @@ export default function Home() {
 []);
 
   return (
-    <div>
-      <h1>Bem-vindo, {userName ? userName : "Carregando..."}</h1>
+    <div className="container-home">
+      <h1 className="mostrar-nome">Bem-vindo, {userName ? userName : "Carregando..."}</h1>
     </div>
   );
 }

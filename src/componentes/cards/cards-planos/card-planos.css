@@ -1,6 +1,7 @@
 /* Container principal - garante espaço mínimo sem vazar o footer */
 .container_planos {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     padding: 3rem 1.5rem;
     max-width: 1400px;
@@ -12,6 +13,7 @@
 /* Container dos cards - agora com scroll horizontal em telas pequenas */
 .cards-planos {
     display: flex;
+
     gap: 3rem;
     justify-content: center;
     flex-wrap: nowrap;

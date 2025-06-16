@@ -5,6 +5,8 @@ import "./contato.css"
 export default function Contato() {
     return (
         <div className="container-pag-contato">
+
+            <h1>Contate-nos</h1>
             <form className="form-contato">
                 <Campos />
                 <label>Mensagem</label>
