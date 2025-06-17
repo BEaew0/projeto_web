@@ -1,4 +1,5 @@
 import React from 'react';
+import "./mensagem.css";
 
 export default function Mensagem({ titulo, texto, botoes, onClick }) {
   return (
@@ -8,12 +9,12 @@ export default function Mensagem({ titulo, texto, botoes, onClick }) {
         <p>{texto}</p>
         
         <div className="modal-botoes">
-          {botoes.map((botao, index) => (
+          {botoes?.map((botao, index) => (
             <button key={index}className={`btn-${botao.tipo}`}onClick={() => onClick(botao.texto)}>
               {botao.texto}
-            </button>
-          ))}
-          
+            </button>))
+          }
+   
         </div>
       </div>
     </div>

@@ -1,44 +1,41 @@
 import { useState, useEffect, useRef } from "react"; 
 import { useNavigate } from "react-router-dom";
-import emailjs from '@emailjs/browser';
+// import emailjs from '@emailjs/browser'; // Comentado para testes
 import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import { FcGoogle } from "react-icons/fc";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Sociais from "../../componentes/footer/icons_";
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
-import { loginUser } from "../../services/login.js";
+// import { loginUser } from "../../services/login.js"; // Comentado para testes
 import "./login.css";
 
-
-
-export default function LoginPage() 
-{
+export default function LoginPage() {
     const navigate = useNavigate();
     const [showRecovery, setShowRecovery] = useState(false);
 
-    // Mantém name no estado para o input, mas não envia no login
+    // Dados mockados para o formulário de login
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        senha: ""
+        name: "Usuário Teste", // Mock
+        email: "teste@example.com", // Mock
+        senha: "123456" // Mock
     });
 
+    // Dados mockados para recuperação
     const [recoveryData, setRecoveryData] = useState({
-        user_email: "",
-        message: ""
+        user_email: "teste@example.com", // Mock
+        message: "Por favor, redefina minha senha" // Mock
     });
 
     const [emailEnviado, setEmailEnviado] = useState(false);
     const [errorLogin, setErrorLogin] = useState("");
     const formRecovery = useRef();
 
-    useEffect(() => {
-        emailjs.init('service_nbv9ufd')
-    }, []);
+    // useEffect(() => {
+    //     emailjs.init('service_nbv9ufd') // Comentado para testes
+    // }, []);
 
-    const validateEmail = (email) => 
-    {
+    const validateEmail = (email) => {
         return /\S+@\S+\.\S+/.test(email);
     };
 
@@ -47,55 +44,52 @@ export default function LoginPage()
 
         if (showRecovery) {
             try {
-                const result = await emailjs.sendForm(
-                   'service_nbv9ufd',
-                    'template_xrd3aep', 
-                    formRecovery.current,
-                    'TGGUjJjDOARZYz2ri'
-                );
+                // Mock do envio de email - substitui a chamada real
+                console.log("Dados que seriam enviados por email:", recoveryData);
                 
-                console.log("E-mail enviado com sucesso:", result);
+                // Simulação de envio bem-sucedido
                 setEmailEnviado(true);
                 
-                setTimeout(() => 
-                {
+                setTimeout(() => {
                     setShowRecovery(false);
                     setEmailEnviado(false);
                     setRecoveryData({ user_email: "", message: "" });
                 }, 3000);
                 
             } catch (error) {
-                console.error("Detalhes do erro:", 
-                {
-                    status: error.status,
-                    text: error.text,
-                    message: error.message
-                });
-                alert(`Erro ao enviar e-mail: ${error.text || "Tente novamente mais tarde"}`);
+                console.error("Erro simulado no envio de email:", error);
+                alert("Erro simulado ao enviar e-mail. Verifique o console.");
             }
         } else {
             setErrorLogin("");
 
-            if (!validateEmail(formData.email)) 
-            {
+            if (!validateEmail(formData.email)) {
                 setErrorLogin("E-mail inválido");
                 return;
             }
 
-            // ** Alteração importante: enviar somente email e senha para login **
-            const response = await loginUser({
+            // Mock do login - substitui a chamada à API
+            console.log("Dados de login que seriam enviados:", {
                 email: formData.email,
                 senha: formData.senha
             });
 
-            if (response.success) 
-            {
+            // Simulação de resposta da API
+            const mockResponse = {
+                success: true,
+                message: "Login mockado com sucesso!"
+            };
+
+            if (mockResponse.success) {
                 setErrorLogin("");
-                navigate("/home");
-            } 
-            else 
-            {
-                setErrorLogin(response.message || "Erro ao tentar logar");
+                navigate("/home", { 
+                    state: { 
+                        message: "Você está em modo de teste (dados mockados)",
+                        isMock: true 
+                    } 
+                });
+            } else {
+                setErrorLogin(mockResponse.message || "Erro simulado ao tentar logar");
             }
         }
     };
@@ -120,7 +114,7 @@ export default function LoginPage()
 
     return (
         <div className="container_pg_login">
-            <BtnVoltar />
+            <BtnVoltar onClick={() => navigate(-1)} />
             
             <div className="main_login">
                 <img src={Logo_ts} alt="Logo" className="logo" />
@@ -129,7 +123,9 @@ export default function LoginPage()
                     <form ref={formRecovery} onSubmit={handleSubmit} className="login_form">
                         {emailEnviado ? 
                             (
-                                <p className="mensagem-sucesso">E-mail de recuperação enviado com sucesso!</p>
+                                <p className="mensagem-sucesso">
+                                    Simulação: E-mail de recuperação enviado! (ver console)
+                                </p>
                             ) : 
                             (
                                 <>
@@ -140,13 +136,14 @@ export default function LoginPage()
                                     </span>
 
                                     <button type="submit" className="btn_logar">
-                                         Recuperar Senha
+                                        Simular Recuperação
                                     </button>
                                 </>
-                        )}
+                            )
+                        }
                     </form>
-                ) : (
-
+                ) : 
+                (
                     <form className="login_form" onSubmit={handleSubmit}>
                         <LoginForm formData={formData} onChange={handleChange} />
 
@@ -156,7 +153,9 @@ export default function LoginPage()
                             Esqueci minha senha
                         </span>
                         
-                        <button type="submit" className="btn_logar">Logar</button>
+                        <button type="submit" className="btn_logar">
+                           Login
+                        </button>
         
                         <p> 
                             Não possui conta? 
@@ -164,8 +163,6 @@ export default function LoginPage()
                                 Cadastre-se
                             </span>
                         </p>
-        
-
                     </form>
                 )}
             </div>

@@ -4,10 +4,11 @@ export const loginUser = async (userData) => {
   try {
     const credentials = {
       emaiL_USUARIO: userData.email,
-      senhA_USUARIO: userData.senha,
+      senhA_USUARIO: userData.senha,  // Note que corrigi para senhA_USUARIO (consistente com o curl)
     };
 
-    const response = await api.post("https://Usuarios/login", credentials, {
+    // Usando a URL completa do endpoint como no exemplo curl
+    const response = await api.post("https://srv869019.hstgr.cloud/api/Usuarios/login", credentials, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -16,7 +17,6 @@ export const loginUser = async (userData) => {
 
     console.log("Resposta do login:", response.data);
 
-    // Usar 'token' pois é o que sua API está retornando
     if (response.data.token) {
       localStorage.setItem("accessToken", response.data.token);
 

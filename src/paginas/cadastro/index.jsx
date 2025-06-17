@@ -1,44 +1,40 @@
-//importanto funções, métodos do react,componentes e css
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { cadastrarUser } from "../../services/cadastro.js";
+// import { cadastrarUser } from "../../services/cadastro.js"; // API real (comentada)
 import CadForm from "../../componentes/forms/cadastro";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
-import Card_planos from "../../componentes/cards/cards-planos/index.jsx"; // import do componente dos planos
+import Card_planos from "../../componentes/cards/cards-planos/index.jsx";
 import Logo_ts from "../../assets/Imagens/logo_tcc1.png";
-
+import Mensagem from "../../componentes/modals/Mensagem/index.jsx";
 import "./cadastro.css";
 
 export default function Cadastro() {
   const navigate = useNavigate();
-
-  // Estado do formulário
+  
+  // Estado do formulário com valores mockados para testes
   const [form, setForm] = useState({
-    nome_usuario: "",
-    CPF_usuario: "",
+    nome_usuario: "Fulano de Tal", // Mock
+    CPF_usuario: "123.456.789-00", // Mock
     CNPJ_usuario: "",
-    dta_nascimento: "",
-    email_usuario: "",
-    conf_email: "",
-    senha_cad: "",
-    senha_conf: "",
-    plano_user: "",
+    dta_nascimento: "1990-01-01", // Mock
+    email_usuario: "teste@example.com", // Mock
+    conf_email: "teste@example.com", // Mock
+    senha_cad: "123456", // Mock
+    senha_conf: "123456", // Mock
   });
 
-  // Controle de erros e loading
   const [erros, setErrors] = useState({});
-  const [apiErro, setApiErro] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  // Controle de etapa: 1 = formulário, 2 = escolha do plano
   const [etapa, setEtapa] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlano, setSelectedPlano] = useState(null);
+  const [loading, setLoading] = useState(false); // Mantido para exemplo de loading
 
   const inputChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-
+    setForm(prev => ({ ...prev, [name]: value }));
+    
     if (erros[name]) {
-      setErrors((prev) => {
+      setErrors(prev => {
         const newErros = { ...prev };
         delete newErros[name];
         return newErros;
@@ -46,90 +42,63 @@ export default function Cadastro() {
     }
   };
 
-  //validação do form
   const validarForm = () => {
     const Erros = {};
-
+    
+    // Validações básicas para teste
     if (!form.nome_usuario) Erros.nome_usuario = "Nome é obrigatório";
-    if (!form.CPF_usuario) Erros.CPF_usuario = "CPF é obrigatório";
-    if (!form.dta_nascimento) Erros.dta_nascimento = "Data de nascimento é obrigatória";
-
-    if (!form.email_usuario) {
-      Erros.email_usuario = "Email é obrigatório";
-    } 
-    else if (!/\S+@\S+\.\S+/.test(form.email_usuario)) 
-    {
-      Erros.email_usuario = "Email inválido";
-    }
-
-    if (!form.senha_cad) 
-    {
-      Erros.senha_cad = "Senha é obrigatória";
-    } else if (form.senha_cad.length < 6) 
-    {
-      Erros.senha_cad = "Senha deve ter pelo menos 6 caracteres";
-    }
-
+    if (!form.email_usuario) Erros.email_usuario = "Email é obrigatório";
+    if (!form.senha_cad) Erros.senha_cad = "Senha é obrigatória";
     if (form.email_usuario !== form.conf_email) Erros.conf_email = "Emails não coincidem";
-
     if (form.senha_cad !== form.senha_conf) Erros.senha_conf = "Senhas não coincidem";
 
     setErrors(Erros);
-
     return Object.keys(Erros).length === 0;
   };
 
-  // Função chamada no submit da etapa 1 (formulário)
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setApiErro(null);
-
     if (validarForm()) {
-      setEtapa(2); // passa para escolha do plano
+      setEtapa(2); // Vai para a etapa de seleção de plano
     }
   };
 
-  // Função chamada ao escolher um plano (etapa 2)
-  const handleSelecionarPlano = async (planoId, isPremium) => {
-    setForm((prev) => ({ ...prev, plano_user: planoId }));
+  // Função mock para substituir a chamada à API
+  const mockCadastrarUsuario = () => {
+    console.log("Dados que seriam enviados para a API:", {
+      ...form,
+      plano_selecionado: selectedPlano
+    });
+    
     setLoading(true);
-    setApiErro(null);
-
-    try {
-      const { conf_email, senha_conf, ...formData } = form;
-
-      const userData = {
-        NOME_USUARIO: formData.nome_usuario,
-        CPF_USUARIO: formData.CPF_usuario.replace(/\D/g, ""),
-        CNPJ_USUARIO: formData.CNPJ_usuario ? formData.CNPJ_usuario.replace(/\D/g, "") : undefined,
-        DATA_NASC_USUARIO: formData.dta_nascimento,
-        EMAIL_USUARIO: formData.email_usuario,
-        SENHA_USUARIO: formData.senha_cad,
-        ID_ASSINATURA_FK: Number(planoId),
-      };
-
-      const response = await cadastrarUser(userData);
-
-      if (response.success) {
-        if (isPremium) {
-          alert("Você terá 7 dias grátis para experimentar o plano premium!");
-        }
-        navigate("/home"); // Ou "/login" conforme preferir
-      } else {
-        setApiErro(response.message || "Erro ao cadastrar");
-        setEtapa(1); // volta para o form se erro
-      }
-    } catch (err) {
-      setApiErro("Erro na conexão com o servidor");
-      setEtapa(1);
-    } finally {
+    
+    // Simula delay de requisição
+    setTimeout(() => {
       setLoading(false);
+      navigate("/login", { 
+        state: { 
+          mensagem: "Cadastro teste realizado! (Dados apenas no console)",
+          cadastroMock: true 
+        }
+      });
+    }, 1500);
+  };
+
+  const handleSelecionarPlano = (planoId, isPremium) => {
+    setSelectedPlano({ planoId, isPremium });
+    setShowModal(true);
+  };
+
+  const handleModalClick = (acao) => {
+    setShowModal(false);
+    if (acao === "Confirmar") {
+      mockCadastrarUsuario(); // Usa a função mock em vez da API real
     }
   };
 
   return (
     <div className="main_cadastro">
-      <BtnVoltar onClick={() => navigate(-1)} />
+      <BtnVoltar onClick={() => etapa === 1 ? navigate(-1) : setEtapa(1)} />
 
       <div className="container_cadastro">
         <img src={Logo_ts} alt="Logo" />
@@ -138,45 +107,36 @@ export default function Cadastro() {
           <form className="form_cadastro" onSubmit={handleFormSubmit}>
             <CadForm formData={form} onInputChange={inputChange} errors={erros} />
 
-            {apiErro && <div className="menssagem_erro">{apiErro}</div>}
-
-            <button className="btn_cad" type="submit" disabled={loading}>
-              {loading ? "Processando..." : "Continuar"}
+            <button className="btn_cad" type="submit">
+              Continuar
             </button>
 
             <p>
               Já possui conta?{" "}
               <span onClick={() => navigate("/login")} className="link_login">
-                Faça Login.
+                Faça Login
               </span>
             </p>
           </form>
         ) : (
-          <div>
-            {/* Botão voltar para etapa 1 */}
-            <button
-              className="btn_voltar_etapa"
-              onClick={() => setEtapa(1)}
-              disabled={loading}
-              style={{
-                marginBottom: "15px",
-                backgroundColor: "#eee",
-                border: "none",
-                padding: "8px 12px",
-                cursor: "pointer",
-                borderRadius: "4px",
-              }}
-            >
-              ← Voltar
-            </button>
-
-            <h2>Escolha seu plano:</h2>
+          <div className="etapa-planos">
+            <h2>Escolha seu plano (Modo Teste)</h2>
             <Card_planos onSelecionarPlano={handleSelecionarPlano} />
-            {apiErro && <div className="menssagem_erro">{apiErro}</div>}
-            {loading && <p>Enviando cadastro...</p>}
           </div>
         )}
       </div>
+
+      {showModal && (
+        <Mensagem 
+          titulo="Confirmação (Teste)"
+          texto="Isso é apenas uma simulação. Os dados serão exibidos no console."
+          botoes={[
+            { texto: "Confirmar", tipo: "confirmar" },
+            { texto: "Cancelar", tipo: "cancelar" }
+          ]} 
+          onClick={handleModalClick}
+        />
+      )}
     </div>
   );
 }

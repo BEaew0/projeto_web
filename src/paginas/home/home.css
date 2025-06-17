@@ -1,13 +1,63 @@
-.container-home {
-    display: flex;
-    height: 100vh;
-    padding: 10px;
-    justify-content:right; /* empurra o conteúdo para direita */
+/* ... (mantenha todos os estilos existentes acima) ... */
 
+/* Container Home */
+.container-home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 20px;
+  background-color: var(--cor-de-fundo);
+}
+
+/* Container do Título - Alinhado à direita */
+.container-título {
+  display: flex;
+  justify-content: flex-end; /* Isso é suficiente para alinhar à direita */
+  margin-bottom: 50px;
+  width: 100%; /* Ocupa toda a largura disponível */
+}
+
+/* Estilo do Título */
+.mostrar-nome {
+  font-size: 3rem;
+  color: var(--cor-texto);
+  margin: 0;
+  text-align: right; /* Redundante, mas ajuda como fallback */
+}
+
+/* Efeito de underline dinâmico */
+
+
+
+
+/* Container da Lista */
+.container-lista {
+  background-color: var(--cor-de-card);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px var(--sombreamento);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container-título {
+    margin-bottom: 30px;
+    padding-right: 10px;
   }
   
   .mostrar-nome {
-    font-size: 3rem;
-    /* text-align: right; opcional aqui */
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mostrar-nome {
+    font-size: 1.8rem;
   }
   
+  .container-título {
+    margin-bottom: 20px;
+    justify-content: center; /* Centraliza em mobile se preferir */
+  }
+}

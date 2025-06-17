@@ -119,6 +119,7 @@ footer.footer_main a:hover {
 .usuario-layout{
     display: flex;
     min-height: 100vh;
+      padding: 20px;
     background-color: var(--cor-de-fundo);
     width: 100%;
 

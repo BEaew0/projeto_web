@@ -1,0 +1,72 @@
+.estoques-compact-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  padding: 10px;
+}
+
+.estoque-compact-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  background: white;
+}
+
+.estoque-compact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.estoque-compact-image {
+  width: 100%;
+  height: 80px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.estoque-compact-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.no-image {
+  font-size: 24px;
+  color: #999;
+}
+
+.estoque-compact-info h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estoque-compact-info p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.loading-compact,
+.error-compact,
+.empty-compact {
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.error-compact {
+  color: #d32f2f;
+}
