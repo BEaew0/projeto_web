@@ -1,34 +1,40 @@
+/* listaEstoque.css */
+
 .estoques-compact-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* espaçamento entre os cards */
+  justify-content: flex-start;
+  width: 100%;
 }
 
+/* Estilo do card */
 .estoque-compact-card {
-  border: 1px solid #e0e0e0;
+  background-color: var(--cor-de-form);
   border-radius: 8px;
-  padding: 10px;
+  box-shadow: 0 2px 8px var(--sombreamento);
   transition: transform 0.2s ease;
   cursor: pointer;
-  background: white;
+  width: 180px; /* largura fixa para alinhamento */
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
 }
 
 .estoque-compact-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px var(--sombreamento);
 }
 
+/* Imagem no card */
 .estoque-compact-image {
-  width: 100%;
-  height: 80px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
+  height: 100px;
+  background: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .estoque-compact-image img {
@@ -38,35 +44,52 @@
 }
 
 .no-image {
-  font-size: 24px;
-  color: #999;
+  font-size: 40px;
+  color: #666;
+}
+
+/* Info dentro do card */
+.estoque-compact-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .estoque-compact-info h4 {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #333;
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--cor-texto);
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .estoque-compact-info p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #2e7d32;
+  margin: 0;
+  color: var(--cor-texto);
   font-weight: bold;
+  font-size: 16px;
+  margin-top: auto;
 }
 
-.loading-compact,
-.error-compact,
-.empty-compact {
-  text-align: center;
-  padding: 15px;
-  font-size: 0.9rem;
-  color: #666;
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoque-compact-card {
+    width: 160px;
+    min-height: 200px;
+  }
+
+  .estoque-compact-image {
+    height: 90px;
+  }
 }
 
-.error-compact {
-  color: #d32f2f;
+@media (max-width: 480px) {
+  .estoque-compact-card {
+    width: calc(50% - 10px);
+    min-height: 180px;
+  }
 }

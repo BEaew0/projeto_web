@@ -1,0 +1,54 @@
+/* Adicione esses novos estilos */
+
+.estoque-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 15px; /* Espaço para o botão voltar */
+  }
+  
+  .exportar-excel-btn {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .exportar-excel-btn:hover {
+    background-color: #1b5e20;
+    transform: translateY(-1px);
+  }
+  
+  .exportar-excel-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .exportar-excel-btn::before {
+    content: "📊";
+    margin-right: 5px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .estoque-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .exportar-excel-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }

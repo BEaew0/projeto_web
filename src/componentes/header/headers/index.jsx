@@ -7,11 +7,11 @@ export default function Header() {
   const location = useLocation();
   
   // Define se está em rota privada (home)
-  const isPrivate = location.pathname.startsWith("/home");
+  const isPrivate = location.pathname.startsWith("/home")||location.pathname.startsWith("/estoque");
 
   return (
     <header className="main-header">
-      <Menu isLogged={isPrivate} />
+      <Menu isLogged={isPrivate}/>
     </header>
   );
 }

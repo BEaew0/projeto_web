@@ -1,4 +1,6 @@
-export const buscarTodosEstoques = async () => {
+import api from './api.js';
+
+export const buscarTodosEstoquesUser = async () => {
     try {
         const token = localStorage.getItem('accessToken');
         if (!token) throw new Error('Usuário não autenticado');

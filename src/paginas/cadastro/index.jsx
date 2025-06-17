@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { cadastrarUser } from "../../services/cadastro.js"; // API real (comentada)
 import CadForm from "../../componentes/forms/cadastro";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
 import Card_planos from "../../componentes/cards/cards-planos/index.jsx";
@@ -11,23 +10,22 @@ import "./cadastro.css";
 export default function Cadastro() {
   const navigate = useNavigate();
   
-  // Estado do formulário com valores mockados para testes
   const [form, setForm] = useState({
-    nome_usuario: "Fulano de Tal", // Mock
-    CPF_usuario: "123.456.789-00", // Mock
+    nome_usuario: "Fulano de Tal",
+    CPF_usuario: "123.456.789-00",
     CNPJ_usuario: "",
-    dta_nascimento: "1990-01-01", // Mock
-    email_usuario: "teste@example.com", // Mock
-    conf_email: "teste@example.com", // Mock
-    senha_cad: "123456", // Mock
-    senha_conf: "123456", // Mock
+    dta_nascimento: "1990-01-01",
+    email_usuario: "teste@example.com",
+    conf_email: "teste@example.com",
+    senha_cad: "123456",
+    senha_conf: "123456",
   });
 
   const [erros, setErrors] = useState({});
   const [etapa, setEtapa] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedPlano, setSelectedPlano] = useState(null);
-  const [loading, setLoading] = useState(false); // Mantido para exemplo de loading
+  const [loading, setLoading] = useState(false);
 
   const inputChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +43,6 @@ export default function Cadastro() {
   const validarForm = () => {
     const Erros = {};
     
-    // Validações básicas para teste
     if (!form.nome_usuario) Erros.nome_usuario = "Nome é obrigatório";
     if (!form.email_usuario) Erros.email_usuario = "Email é obrigatório";
     if (!form.senha_cad) Erros.senha_cad = "Senha é obrigatória";
@@ -59,11 +56,10 @@ export default function Cadastro() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (validarForm()) {
-      setEtapa(2); // Vai para a etapa de seleção de plano
+      setEtapa(2);
     }
   };
 
-  // Função mock para substituir a chamada à API
   const mockCadastrarUsuario = () => {
     console.log("Dados que seriam enviados para a API:", {
       ...form,
@@ -72,7 +68,6 @@ export default function Cadastro() {
     
     setLoading(true);
     
-    // Simula delay de requisição
     setTimeout(() => {
       setLoading(false);
       navigate("/login", { 
@@ -92,13 +87,15 @@ export default function Cadastro() {
   const handleModalClick = (acao) => {
     setShowModal(false);
     if (acao === "Confirmar") {
-      mockCadastrarUsuario(); // Usa a função mock em vez da API real
+      mockCadastrarUsuario();
     }
   };
 
   return (
     <div className="main_cadastro">
-      <BtnVoltar onClick={() => etapa === 1 ? navigate(-1) : setEtapa(1)} />
+      <div className="mini-header">
+        <BtnVoltar onClick={() => etapa === 1 ? navigate(-1) : setEtapa(1)} />
+      </div>
 
       <div className="container_cadastro">
         <img src={Logo_ts} alt="Logo" />

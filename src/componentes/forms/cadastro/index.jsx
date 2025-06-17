@@ -1,6 +1,7 @@
 import Input from "../../input";
 import React from "react";
 
+//setando os inputs e seus valores
 const inputs_cad = [
     {
         texto: "Nome",
@@ -8,7 +9,7 @@ const inputs_cad = [
         id: "nome_cad",
         type: "text",
         required: true,
-        autoComplete: "name"  // Adicionado
+        autoComplete: "name"  
     },
     {
         texto: "CPF",
@@ -69,9 +70,11 @@ const inputs_cad = [
     }
 ];
 
+//
 export default function CadForm({ formData, onInputChange, errors }) {
     return (
         <>
+          {/*Mapeando os itens do array e criando os inputs para o form */}
             {inputs_cad.map((input) => (
                 <Input
                     key={input.id}

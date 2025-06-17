@@ -1,0 +1,116 @@
+.graficos-page {
+  max-width: 100%; /* Alterado para ocupar toda a largura */
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.graficos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.graficos-header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.exportar-excel-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exportar-excel-btn:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.exportar-excel-btn:active {
+  transform: translateY(0);
+}
+
+.graficos-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  max-width: 100%;
+}
+
+.grafico-card {
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.grafico-card h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  color: #2c3e50;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.grafico-wrapper {
+  height: 500px; /* Aumentei a altura */
+  width: 100%;
+  position: relative;
+}
+
+/* Layout para telas maiores */
+@media (min-width: 1200px) {
+  .graficos-container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .grafico-card-full {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .graficos-page {
+    padding: 30px;
+  }
+  
+  .grafico-card {
+    padding: 30px;
+  }
+  
+  .grafico-wrapper {
+    height: 400px;
+  }
+}
+
+/* Efeitos de hover para melhor interatividade */
+.grafico-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Adicione esta classe para gráficos que devem ocupar largura total */
+.full-width-chart {
+  grid-column: 1 / -1;
+}

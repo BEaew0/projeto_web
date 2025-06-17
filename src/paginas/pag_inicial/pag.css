@@ -43,13 +43,14 @@
 /* IMAGEM (mantenha seu estilo atual) */
 .image-container {
     flex: 1;
+    padding: 50px;
     background-color: aliceblue;
     border-radius: 30px;
     
     img{
         height: 60vh;
     }
-    /* ... seu CSS existente ... */
+ 
 }
 
 /* Responsivo */

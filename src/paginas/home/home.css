@@ -1,63 +1,184 @@
-/* ... (mantenha todos os estilos existentes acima) ... */
-
-/* Container Home */
+/* Estilos gerais da página */
 .container-home {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  max-width: 100vh;
+  margin: 0 auto;
   padding: 20px;
-  gap: 20px;
-  background-color: var(--cor-de-fundo);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
 }
 
-/* Container do Título - Alinhado à direita */
-.container-título {
+/* Container do título */
+.container-titulo {
   display: flex;
-  justify-content: flex-end; /* Isso é suficiente para alinhar à direita */
-  margin-bottom: 50px;
-  width: 100%; /* Ocupa toda a largura disponível */
+  color: var(--cor-texto);
+  text-align: left;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  justify-content: flex-start;
 }
 
-/* Estilo do Título */
 .mostrar-nome {
-  font-size: 3rem;
+  font-size: 2rem;
   color: var(--cor-texto);
   margin: 0;
-  text-align: right; /* Redundante, mas ajuda como fallback */
+  font-weight: 600;
+  text-align: left;
 }
 
-/* Efeito de underline dinâmico */
+/* Container principal de estoque e gráficos */
+.container-estoque-user, 
+.container-graficos-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinha tudo à esquerda */
+  width: 100%;
+}
 
+.container-estoque-user h2,
+.container-graficos-user h2 {
+  margin: 0 0 20px 0; /* Ajuste das margens */
+  padding: 0;
+  text-align: left;
+  font-size: 1.5rem;
+  color: var(--cor-texto);
+}
 
-
-
-/* Container da Lista */
+/* Container da lista de estoque */
 .container-lista {
-  background-color: var(--cor-de-card);
+  background-color: var(--cor-de-form);
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 10px var(--sombreamento);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  width: 100%; /* Ocupa toda a largura disponível */
+  margin-bottom: 30px; /* Espaço entre seções */
+}
+
+.container-lista h2 {
+  font-size: 1.5rem;
+  color: var(--cor-texto);
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+/* Container de gráficos */
+.container-gráficos {
+  background-color: var(--cor-de-form);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+/* Botão "Ver mais" */
+.ver-mais-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.ver-mais-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.ver-mais-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(41, 128, 185, 0.3);
+}
+
+.ver-mais-btn:active {
+  transform: translateY(0);
+}
+
+/* Estilos para a lista compacta */
+.lista-compacta-simples {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.lista-compacta-simples li {
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+  transition: all 0.2s ease;
+  text-align: left;
+  margin-right: auto;
+  width: fit-content; /* Ajusta a largura ao conteúdo */
+}
+
+.lista-compacta-simples li:hover {
+  background-color: #e9ecef;
+  transform: translateX(3px);
+}
+
+/* Estados de loading e error */
+.loading-compact,
+.error-compact,
+.empty-compact {
+  text-align: left;
+  padding: 20px;
+}
+
+.loading-compact {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.error-compact {
+  color: #e74c3c;
+  background-color: #fdedec;
+  border-radius: 5px;
+}
+
+.empty-compact {
+  color: #95a5a6;
+  font-style: italic;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .container-título {
-    margin-bottom: 30px;
-    padding-right: 10px;
+  .container-home {
+    padding: 15px;
   }
   
   .mostrar-nome {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
+  }
+  
+  .container-lista h2,
+  .container-estoque-user h2,
+  .container-graficos-user h2 {
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 480px) {
   .mostrar-nome {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
   }
   
-  .container-título {
-    margin-bottom: 20px;
-    justify-content: center; /* Centraliza em mobile se preferir */
+  .container-lista,
+  .container-gráficos {
+    padding: 15px;
   }
 }

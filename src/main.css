@@ -49,6 +49,8 @@ html, body {
   width: 100%;
 }
 
+
+/*estilo do body*/
 body {
   background-color: var(--cor-de-fundo);
   display: flex;
@@ -78,6 +80,8 @@ main {
   flex: 1;
 }
 
+
+/*estilo do footer*/
 footer.footer_main {
   background-color: var(--footer-bg);
   color: var(--footer-texto);
@@ -100,6 +104,7 @@ footer.footer_main a:hover {
   background-color: var(--cor-hover);
 }
 
+/*estilo do layout para rota de autenticação*/
 .auth-layout{
   display: flex;
     min-height: 100vh; /* Adicionado */
@@ -169,7 +174,7 @@ footer.footer_main a:hover {
     font-size: 0.9rem;
   }
 }
-
+/*ajustando para outros tipos de tela*/
 @media (max-width: 480px) {
   .main-header {
     padding: 0.5rem 2%;

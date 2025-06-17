@@ -12,14 +12,7 @@ label{
   color:var(--cor-texto);
 }
 
-/* Botão de voltar */
-.btnVoltar_container {
-  margin: 10vh;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-}
+
 
 .voltar_pag {
   color: var(--cor-texto);

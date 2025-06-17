@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 import { FaUserCircle } from "react-icons/fa";
-import { IoIosNotifications } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
 import LogoTS from './logo/index';
@@ -60,10 +59,11 @@ export default function Menu({ isLogged = false }) {
       <div className="links_esquerda">
         {isLogged ? (
           <>
-            <IoIosNotifications className="icon" />
+       
             <LogoTS link={"/"} logo={Logo_ts} />
           </>
-        ) : (
+        ) : 
+        (
           <>
             <LogoTS link={"/"} logo={Logo_ts} />
             {links_esquerda.map((link, key) => (
@@ -84,7 +84,6 @@ export default function Menu({ isLogged = false }) {
             </button>
 
             {dropdown && (
-
               <div className="dropdown-menu">
                 <button className="dropdown-item" onClick={handleConfiguracoes}>
                   <IoSettings className="dropdown-icon" />
@@ -99,11 +98,14 @@ export default function Menu({ isLogged = false }) {
               </div>
             )}
           </div>
-        ) : (
+        ) : 
+        (
           <>
-            {links_direita.map((link, key) => (
+            {
+              links_direita.map((link, key) => (
               <Menu_links key={key} link={link.link} text={link.text} />
-            ))}
+            ))
+            }
           </>
         )}
       </div>

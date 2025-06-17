@@ -13,7 +13,9 @@ import Sobre from "./paginas/Sobre";
 import Login from "./paginas/login";
 import Cadastro from "./paginas/cadastro";
 import Home from "./paginas/home";
+import Estoque from "./paginas/estoque";
 import PrivateRoute from "./componentes/rotas/usuario";
+import Graficos from "./paginas/graficos";
 import PerfilUsuario from "./paginas/perfil";
 import "./main.css";
 
@@ -30,21 +32,22 @@ export default function App() {
           <Route path="/contato" element={<Contato/>}/>
         </Route>
 
-        {/* Rotas de Autenticação */}
+        {/* Rotas de Autenticação e modificação */}
         <Route element={<LayoutLC />}>
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/perfil" element={<PerfilUsuario />} /> {/* Movido para cá */}
+          <Route path="/perfil" element={<PerfilUsuario />} /> 
         </Route>
 
-        {/* Rotas Privadas (sem perfil) */}
+        {/* Rotas Privadas para  tem perfil */}
         <Route element={<Layout_user />}>
           <Route path="/home" element={<Home />} />
-          {/* Outras rotas privadas... */}
+          <Route path="/estoque" element={<Estoque/>}/>
+          <Route path="/graficos" element={<Graficos/>}/>
         </Route>
 
-        {/* Rota de fallback */}
-        <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
+        {/* Rota de se caso não encontrar a página*/}
+        <Route path="*" element={<h1>404 - Página não encontrada</h1>}/>
       </Routes>
     </Auth>
   );
