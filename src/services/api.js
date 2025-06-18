@@ -12,3 +12,9 @@ const api = axios.create({
 });
 
 export default api;
+
+
+fetch('https://srv869019.hstgr.cloud/api/TestarConexao/StatusAPI')
+  .then(response => response.json())
+  .then(data => console.log(data.mensagem)) // "API está funcionando corretamente."
+  .catch(error => console.error('Erro:', error));

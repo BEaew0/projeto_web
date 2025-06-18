@@ -39,11 +39,12 @@ export default function App() {
           <Route path="/perfil" element={<PerfilUsuario />} /> 
         </Route>
 
-        {/* Rotas Privadas para  tem perfil */}
+        {/* Rotas Privadas para  quem tem perfil */}
         <Route element={<Layout_user />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/estoque" element={<Estoque/>}/>
           <Route path="/graficos" element={<Graficos/>}/>
+          <Route path="/estoque" element={<Estoque/>}/>
+          
         </Route>
 
         {/* Rota de se caso não encontrar a página*/}

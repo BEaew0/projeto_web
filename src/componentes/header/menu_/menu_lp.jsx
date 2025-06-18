@@ -59,7 +59,6 @@ export default function Menu({ isLogged = false }) {
       <div className="links_esquerda">
         {isLogged ? (
           <>
-       
             <LogoTS link={"/"} logo={Logo_ts} />
           </>
         ) : 

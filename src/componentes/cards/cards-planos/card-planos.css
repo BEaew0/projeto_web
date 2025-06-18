@@ -1,7 +1,6 @@
-/* Container principal - garante espaço mínimo sem vazar o footer */
+/* Container principal - alinhamento e espaçamento */
 .container_planos {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     padding: 3rem 1.5rem;
     max-width: 1400px;
@@ -10,17 +9,16 @@
     width: 100%;
 }
 
-/* Container dos cards - agora com scroll horizontal em telas pequenas */
+/* Container dos cards - flexível e com scroll horizontal em telas pequenas */
 .cards-planos {
     display: flex;
-
     gap: 3rem;
-    justify-content: center;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Impede que os cards quebrem linha */
+    justify-content: center; /* Centraliza os cards */
     width: 100%;
-    overflow-x: auto;
+    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
     scrollbar-width: thin;
-    padding: 40px 1rem;
+    padding: 1rem;
 }
 
 /* Estilização do scrollbar */
@@ -31,160 +29,88 @@
     background: var(--cor-de-botao);
 }
 
-/* Card principal - seus novos estilos integrados */
+/* Card - tamanho fixo e alinhamento interno */
 .card-planos {
-    padding: 60px;
+    padding: 40px;
     border-radius: 10px;
     display: flex;
-    height: fit-content;
     flex-direction: column;
     gap: 30px;
     width: 400px;
-    flex-shrink: 0;
+    min-height: 600px; /* Altura fixa */
+    flex-shrink: 0; /* Impede que os cards encolham */
     border: 2px solid blue;
-    transition: transform 0.3s ease;
     box-shadow: 0 4px 12px var(--sombreamento);
+    transition: transform 0.3s ease;
 }
 
+/* Conteúdo do card */
 .card-planos h1 {
     text-align: left;
+    font-size: 2rem;
+    color: var(--cor-texto);
+    border-bottom: 1px solid rgb(8, 76, 122);
+    padding-bottom: 10px;
     margin-bottom: 1rem;
-    font-size: 2.5rem;
-    color: var(--cor-texto);
-    border-bottom: solid 1px rgb(8, 76, 122);
-    width: 100%;
-    padding-bottom: 10px; /* Espaço entre texto e linha */
 }
 
-.card-planos p {
-    font-size: large;
-    text-align: left;
-    margin: 20px 0;
-    line-height: 1.5;
-    color: var(--cor-texto);
-}
-
-/* Lista de benefícios - Espaçamento aumentado */
 .beneficios-lista {
     display: flex;
     flex-direction: column;
-
-    
-    gap: 1.5rem; /* Aumentei o gap entre itens */
-    padding: 1.5rem; /* Adicionei padding interno */
-    border-radius: 8px; /* Bordas arredondadas */
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-grow: 1; /* Ocupa espaço restante para alinhar o botão no final */
 }
 
 .card-planos li {
     display: flex;
-    font-size: 1.4rem;
-    gap: 10px; /* Aumentei o gap entre ícone e texto */
-    align-items: flex-start; /* Alinhamento no topo */
-    line-height: 1.4; /* Melhor espaçamento entre linhas */
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 1.2rem;
+    line-height: 1.4;
 }
 
-/* Versões de card */
-.card-cinza {
-    background-color: gray;
-    padding: 30px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-}
-
-.card-azul {
-    background-color: var(--cor-de-card);
-    padding: 30px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-}
-
-/* Botão */
+/* Botão alinhado na base */
 .card-planos button {
     width: 120px;
     padding: 15px;
     background: var(--cor-de-botao);
-    color:var(--cor-texto);
+    color: var(--cor-texto);
     border: none;
-    font-weight: 700;
     border-radius: 8px;
-    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem; /* Espaço acima do botão */
+    margin-top: auto; /* Empurra o botão para a base do card */
 }
 
-button:hover {
-    background: var(--cor-de-hover);
-    transform: translateY(-2px);
+/* Versões de cores dos cards */
+.card-cinza {
+    background-color: gray;
+}
+.card-azul {
+    background-color: var(--cor-de-card);
 }
 
-/* Efeito hover */
-
-
-/* Media Queries para responsividade */
-@media (max-width: 1200px) {
-    .card-planos {
-        padding: 40px;
-    }
-    
-    .card-planos h1 {
-        font-size: 2rem;
-    }
-    
-    .beneficios-lista {
-        gap: 1.2rem;
-    }
+/* Efeitos hover */
+.card-planos:hover {
+    transform: translateY(-5px);
 }
 
+/* Responsividade */
 @media (max-width: 900px) {
-    .cards-planos {
-        justify-content: flex-start;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    
     .card-planos {
         width: 350px;
+        min-height: 550px;
         padding: 30px;
-    }
-    
-    .card-planos h1 {
-        font-size: 1.8rem;
-    }
-    
-    .card-planos li {
-        font-size: 1.2rem;
-    }
-    
-    .beneficios-lista {
-        gap: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .card-planos {
-        width: 300px;
+        width: 280px;
+        min-height: 500px;
         padding: 20px;
     }
-    
-    .card-planos h1 {
-        font-size: 1.5rem;
-    }
-    
-    .card-planos li {
-        font-size: 1rem;
-        gap: 8px;
-    }
-    
-    .beneficios-lista {
-        gap: 0.8rem;
-        padding: 1rem;
-    }
-    
-    .card-planos:hover {
-        transform: none;
-    }
-    
     .card-planos button {
         width: 100%;
     }

@@ -8,7 +8,7 @@ import './main.css';
 export default function Layout_user(){
  return(
     <TemaProvider>{}
-        <Header/>
+        <Header use/>
             <div className="usuario-layout">
                 <Outlet/>{}
             </div>

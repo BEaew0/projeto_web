@@ -50,8 +50,7 @@ export default function Estoque() {
       </div>
       
       <div className="grid-produtos">
-        <ListaEstoquesCompacta estoques={state?.estoques || []}loading={false}error={null}mostrarTodos={true}onCardClick={handleCardClick}
-/>
+        <ListaEstoquesCompacta estoques={state?.estoques || []}loading={false}error={null}mostrarTodos={true}onCardClick={handleCardClick}/>
       </div>
 
       {modalAberto && (

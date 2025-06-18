@@ -29,7 +29,7 @@ export default function Graficos() {
     XLSX.writeFile(workbook, `dados_graficos_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  // Dados para gráficos
+  // Dados para gráficos (mantido igual)
   const topProdutos = [...estoques]
     .sort((a, b) => b.quantidadE_PRODUTO - a.quantidadE_PRODUTO)
     .slice(0, 5);
@@ -61,37 +61,52 @@ export default function Graficos() {
   };
 
   return (
-    <div className="graficos-page">
-      <BtnVoltar />
-      <div className="graficos-header">
-        <h1>Análise de Estoque</h1>
-        <button onClick={exportToExcel} className="exportar-excel-btn">
-          Exportar Dados para Excel
-        </button>
-      </div>
-
-      <div className="graficos-container">
-        <div className="grafico-card">
-          <h2>Top 5 Produtos (Quantidade)</h2>
-          <div className="grafico-wrapper">
-            <Bar data={barChartData} options={{
-              responsive: true,
-              plugins: {
-                legend: { display: false }
-              }
-            }} />
-          </div>
+    <div className="graficos-container">
+      <div className="graficos-content">
+        <BtnVoltar />
+        
+        <div className="graficos-header">
+          <h1>Análise de Estoque</h1>
+          <button 
+            onClick={exportToExcel} 
+            className="exportar-excel-btn"
+            disabled={estoques.length === 0}
+          >
+            Exportar Dados para Excel
+          </button>
         </div>
 
-        <div className="grafico-card">
-          <h2>Distribuição de Estoque</h2>
-          <div className="grafico-wrapper">
-            <Pie data={pieChartData} options={{
-              responsive: true,
-              plugins: {
-                legend: { position: 'right' }
-              }
-            }} />
+        <div className="graficos-grid">
+          <div className="grafico-section">
+            <div className="grafico-card">
+              <h2>Top 5 Produtos (Quantidade)</h2>
+              <div className="chart-container">
+                <Bar 
+                  data={barChartData} 
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                  }} 
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grafico-section">
+            <div className="grafico-card">
+              <h2>Distribuição de Estoque</h2>
+              <div className="chart-container">
+                <Pie 
+                  data={pieChartData} 
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right' } }
+                  }} 
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
