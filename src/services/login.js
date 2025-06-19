@@ -16,7 +16,7 @@ export const loginUser = async (userData) => {
       senhA_USUARIO: userData.senha
     };
 
-    const response = await api.post("https://srv869019.hstgr.cloud/api/Usuarios/login", credentials, {
+    const response = await api.post('Usuarios/login', credentials, {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"

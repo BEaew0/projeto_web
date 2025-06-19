@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { acharUsuario, buscarTodosEstoques } from "../../services/api"; // Chamada real comentada
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
-import  GraficosCompactos from "../../componentes/grafico";
+import  GraficosCompactos from "../../componentes/graficos";
 import "./home.css";
 
 // Mock da função acharUsuario (adicionado)
@@ -170,9 +170,6 @@ export default function Home() {
           <h2>Gráficos</h2>
           <div className="container-gráficos">
               <GraficosCompactos estoques={estoques} />
-              <button className="ver-mais-btn" onClick={() => navigate("/graficos",{ state: { estoques } })}>
-                   Ver todos os gráficos
-                </button>
          </div>
      </div>
 

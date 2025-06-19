@@ -4,7 +4,7 @@ import axios from 'axios';
 
 //criando a conexão com api
 const api = axios.create({
-    baseURL: "https://srv869019.hstgr.cloud", 
+    baseURL: "https://srv869019.hstgr.cloud/api", 
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

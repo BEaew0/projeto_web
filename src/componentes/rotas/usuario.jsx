@@ -1,7 +1,9 @@
-import { useAuth } from "../auth_teste";
-import { Navigate } from "react-router-dom";
+// src/components/PrivateRoute.js
+import { useAuth } from '../autenticação';
+import { Navigate, Outlet } from 'react-router-dom';
 
-export default function PrivateRoute({ children }) {
-  const { isLogged } = useAuth();
-  return isLogged ? children : <Navigate to="/login" />;
+export function PrivateRoute() {
+  const { autenticado } = useAuth();
+
+  return autenticado ? <Outlet /> : <Navigate to="/login" replace />;
 }

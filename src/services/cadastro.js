@@ -42,11 +42,7 @@ export const cadastrarUser = async (userData) => {
             }
         };
 
-        const response = await api.post(
-            'https://srv869019.hstgr.cloud/api/Usuarios/criar-usuario',
-            payload,
-            config
-        );
+        const response = await api.post('Usuarios/criar-usuario',payload,config);
 
         // Tratamento da resposta
         if (response.data.token) {

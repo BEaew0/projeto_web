@@ -7,7 +7,6 @@ import { IoLogOut } from "react-icons/io5";
 import LogoTS from './logo/index';
 import BtnTema from "./../botoes/btn_tema";
 import Menu_links from "../menu_/links_menu/index";
-
 import { logoutUser } from '../../../services/logout';
 import "./menu.css";
 
@@ -24,9 +23,25 @@ const links_direita = [
 
 export default function Menu({ isLogged = false }) {
   const [dropdown, setDropdown] = useState(false);
+  const [authenticated, setAuthenticated] = useState(isLogged);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate();
 
+  // Sincroniza com o localStorage e monitora mudanças
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setAuthenticated(!!token);
+    
+    const handleStorageChange = () => {
+      const token = localStorage.getItem('accessToken');
+      setAuthenticated(!!token);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [isLogged]);
+
+  // Fecha o dropdown ao clicar fora
   useEffect(() => {
     function fecharSubmenu(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -34,49 +49,37 @@ export default function Menu({ isLogged = false }) {
       }
     }
     document.addEventListener("mousedown", fecharSubmenu);
-    return () => {
-      document.removeEventListener("mousedown", fecharSubmenu);
-    };
+    return () => document.removeEventListener("mousedown", fecharSubmenu);
   }, []);
 
-  const SubmenuAbrir = () => {
-    setDropdown(!dropdown);
-  };
+  const SubmenuAbrir = () => setDropdown(!dropdown);
 
   const handleLogout = () => {
-    logoutUser();  
+    logoutUser();
+    setDropdown(false);
+    setAuthenticated(false);
   };
 
-  // Função para navegar para a página de configurações
   const handleConfiguracoes = () => {
     navigate('/perfil');
-    setDropdown(false); // Fecha o dropdown após navegar
+    setDropdown(false);
   };
 
   return (
     <div className="menu__">
-      {/* Lado Esquerdo (sempre mostra os mesmos links) */}
+      {/* Lado Esquerdo */}
       <div className="links_esquerda">
-        {isLogged ? (
-          <>
-            <LogoTS link={"/"} logo={Logo_ts} />
-          </>
-        ) : 
-        (
-          <>
-            <LogoTS link={"/"} logo={Logo_ts} />
-            {links_esquerda.map((link, key) => (
-              <Menu_links key={key} link={link.link} text={link.text} />
-            ))}
-          </>
-        )}
+        <LogoTS link={"/"} logo={Logo_ts} />
+        {!authenticated && links_esquerda.map((link, key) => (
+          <Menu_links key={key} link={link.link} text={link.text} />
+        ))}
       </div>
 
-      {/* Links do lado direito*/}
+      {/* Lado Direito */}
       <div className="links_direita">
         <BtnTema />
 
-        {isLogged ? (
+        {authenticated ? (
           <div className="dropdown-container" ref={dropdownRef}>
             <button className="btn_usuario" onClick={SubmenuAbrir}>
               <FaUserCircle className="icon" />
@@ -88,24 +91,18 @@ export default function Menu({ isLogged = false }) {
                   <IoSettings className="dropdown-icon" />
                   <span>Configurações</span>
                 </button>
-
                 <button className="dropdown-item" onClick={handleLogout}>
                   <IoLogOut className="dropdown-icon" />
                   <span>Sair</span>
                 </button>
-
               </div>
             )}
           </div>
         ) : 
         (
-          <>
-            {
-              links_direita.map((link, key) => (
-              <Menu_links key={key} link={link.link} text={link.text} />
-            ))
-            }
-          </>
+          links_direita.map((link, key) => (
+            <Menu_links key={key} link={link.link} text={link.text} />
+          ))
         )}
       </div>
     </div>

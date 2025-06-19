@@ -1,0 +1,176 @@
+.graficos-container {
+  padding: 30px;
+  width: 95%;
+  max-width: 1800px; /* Limite máximo de largura */
+  margin: 0 auto;
+}
+
+.header-graficos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px; /* Aumentei o espaçamento */
+  flex-wrap: wrap;
+}
+
+.graficos-container h1 {
+  color: #2c3e50;
+  margin-bottom: 20px; /* Mais espaçamento */
+  font-size: 2.4rem; /* Título um pouco maior */
+}
+
+.botoes-exportacao {
+  display: flex;
+  gap: 20px; /* Mais espaço entre botões */
+}
+
+.export-btn, .download-btn {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 14px 28px; /* Botões maiores */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.export-btn:hover, .download-btn:hover {
+  background-color: #1a252f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra no hover */
+}
+
+.graficos-row {
+  display: flex;
+  gap: 40px; /* Aumentei o gap entre gráficos */
+  margin: 40px 0; /* Mais espaçamento vertical */
+  flex-wrap: wrap;
+}
+
+.grafico-section {
+  background: white;
+  padding: 30px; /* Padding maior */
+  border-radius: 16px; /* Bordas mais arredondadas */
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 700px; /* Altura aumentada */
+  margin-bottom: 30px; /* Espaço abaixo de cada seção */
+}
+
+.grafico-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px; /* Mais espaço abaixo do cabeçalho */
+  flex-wrap: wrap;
+  gap: 20px; /* Espaço entre título e botão */
+}
+
+.grafico-section h2 {
+  color: #34495e;
+  font-size: 1.8rem; /* Título maior */
+  margin-right: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1; /* Permite que o título ocupe espaço disponível */
+}
+
+.grafico-wrapper {
+  height: 100%;
+  min-height: 550px; /* Altura mínima maior */
+  position: relative;
+  flex-grow: 1;
+}
+
+.pie-chart {
+  max-width: 100%;
+}
+
+/* Ajustes para telas grandes */
+@media (min-width: 1600px) {
+  .graficos-row {
+    gap: 50px; /* Espaço ainda maior em telas grandes */
+  }
+}
+
+@media (max-width: 1400px) {
+  .graficos-row {
+    gap: 30px;
+  }
+  
+  .grafico-section {
+    flex: 1 1 calc(50% - 30px); /* Dois gráficos por linha com gap */
+    height: 650px;
+    box-sizing: border-box; /* Inclui padding na largura */
+  }
+}
+
+@media (max-width: 1100px) {
+  .graficos-row {
+    gap: 25px;
+  }
+  
+  .grafico-section {
+    height: 600px;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  .graficos-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .grafico-section {
+    width: 100%;
+    height: 550px;
+    margin-bottom: 0; /* Remove margem inferior já que temos gap */
+  }
+}
+
+@media (max-width: 768px) {
+  .graficos-container {
+    padding: 20px;
+  }
+  
+  .header-graficos, .grafico-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .grafico-section {
+    height: 500px;
+    padding: 20px;
+  }
+  
+  .grafico-wrapper {
+    min-height: 400px;
+  }
+  
+  .export-btn, .download-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .graficos-container h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grafico-section {
+    height: 450px;
+    padding: 15px;
+  }
+  
+  .grafico-wrapper {
+    min-height: 350px;
+  }
+}
