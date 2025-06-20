@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/login"; // Importe sua função de login real
+import {useAuth} from "../../componentes/hook/index";
+import { loginUser } from "../../services/login";
 import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
@@ -9,6 +10,7 @@ import "./login.css";
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const { login } = useAuth(); // Adicionado - função do AuthContext
     const [showRecovery, setShowRecovery] = useState(false);
     const [formData, setFormData] = useState({ 
         email: "",
@@ -70,11 +72,9 @@ export default function LoginPage() {
                 });
 
                 if (response.success) {
-                    navigate("/home", { 
-                        state: { 
-                            user: response.user 
-                        } 
-                    });
+                    // Modificado - usa a função login do AuthContext
+                    login(response.accessToken); // Armazena o token
+                    navigate("/home"); // Navega para a página inicial
                 } else {
                     setErrorLogin(response.message || "Credenciais inválidas");
                 }
@@ -87,13 +87,13 @@ export default function LoginPage() {
         }
     };
 
+    // ... (mantenha o restante do código igual)
     const handleChange = (e) => {
         const { name, value } = e.target;
         showRecovery
             ? setRecoveryData(prev => ({ ...prev, [name]: value }))
             : setFormData(prev => ({ ...prev, [name]: value }));
         
-        // Limpa erros quando o usuário começa a digitar
         if (errorLogin) setErrorLogin("");
     };
 

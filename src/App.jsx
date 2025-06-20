@@ -1,8 +1,12 @@
+import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
+// Layout Components
 import Layout_i from "./Layout_Inicial"; 
 import LayoutLC from "./Layout_Auth"; 
 import Layout_user from "./Layout_user";
+
+// Page Components
 import Contato from "./paginas/contato";
 import Pag_inicial from "./paginas/pag_inicial";
 import Download from "./paginas/download";
@@ -13,16 +17,20 @@ import Cadastro from "./paginas/cadastro";
 import Home from "./paginas/home";
 import Estoque from "./paginas/estoque";
 import VerGraficos from "./paginas/graficos";
-import { PrivateRoute } from "./componentes/rotas/usuario";
 import PerfilUsuario from "./paginas/perfil";
-import LOL from "./paginas/TESTE";
+
+// Auth Components
+import { AuthProvider } from './componentes/autenticação/index'
+import { PrivateRoute } from "./componentes/rotas/usuario";
+
+// Styles
 import "./main.css";
 
 export default function App() {
   return (
-    <Auth>
+    <AuthProvider> {/* Changed from <Auth> to <AuthProvider> */}
       <Routes>
-        {/* Rotas Públicas */}
+        {/* Public Routes */}
         <Route element={<Layout_i />}>
           <Route path="/" element={<Pag_inicial />} />
           <Route path="/download" element={<Download />} />
@@ -31,27 +39,25 @@ export default function App() {
           <Route path="/contato" element={<Contato/>}/>
         </Route>
 
-        {/* Rotas de Autenticação */}
+        {/* Authentication Routes */}
         <Route element={<LayoutLC />}>
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/perfil" element={<PerfilUsuario />} /> 
         </Route>
 
-        {/* Rotas Privadas */}
+        {/* Private Routes */}
         <Route element={<PrivateRoute />}>
-         <Route element={<Layout_user />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/estoque" element={<Estoque/>}/>
-          <Route path="/graficos" element={<VerGraficos/>}/> 
+          <Route element={<Layout_user />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/estoque" element={<Estoque/>}/>
+            <Route path="/graficos" element={<VerGraficos/>}/> 
+            <Route path="/perfil" element={<PerfilUsuario />} /> {/* Moved inside PrivateRoute */}
           </Route>
         </Route>
-       
-        
 
-        {/* Rota 404 */}
+        {/* 404 Route */}
         <Route path="*" element={<h1>404 - Página não encontrada</h1>}/>
       </Routes>
-    </Auth>
+    </AuthProvider>
   );
 }

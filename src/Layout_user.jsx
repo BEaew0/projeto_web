@@ -1,23 +1,13 @@
-// Layout_user.js
-import { Outlet, Navigate } from "react-router-dom";
+// src/componentes/Layout_user.jsx
+import { Outlet } from "react-router-dom";
 import { TemaProvider } from "./componentes/header/menu_/mudar_tema/mudar_tema";
 import Footer from "./componentes/footer";
-import Header from "./componentes/header/headers";
-import { useAuth } from "./componentes/autenticação";
+import Header from "./componentes/header/menu_/links_menu/index";
+import { useAuth } from "./componentes/hook/index";
 import './main.css';
 
 export default function Layout_user() {
-  const { autenticado, carregando } = useAuth();
-
-  if (carregando) {
-    return <div className="loading-screen">Carregando...</div>;
-  }
-
-  if (!autenticado) {
-    // Redireciona para a página de login se não estiver autenticado
-    return <Navigate to="/login" replace />;
-  }
-
+  // Remove a verificação de autenticação aqui
   return (
     <TemaProvider>
       <Header />

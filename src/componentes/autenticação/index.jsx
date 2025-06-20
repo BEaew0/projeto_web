@@ -1,44 +1,57 @@
-// src/hooks/useAuth.js
-import { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Instale com: npm install jwt-decode
+// src/context/AuthContext.js
+import { createContext, useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
-export function useAuth() {
-  const [autenticado, setAutenticado] = useState(false);
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
 
   useEffect(() => {
-    const validateToken = () => {
+    const checkAuth = () => {
       const token = localStorage.getItem('accessToken');
-      
       if (!token) {
-        setAutenticado(false);
         return;
       }
 
       try {
-        // Verifica se o token está expirado
         const decoded = jwtDecode(token);
         const isExpired = decoded.exp < Date.now() / 1000;
         
-        setAutenticado(!isExpired);
-        
         if (isExpired) {
-          localStorage.removeItem('accessToken');
+          logout();
+          return;
         }
+
+        setUser(decoded);
       } catch (error) {
-        setAutenticado
-        
-    ,(false);
-        localStorage.removeItem('accessToken');
-      }
+        logout();
+      } 
     };
 
-    validateToken();
-    
-    const handleStorageChange = () => validateToken();
+    checkAuth();
+
+    const handleStorageChange = () => checkAuth();
     window.addEventListener('storage', handleStorageChange);
     
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  return autenticado;
-}
+  const login = (token) => {
+    localStorage.setItem('accessToken', token);
+    const decoded = jwtDecode(token);
+    setUser(decoded);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

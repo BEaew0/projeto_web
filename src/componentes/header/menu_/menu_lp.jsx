@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
+import { useAuth } from '../../hook/index';
 import LogoTS from './logo/index';
 import BtnTema from "./../botoes/btn_tema";
 import Menu_links from "../menu_/links_menu/index";
 import { logoutUser } from '../../../services/logout';
 import "./menu.css";
+import Logo_ts from "../../../assets/Imagens/logo_tcc1.png";
 
 const links_esquerda = [
   { link: "/download", classe: "link_esquerda", text: "Download" },
@@ -21,25 +22,11 @@ const links_direita = [
   { link: "/cadastro", classe: "link_direita", text: "Cadastro" },
 ];
 
-export default function Menu({ isLogged = false }) {
+export default function Menu() {
   const [dropdown, setDropdown] = useState(false);
-  const [authenticated, setAuthenticated] = useState(isLogged);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-
-  // Sincroniza com o localStorage e monitora mudanças
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    setAuthenticated(!!token);
-    
-    const handleStorageChange = () => {
-      const token = localStorage.getItem('accessToken');
-      setAuthenticated(!!token);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [isLogged]);
+  const { autenticado } = useAuth(); // Use o hook aqui
 
   // Fecha o dropdown ao clicar fora
   useEffect(() => {
@@ -57,7 +44,8 @@ export default function Menu({ isLogged = false }) {
   const handleLogout = () => {
     logoutUser();
     setDropdown(false);
-    setAuthenticated(false);
+    // Não precisa mais do setAuthenticated - o hook vai lidar com isso
+    window.location.reload(); // Força a atualização do estado de autenticação
   };
 
   const handleConfiguracoes = () => {
@@ -69,8 +57,8 @@ export default function Menu({ isLogged = false }) {
     <div className="menu__">
       {/* Lado Esquerdo */}
       <div className="links_esquerda">
-        <LogoTS link={"/"} logo={Logo_ts} />
-        {!authenticated && links_esquerda.map((link, key) => (
+        <LogoTS link={autenticado ? "/home" : "/"} logo={Logo_ts} />
+        {!autenticado && links_esquerda.map((link, key) => (
           <Menu_links key={key} link={link.link} text={link.text} />
         ))}
       </div>
@@ -79,7 +67,7 @@ export default function Menu({ isLogged = false }) {
       <div className="links_direita">
         <BtnTema />
 
-        {authenticated ? (
+        {autenticado ? (
           <div className="dropdown-container" ref={dropdownRef}>
             <button className="btn_usuario" onClick={SubmenuAbrir}>
               <FaUserCircle className="icon" />
@@ -98,8 +86,7 @@ export default function Menu({ isLogged = false }) {
               </div>
             )}
           </div>
-        ) : 
-        (
+        ) : (
           links_direita.map((link, key) => (
             <Menu_links key={key} link={link.link} text={link.text} />
           ))
