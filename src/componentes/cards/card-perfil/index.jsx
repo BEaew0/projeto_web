@@ -1,27 +1,19 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../autenticação';
 import MudarInfo from '../../modals/MudarDados';
 import Mensagem from '../../modals/Mensagem';
 import { FaUser, FaEdit, FaTrash, FaCamera, FaEnvelope, FaLock, FaCalendar } from 'react-icons/fa';
 import './card-perfil.css';
 
-const texto = [
-  {
-    titulo: "Excluir Conta",
-    texto: "Tem certeza que deseja excluir sua conta permanentemente? Esta ação não pode ser desfeita.",
-    botoes: [
-      {
-        texto: "Cancelar",
-        tipo: "secundario"
-      },
-      {
-        texto: "Excluir Conta",
-        tipo: "primario"
-      }
-    ]
-  }
-];
-
+const texto = [{
+  texto: "Excluir Conta",
+  tipo: "primario"
+}];
+    
 export default function Card_perfil() {
+  const { logout } = useAuth(); // Obtenha a função de logout do contexto
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState({
     nome: 'Nome do Usuário',
     email: 'email@exemplo.com',
@@ -40,9 +32,10 @@ export default function Card_perfil() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [modalTipo, setModalTipo] = useState('');
   const [mostrarModalExclusao, setMostrarModalExclusao] = useState(false);
+  const [loadingExclusao, setLoadingExclusao] = useState(false);
+  const [erroExclusao, setErroExclusao] = useState('');
   const fileInputRef = useRef(null);
 
-  // Array com os dados do usuário para renderização dinâmica
   const dadosUsuario = [
     {
       icone: <FaEnvelope className="icone-dado" />,
@@ -79,11 +72,6 @@ export default function Card_perfil() {
     fileInputRef.current.click();
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUsuario(prev => ({ ...prev, [name]: value }));
-  };
-
   const abrirModal = (tipo) => {
     setModalTipo(tipo);
     setModalValues(prev => ({ ...prev, emailRecuperacao: usuario.email }));
@@ -99,10 +87,28 @@ export default function Card_perfil() {
     setModalValues(prev => ({ ...prev, [name]: value }));
   };
 
-  const confirmarExclusao = () => {
-    setMostrarModalExclusao(false);
-    // Lógica para excluir a conta
-    console.log("Conta excluída!");
+  const confirmarExclusao = async () => {
+    setLoadingExclusao(true);
+    setErroExclusao('');
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await DesativarUsuario(token);
+      
+      if (response.success) {
+        // Faz logout e redireciona
+        logout();
+        navigate('/');
+      } else {
+        setErroExclusao(response.message || 'Falha ao excluir conta');
+      }
+    } catch (error) {
+      console.error('Erro ao desativar conta:', error);
+      setErroExclusao('Erro inesperado ao excluir conta');
+    } finally {
+      setLoadingExclusao(false);
+      setMostrarModalExclusao(false);
+    }
   };
 
   return (
@@ -110,8 +116,7 @@ export default function Card_perfil() {
       <div className="foto-container" onClick={triggerFileInput}>
         {foto ? (
           <img src={foto} alt="Foto do usuário" className="foto-usuario"/>
-        ) : 
-        (
+        ) : (
           <div className="foto-placeholder">
             <FaUser size={48} color="#666" />
             <div className="foto-overlay">
@@ -119,21 +124,29 @@ export default function Card_perfil() {
             </div>
           </div>
         )}
-
-        <input type="file" ref={fileInputRef}onChange={handleFotoChange} accept="image/*"style={{ display: 'none' }}/>
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          onChange={handleFotoChange} 
+          accept="image/*"
+          style={{ display: 'none' }}
+        />
       </div>
 
       <div className="dados-container">
         <div className="modo-visualizacao">
           <h3 className="nome">{usuario.nome}</h3>
           
-          {/* Renderização dinâmica dos dados do usuário */}
           {dadosUsuario.map((dado, index) => (
             dado.valor && (
               <p key={index} className="dado">
                 {dado.icone} {dado.valor}
                 {dado.mostraBotao && (
-                  <button className="botao-alterar-dado"onClick={() => abrirModal(dado.tipo)}aria-label={`Alterar ${dado.tipo}`}>
+                  <button 
+                    className="botao-alterar-dado"
+                    onClick={() => abrirModal(dado.tipo)}
+                    aria-label={`Alterar ${dado.tipo}`}
+                  >
                     <FaEdit className="icone-editar" />
                   </button>
                 )}
@@ -144,8 +157,13 @@ export default function Card_perfil() {
       </div>
 
       <div className="botoes">
-        <button className="botao-excluir"onClick={() => setMostrarModalExclusao(true)}>
-          <FaTrash className="icone" /> Excluir Conta
+        <button 
+          className="botao-excluir"
+          onClick={() => setMostrarModalExclusao(true)}
+          disabled={loadingExclusao}
+        >
+          <FaTrash className="icone" /> 
+          {loadingExclusao ? 'Processando...' : 'Excluir Conta'}
         </button>
       </div>
 
@@ -156,27 +174,39 @@ export default function Card_perfil() {
             <h2 className="modal-title">
               {modalTipo === 'email' ? 'Alterar Email' : 'Alterar Senha'}
             </h2>
-
-            <MudarInfo tipo={modalTipo}values={modalValues}onChange={handleModalChange} />
+            <MudarInfo 
+              tipo={modalTipo}
+              values={modalValues}
+              onChange={handleModalChange} 
+            />
           </div>
         </div>
       )}
 
-      {mostrarModalExclusao && texto.map((item, index) => (
-        <Mensagem 
-          key={index}
-          titulo={item.titulo}
-          texto={item.texto}
-          botoes={item.botoes}
-          onClick={(botaoTexto) => {
-            if (botaoTexto === "Excluir Conta") 
-            {
-              confirmarExclusao();
-            }
-            setMostrarModalExclusao(false);
-          }}/>
-
-      ))}
+      {mostrarModalExclusao && (
+        <>
+          {texto.map((item, index) => (
+            <Mensagem 
+              key={index}
+              titulo={item.titulo}
+              texto={item.texto}
+              botoes={item.botoes}
+              onClick={(botaoTexto) => {
+                if (botaoTexto === "Excluir Conta") {
+                  confirmarExclusao();
+                } else {
+                  setMostrarModalExclusao(false);
+                }
+              }}
+            />
+          ))}
+          {erroExclusao && (
+            <div className="error-message">
+              {erroExclusao}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

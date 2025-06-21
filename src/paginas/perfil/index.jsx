@@ -8,7 +8,7 @@ export default function PerfilUsuario() {
     <div className="container-perfil">
       <BtnVoltar/>
 
-          <Card_perfil/>
+        <Card_perfil/>
    
     </div>
   );

@@ -14,7 +14,7 @@
 }
 
 .graficos-container h1 {
-  color: #2c3e50;
+  color: var(--cor-de-texto);
   margin-bottom: 20px; /* Mais espaçamento */
   font-size: 2.4rem; /* Título um pouco maior */
 }
@@ -24,11 +24,11 @@
   gap: 20px; /* Mais espaço entre botões */
 }
 
-.export-btn, .download-btn {
-  background-color: #2c3e50;
+.exportar-excel-btn, .download-btn {
+  background-color: #2e7d32;
   color: white;
   border: none;
-  padding: 14px 28px; /* Botões maiores */
+  padding: 0.5rem 18px; /* Botões maiores */
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;

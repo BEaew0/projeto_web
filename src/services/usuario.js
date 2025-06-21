@@ -5,7 +5,7 @@ export const acharUsuario = async () => {
   if (!token) throw new Error('Usuário não autenticado');
 
   try {
-    const response = await api.get('https://srv869019.hstgr.cloud/buscar-dados-usuario', 
+    const response = await api.get('buscar-dados-usuario', 
     {
       headers: {
         'accept': 'text/plain', // Header conforme o cURL

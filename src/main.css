@@ -107,7 +107,7 @@ footer.footer_main a:hover {
 /*estilo do layout para rota de autenticação*/
 .auth-layout{
   display: flex;
-    min-height: 100vh; /* Adicionado */
+  min-height: 100vh; /* Adicionado */
   width: 100vw;
 
   background-color: var(--cor-de-fundo);
@@ -116,7 +116,7 @@ footer.footer_main a:hover {
   background-attachment: fixed;
   background-size: cover;
   justify-content: center;
-  margin: 0;
+  margin: 0 0;
   align-items: center;
   width: 100%;
 }
@@ -124,7 +124,7 @@ footer.footer_main a:hover {
 .usuario-layout{
     display: flex;
     min-height: 100vh;
-      padding: 20px;
+    padding: 20px;
     background-color: var(--cor-de-fundo);
     width: 100%;
 
@@ -136,7 +136,15 @@ footer.footer_main a:hover {
   margin: 0 auto;
   padding: 0 1.5rem;
 }
+.layout-perfil{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Adicionado */
+  width: 100vw;
+  background-color: var(--cor-de-fundo);
+  background-image: radial-gradient(var(--seg_cor_gradiente) 40%, var(--cor-de-fundo) 80%);
 
+}
 
 /* Media Queries - Versão Corrigida */
 @media (max-width: 1024px) {

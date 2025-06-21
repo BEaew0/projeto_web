@@ -15,10 +15,11 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem 0.5rem 0.75rem;
-    background-color: transparent;
+    background-color: rgb(85, 160, 209);
     border: none;
+    border-radius: 100%;
     color: var(--cor-texto);
-    font-size:5rem;
+    height:3rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;

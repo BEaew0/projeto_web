@@ -6,7 +6,7 @@ export const buscarTodosEstoquesUser = async () => {
         if (!token) throw new Error('Usuário não autenticado');
 
         const response = await api.get(
-            'https://srv869019.hstgr.cloud/api/Estoque/buscar-estoques-por-usuario',
+            'Estoque/buscar-estoques-por-usuario',
             {
                 headers: {
                     'accept': '*/*',

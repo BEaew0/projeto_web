@@ -3,7 +3,7 @@ import api from './api.js';
 export const DesativarUsuario = async (accessToken) => {
   try {
     const response = await api.patch(
-      "https://srv869019.hstgr.cloud/desativar-usuario",  // Usando caminho relativo (assumindo que api.js já configura a base URL)
+      "/desativar-usuario",  // Usando caminho relativo (assumindo que api.js já configura a base URL)
       {}, // Corpo vazio
       {
         headers: {

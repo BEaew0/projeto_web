@@ -1,57 +1,56 @@
-// src/context/AuthContext.js
-import { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { createContext, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        return;
-      }
+    const storedUser = localStorage.getItem('user');
+    const storedToken = localStorage.getItem('token');
 
-      try {
-        const decoded = jwtDecode(token);
-        const isExpired = decoded.exp < Date.now() / 1000;
-        
-        if (isExpired) {
-          logout();
-          return;
-        }
-
-        setUser(decoded);
-      } catch (error) {
-        logout();
-      } 
-    };
-
-    checkAuth();
-
-    const handleStorageChange = () => checkAuth();
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => window.removeEventListener('storage', handleStorageChange);
+    if (storedUser && storedToken) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem('accessToken', token);
-    const decoded = jwtDecode(token);
-    setUser(decoded);
+  const login = async (token, userData) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+    navigate('/home'); // Redireciona para a página home após login
   };
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
+ const logout = () => {
+  return new Promise((resolve) => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
-  };
+    navigate('/login');
+    resolve(); // Resolve a Promise após completar o logout
+  });
+};
+
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        login,
+        logout,
+        loading,
+      }}
+    >
+      {!loading && children}
     </AuthContext.Provider>
   );
-};
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

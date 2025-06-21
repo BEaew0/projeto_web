@@ -1,13 +1,13 @@
-// Rotas privadasdo usuário
+// Rotas privadas do usuário
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hook';
+import { useAuth } from '../autenticação'; // <- caminho corrigido
 
 export function PrivateRoute() {
-  const { autenticado, carregando } = useAuth();
+  const { isAuthenticated, loading } = useAuth(); // <- nomes corretos do seu AuthContext
 
-  if (carregando) {
+  if (loading) {
     return <div className="loading-screen">Carregando...</div>;
   }
 
-  return autenticado ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 }
