@@ -1,19 +1,20 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../componentes/autenticação/index"; // Importe o hook useAuth
+import { useAuth } from "../../componentes/autenticação/index";
 import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
+import api from "../../services/api"; // Importe sua instância da API
 import "./login.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Obtenha a função login do contexto
+  const { login } = useAuth();
   const [showRecovery, setShowRecovery] = useState(false);
   const [formData, setFormData] = useState({ 
-    email: "usuario@gmail.com",
-    senha: "123456789"
+    email: "",
+    senha: ""
   });
   const [recoveryData, setRecoveryData] = useState({ 
     user_email: "",
@@ -38,10 +39,19 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setEmailEnviado(true);
+        
+        // Chamada real para a API de recuperação de senha
+        const response = await api.post('/auth/recuperar-senha', {
+          email: recoveryData.user_email
+        });
+
+        if (response.data.success) {
+          setEmailEnviado(true);
+        } else {
+          setErrorLogin(response.data.message || "Erro ao solicitar recuperação");
+        }
       } catch (error) {
-        setErrorLogin("Erro ao solicitar recuperação");
+        setErrorLogin(error.response?.data?.message || "Erro ao solicitar recuperação");
       } finally {
         setLoading(false);
       }
@@ -58,43 +68,26 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Chamada real para a API de login
+        const response = await api.post('Usuarios/login', {
+          email: formData.email,
+          password: formData.senha
+        });
 
-        const mockUsers = [
-          {
-            email: "usuario@gmail.com",
-            senha: "123456789",
-            token: "mock-token-123",
-            userData: {
-              id: 1,
-              nome: "Usuário Teste",
-              role: "user"
-            }
-          },
-          {
-            email: "admin@teste.com",
-            senha: "admin123",
-            token: "mock-token-456",
-            userData: {
-              id: 2,
-              nome: "Administrador",
-              role: "admin"
-            }
-          }
-        ];
-
-        const userFound = mockUsers.find(
-          user => user.email === formData.email && user.senha === formData.senha
-        );
-
-        if (userFound) {
-          // Use a função login do AuthContext em vez de gerenciar manualmente
-          login(userFound.token, userFound.userData);
+        const { token, user } = response.data;
+        
+        if (token && user) {
+          login(token, user); // Usa o contexto de autenticação
+          navigate('/home'); // Redireciona após login
         } else {
           setErrorLogin("Credenciais inválidas");
         }
       } catch (error) {
-        setErrorLogin("Erro no processo de login");
+        const errorMessage = error.response?.data?.message || 
+                           error.response?.data?.error || 
+                           "Erro no processo de login";
+        setErrorLogin(errorMessage);
       } finally {
         setLoading(false);
       }

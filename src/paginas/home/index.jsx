@@ -1,57 +1,80 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  mockAcharUsuario,
-  mockBuscarTodosEstoques
-} from "./estoqueMock";
+import { buscarTodosEstoquesUser } from "../../services/estoque";
+import { acharUsuario } from "../../services/usuario";
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import GraficosCompactos from "../../componentes/graficos";
 import "./home.css";
 
 export default function Home() {
-  const [userName, setUserName] = useState("");
-  const [estoques, setEstoques] = useState([]);
-  const [loadingEstoques, setLoadingEstoques] = useState(true);
-  const [errorEstoques, setErrorEstoques] = useState(null);
+  const [dadosUsuario, setDadosUsuario] = useState({
+    nome: "",
+    carregando: true,
+    erro: null
+  });
+  
+  const [estoques, setEstoques] = useState({
+    dados: [],
+    carregando: true,
+    erro: null
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
+    const carregarDados = async () => {
       try {
-        const userData = await mockAcharUsuario();
-        setUserName(userData.nomE_USUARIO || "Usuário");
-        
-        const estoquesData = await mockBuscarTodosEstoques();
-        setEstoques(estoquesData);
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-        setErrorEstoques(error);
-      } finally {
-        setLoadingEstoques(false);
+        // Busca dados do usuário
+        const usuario = await acharUsuario();
+        setDadosUsuario({
+          nome: usuario.nome || usuario.nomE_USUARIO || "Usuário",
+          carregando: false,
+          erro: null
+        });
+
+        // Busca dados de estoques
+        const dadosEstoques = await buscarTodosEstoquesUser();
+        setEstoques({
+          dados: dadosEstoques,
+          carregando: false,
+          erro: null
+        });
+      } catch (erro) {
+        console.error("Erro ao carregar dados:", erro);
+        setEstoques(prev => ({
+          ...prev,
+          carregando: false,
+          erro
+        }));
       }
-    }
-    fetchData();
+    };
+
+    carregarDados();
   }, []);
 
   // Agrupa produtos por estoque
-  const estoquesAgrupados = estoques.reduce((acc, produto) => {
-    const estoqueId = produto.iD_ESTOQUE;
-    if (!acc[estoqueId]) {
-      acc[estoqueId] = {
-        id: estoqueId,
+  const estoquesAgrupados = estoques.dados.reduce((acumulador, produto) => {
+    const idEstoque = produto.iD_ESTOQUE;
+    if (!acumulador[idEstoque]) {
+      acumulador[idEstoque] = {
+        id: idEstoque,
         nome: produto.nomE_ESTOQUE,
         localizacao: produto.localizacao,
         produtos: []
       };
     }
-    acc[estoqueId].produtos.push(produto);
-    return acc;
+    acumulador[idEstoque].produtos.push(produto);
+    return acumulador;
   }, {});
 
   return (
     <div className="container-home">
       <div className="container-titulo">
-        <h1 className="mostrar-nome">Bem-vindo, {userName ? userName : "Carregando..."}</h1>
+        <h1 className="mostrar-nome">
+          {dadosUsuario.carregando 
+            ? "Carregando..." : dadosUsuario.erro
+            ? "Erro ao carregar dados": `Bem-vindo, ${dadosUsuario.nome}`}
+        </h1>
       </div>
 
       <div className="content-row">
@@ -59,39 +82,45 @@ export default function Home() {
           <h2>Estoques</h2>
           
           <div className="estoques-grid">
-            {Object.values(estoquesAgrupados).map(estoque => (
-              <div key={estoque.id} className="estoque-card">
-                <div className="estoque-header">
-                  <h3>{estoque.nome}</h3>
-                  <p className="estoque-localizacao"></p>
-                </div>
-                
-                <div className="container-lista">
-                  <ListaEstoquesCompacta 
-                    estoques={estoque.produtos} 
-                    loading={loadingEstoques} 
-                    error={errorEstoques}  
-                    mostrarTodos={false}
-                  />
+            {estoques.carregando ? (
+              <p>Carregando estoques...</p>
+            ) : estoques.erro ? (
+              <p>Erro ao carregar estoques</p>
+            ) : 
+            (
+              Object.values(estoquesAgrupados).map(estoque => (
+                <div key={estoque.id} className="estoque-card">
+                  <div className="estoque-header">
+                    <h3>{estoque.nome}</h3>
+                    <p className="estoque-localizacao">{estoque.localizacao}</p>
+                  </div>
                   
-                  <div className="ver-mais-container">
-                    <button 
-                      className="ver-mais-btn" 
-                      onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}
-                    >
-                      Ver itens deste estoque
-                    </button>
+                  <div className="container-lista">
+                    <ListaEstoquesCompacta 
+                      estoques={estoque.produtos} 
+                      carregando={estoques.carregando} 
+                      erro={estoques.erro}  
+                      mostrarTodos={false}
+                    />
+                    
+                    <div className="ver-mais-container">
+                      <button className="ver-mais-btn" onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}>
+                        Ver itens deste estoque
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
         <div className="container-graficos-user">
           <h2>Gráficos Consolidados</h2>
           <div className="container-gráficos">
-            <GraficosCompactos estoques={estoques} />
+            <GraficosCompactos 
+              estoques={estoques.dados} 
+              carregando={estoques.carregando}/>
           </div>
         </div>
       </div>

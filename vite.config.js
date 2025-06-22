@@ -3,55 +3,58 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Caminhos relativos (obrigatório para LocaWeb)
-  
+  base: './', // Essencial para funcionar na LocaWeb
+
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    assetsInlineLimit: 0, // Garante que todos assets sejam arquivos separados
-    
+    assetsInlineLimit: 0, // Garante arquivos separados
+    copyPublicDir: true, // Copia _redirects corretamente
+
     rollupOptions: {
       output: {
-        // Organização de arquivos com hash para evitar cache
+        // Organização otimizada para LocaWeb
         assetFileNames: (assetInfo) => {
-          const extType = assetInfo.name?.split('.').at(1);
+          const extType = assetInfo.name.split('.').at(1);
           if (extType === 'css') {
             return 'assets/css/[name].[hash][extname]';
           }
-          if (['png', 'jpe?g', 'gif', 'svg', 'ico'].includes(extType)) {
+          if (['png', 'jpe?g', 'gif', 'svg', 'webp'].includes(extType)) {
             return 'assets/img/[name].[hash][extname]';
-          }
-          if (['woff', 'woff2', 'eot', 'ttf', 'otf'].includes(extType)) {
-            return 'assets/fonts/[name].[hash][extname]';
           }
           return 'assets/[name].[hash][extname]';
         },
-        
         entryFileNames: 'assets/js/[name].[hash].js',
         chunkFileNames: 'assets/js/[name].[hash].js'
       }
     }
   },
 
-  // Configurações de desenvolvimento
   server: {
     open: true,
     port: 5173,
-    strictPort: true,
     host: true // Permite acesso em rede local
   },
 
-  // Pré-carregamento de dependências
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['js-big-decimal']
+  preview: {
+    headers: {
+      'Cache-Control': 'public, max-age=0',
+      'Accept-Ranges': 'none'
+    }
   },
 
-  // Configurações de resolução
+  // Otimizações extras para LocaWeb
   resolve: {
     alias: {
-      '@': '/src', // Alias para a pasta src
-      '@components': '/src/components'
+      '@': '/src',
+      '@assets': '/src/assets'
     }
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom'
+    ]
   }
 });

@@ -1,6 +1,8 @@
-// services/logout.js
 export const logoutUser = () => {
+  // Limpe todos os dados de autenticação
   localStorage.removeItem('accessToken');
   localStorage.removeItem('userData');
-  window.location.href = '/'; // Força recarregamento para limpar estados
+  
+  // Redirecione para a página inicial com recarregamento
+  window.location.href = '/'; // Usando href para garantir recarregamento completo
 };
