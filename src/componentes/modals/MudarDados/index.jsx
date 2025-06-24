@@ -134,7 +134,7 @@ export default function MudarInfo({ tipo }) {
   };
 
   return (
-    <div className={`form-container form-${tipo}`}>
+    <div className={`form-container${tipo}`}>
       <form onSubmit={handleSubmit}>
         {camposFormulario[tipo]?.map((input, index) => (
           <div key={index} className="input-group">

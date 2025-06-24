@@ -1,0 +1,89 @@
+.card-azul {
+    background-color:transparent;
+    min-height: 650px; /* Altura mínima aumentada */
+    display: flex;
+    flex-direction: column;
+    width:70vh;
+    padding: 40px;
+    justify-content: space-between; 
+    box-sizing: border-box; /* Garante que o padding não some às dimensões totais */
+    border-radius: 20px; /* Bordas arredondadas */
+    position: relative; 
+}
+
+.card-inicial h1 {
+    text-align: left;
+    margin-bottom: 1rem; /* Espaçamento aumentado */
+    font-size: 2.5rem;
+    color: var(--cor-texto);
+    line-height: 1.2;
+    max-width: 80%; /* Limita largura para melhor leitura */
+}
+
+.card-inicial p {
+    padding: 15px 60px; /* Padding vertical aumentado */
+    font-size: 2rem;
+    line-height: 1.5; /* Espaçamento entre linhas melhorado */
+    text-align: left;
+    color: var(--cor-texto);
+    margin-bottom: 3rem; /* Espaçamento aumentado */
+    max-width: 85%; /* Limita largura do texto */
+}
+
+.card-inicial button {
+    background-color: var(--cor-de-botao);
+    height: 4.5rem; /* Altura aumentada */
+    font-size: 1.6rem; /* Tamanho de fonte aumentado */
+    margin-top: auto; /* Mantém o botão no rodapé */
+    border: none;
+    width: 100%;
+    max-width: 300px; /* Largura máxima para o botão */
+    padding: 1.2rem;
+    border-radius: 12px; /* Bordas mais arredondadas */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start; /* Alinha à esquerda */
+}
+
+.card-inicial button:hover {
+    transform: translateY(-3px); /* Efeito de levitação */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra no hover */
+}
+
+/* Responsividade para tablets */
+@media (max-width: 992px) {
+    .card-azul {
+        padding: 60px;
+        min-height: 550px;
+    }
+    
+    .card-inicial h1 {
+        font-size: 3rem;
+    }
+    
+    .card-inicial p {
+        font-size: 1.8rem;
+    }
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .card-azul {
+        padding: 40px 30px;
+        min-height: 500px;
+    }
+    
+    .card-inicial h1 {
+        font-size: 2.5rem;
+        max-width: 100%;
+    }
+    
+    .card-inicial p {
+        font-size: 1.6rem;
+        max-width: 100%;
+    }
+    
+    .card-inicial button {
+        max-width: 100%;
+    }
+}

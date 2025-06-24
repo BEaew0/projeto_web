@@ -1,0 +1,14 @@
+.card-download{
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    font-size:5rem;
+    padding: 2rem;
+    
+}
+
+.container-texto-card{
+    display: flex;
+    flex-direction: column;
+}
+

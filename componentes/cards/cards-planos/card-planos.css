@@ -1,0 +1,117 @@
+/* Container principal - alinhamento e espaçamento */
+.container_planos {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 140px);
+    width: 100%;
+}
+
+/* Container dos cards - flexível e com scroll horizontal em telas pequenas */
+.cards-planos {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: nowrap; /* Impede que os cards quebrem linha */
+    justify-content: center; /* Centraliza os cards */
+    width: 100%;
+    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+    scrollbar-width: thin;
+    padding: 1rem;
+}
+
+/* Estilização do scrollbar */
+.cards-planos::-webkit-scrollbar {
+    height: 8px;
+}
+.cards-planos::-webkit-scrollbar-thumb {
+    background: var(--cor-de-botao);
+}
+
+/* Card - tamanho fixo e alinhamento interno */
+.card-planos {
+    padding: 40px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 400px;
+    min-height: 600px; /* Altura fixa */
+    flex-shrink: 0; /* Impede que os cards encolham */
+    border: 2px solid blue;
+    box-shadow: 0 4px 12px var(--sombreamento);
+    transition: transform 0.3s ease;
+}
+
+/* Conteúdo do card */
+.card-planos h1 {
+    text-align: left;
+    font-size: 2rem;
+    color: var(--cor-texto);
+    border-bottom: 1px solid rgb(8, 76, 122);
+    padding-bottom: 10px;
+    margin-bottom: 1rem;
+}
+
+.beneficios-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-grow: 1; /* Ocupa espaço restante para alinhar o botão no final */
+}
+
+.card-planos li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+/* Botão alinhado na base */
+.card-planos button {
+    width: 120px;
+    padding: 15px;
+    background: var(--cor-de-botao);
+    color: var(--cor-texto);
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: auto; /* Empurra o botão para a base do card */
+}
+
+/* Versões de cores dos cards */
+.card-cinza {
+    background-color: gray;
+}
+.card-azul {
+    background-color: var(--cor-de-card);
+}
+
+/* Efeitos hover */
+.card-planos:hover {
+    transform: translateY(-5px);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .card-planos {
+        width: 350px;
+        min-height: 550px;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-planos {
+        width: 280px;
+        min-height: 500px;
+        padding: 20px;
+    }
+    .card-planos button {
+        width: 100%;
+    }
+}

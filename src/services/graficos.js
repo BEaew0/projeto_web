@@ -52,36 +52,50 @@ export const generatePieData = (dados, bgColors, borderColors) => {
  * @param {string} borderColor - Cor da borda (rgba)
  * @returns {object} Configuração para gráfico de linha
  */
-export const generateLineData = (labels, values, label, bgColor, borderColor) => {
+export const generateLineData = (
+  labels,
+  datasetsData, // Array de { data: [], label: '', bgColor: '', borderColor: '' }
+) => {
   return {
     labels,
-    datasets: [{
+    datasets: datasetsData.map(({ data, label, bgColor, borderColor }) => ({
       label,
-      data: values,
+      data,
       fill: false,
       backgroundColor: bgColor,
       borderColor,
-      tension: 0.1
-    }]
+      tension: 0.1,
+    })),
   };
 };
-
 /**
  * Opções padrão para os gráficos
  * @param {string} tooltipSuffix - Sufixo para o tooltip (ex: "unidades")
+ * @param {string} chartType - Tipo de gráfico ('bar', 'pie', 'line')
  * @returns {object} Opções de configuração
  */
-export const defaultChartOptions = (tooltipSuffix = 'unidades') => {
-  return {
+export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar') => {
+  const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        position: chartType === 'pie' ? 'right' : 'top',
+        labels: {
+          font: {
+            size: 20,
+          },
+       
+          padding: 20,
+          usePointStyle: true,
+          pointStyle: 'circle',
+          boxWidth: 12,
+        }
       },
       tooltip: {
         callbacks: {
           label: function(context) {
-            return `${context.parsed.y} ${tooltipSuffix}`;
+            return `${context.parsed.y ?? context.raw} ${tooltipSuffix}`;
           }
         }
       }
@@ -92,4 +106,25 @@ export const defaultChartOptions = (tooltipSuffix = 'unidades') => {
       }
     }
   };
+
+  // Configuração adicional específica para o gráfico de pizza
+  if (chartType === 'pie') {
+    options.layout = {
+      padding: {
+        right: 12, // Espaço extra para acomodar a legenda
+        top:30
+
+      }
+    };
+  }
+  else{
+    options.layout={
+      padding:{
+        bottom:50
+      }
+    }
+
+  }
+
+  return options;
 };

@@ -1,0 +1,159 @@
+.menu__ {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0 1.6rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+.links_esquerda, .links_direita {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    padding: 0;
+    margin: 0;
+    flex-wrap: nowrap;
+}
+
+.links_direita {
+    margin-left: auto;
+}
+
+.logo-container img {
+    height: 10px;
+    width: clamp(3.5rem, 8vw, 4.5rem); 
+    max-height: 80px;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+}
+
+/* Link items */
+#itens_h {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem);
+    border-radius: 0.5rem;
+    color: var(--cor-texto);
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+}
+
+#itens_h:hover {
+    background-color: var(--cor-hover);
+    padding: 0.2rem clamp(0.5rem, 1.2vw, 1.2rem);
+}
+
+.btn_usuario {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos dos icons */
+.icon {
+    height: 60px; 
+    width: 24px; 
+    color: var(--cor-texto);
+}
+
+.icons_container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* List items */
+li {
+    list-style: none;
+    display: inline;
+}
+
+/* Estilos do dropdown */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--cor-submenu);
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 18px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: var(--cor-texto);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cor-hover);
+    padding: 0 auto;
+     height: fit-content;
+
+}
+
+.dropdown-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    color: var(--cor-texto);
+    transition: color 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .menu__ {
+        flex-direction: column;
+        padding: 0.2rem;
+        gap: 1rem;
+    }
+    
+    .links_esquerda, .links_direita {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-left: 0;
+    }
+    
+    .logo-container img {
+        height: 2px;
+        width: max-content;
+        margin-bottom: 0.5rem;
+    }
+    
+    #itens_h {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .icon {
+        height: 20px;
+        width: 20px;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}

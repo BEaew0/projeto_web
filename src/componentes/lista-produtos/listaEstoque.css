@@ -4,7 +4,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 15px; /* espaçamento entre os cards */
-  justify-content: flex-start;
+  justify-content: flex-start; /* ou center se quiser centralizar */
+  align-items: stretch; /* iguala altura dos cards */
   width: 100%;
 }
 
@@ -15,10 +16,14 @@
   box-shadow: 0 2px 8px var(--sombreamento);
   transition: transform 0.2s ease;
   cursor: pointer;
-  width: 180px; /* largura fixa para alinhamento */
-  min-height: 220px;
+  width: 200px; /* largura uniforme */
+  min-height: 240px; /* altura mínima igual */
   display: flex;
   flex-direction: column;
+  color: var(--cor-texto);
+  justify-content: space-between;
+  padding: 12px;
+  box-sizing: border-box;
 }
 
 .estoque-compact-card:hover {
@@ -26,7 +31,7 @@
   box-shadow: 0 4px 12px var(--sombreamento);
 }
 
-/* Imagem no card */
+/* Imagem no card (opcional) */
 .estoque-compact-image {
   height: 100px;
   background: #f5f5f5;
@@ -43,6 +48,8 @@
   object-fit: contain;
 }
 
+
+
 .no-image {
   font-size: 40px;
   color: #666;
@@ -50,11 +57,11 @@
 
 /* Info dentro do card */
 .estoque-compact-info {
-  padding: 12px;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
+  padding: 10px 0 0;
 }
 
 .estoque-compact-info h4 {
@@ -68,11 +75,10 @@
 }
 
 .estoque-compact-info p {
-  margin: 0;
+  margin: 4px 0;
   color: var(--cor-texto);
   font-weight: bold;
-  font-size: 16px;
-  margin-top: auto;
+  font-size: 14px;
 }
 
 /* Responsividade */

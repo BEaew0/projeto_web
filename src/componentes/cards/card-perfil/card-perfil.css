@@ -1,9 +1,9 @@
-
 /* Estilos principais do card */
 .card-perfil {
   display: flex;
   flex-direction: column;
   padding: 80px;
+  text-align: center;
   border-radius: 20px;
   background-color: var(--cor-de-form);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -69,14 +69,39 @@
   background-color: #dadada;
 }
 
-/* Seção de dados */
+/* Seção de dados - Modificado */
 .dados-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 100%;
 }
+
+.dado-item {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 12px 15px;
+  background-color: var(--cor-de-fundo);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  gap: 15px;
+  width: 100%;
+}
+.dado-valor {
+  flex-grow: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .modo-visualizacao, .modo-edicao {
   display: flex;
   flex-direction: column;
+  text-align: center;
   gap: 20px;
 }
 
@@ -89,37 +114,49 @@
 
 .dado {
   display: flex;
-  align-items: center;
+
   justify-content: space-between;
   padding: 12px 15px;
   background-color: var(--cor-de-fundo);
   border-radius: 10px;
   font-size: 1rem;
+  gap: 10px;
+}
 
+.dado-conteudo {
+  display: flex;
+
+  flex-grow: 1;
+  gap: 10px;
+}
+
+.texto-dado {
+  flex-grow: 1;
+  text-align: left;
 }
 
 .icone-dado {
-  margin-right: 10px;
   color: #666;
 }
 
 .botao-alterar-dado {
   background: none;
   border: none;
-  color: #ffffff;
+  color: #4CAF50;
   cursor: pointer;
   font-size: 16px;
-  display: flex;
-  align-items: center;
   padding: 5px;
   border-radius: 50%;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 }
 
 .botao-alterar-dado:hover {
-  border-radius: 50%;
-  background-color: #bbbbbb;
-  padding: 5px;
+  background-color: rgba(76, 175, 80, 0.1);
 }
 
 /* Modo edição */
@@ -129,11 +166,11 @@
 
 .input-container {
   width: 100%;
-    color: var(--cor-texto);
+  color: var(--cor-texto);
 }
 
 /* Botão de excluir */
-.botoes {
+.botoes-acao{
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -173,20 +210,19 @@
 }
 
 .modal-container {
+  display: flex;
+  flex-direction: column;
   background-color: var(--cor-de-fundo);
   color: var(--cor-texto);
-  padding: 30px;
+  padding: 20px;
+  align-items: center;
   border-radius: 15px;
   border: solid 1px rgb(192, 192, 192);
-  width: 90%;
+  width: 60vh;
   max-width: 450px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   position: relative;
   animation: modalFadeIn 0.3s ease-out;
-}
-
-.modal-container input{
-  background-color: var(--cor-de-fundo);
 }
 
 @keyframes modalFadeIn {
@@ -257,6 +293,15 @@
 }
 
 /* Modal de formulário */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
 .modal-content input {
   background-color: var(--cor-de-form);
   width: 100%;
@@ -267,12 +312,13 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 .modal-content input:focus {
   outline: none;
   border-color: var(--cor-destaque);
-   color: black;
+  color: black;
 }
 
 .modal-close {
@@ -291,39 +337,110 @@
   color: var(--cor-texto);
 }
 
-/* Formulários específicos */
-.form-email button,
-.form-senha button {
+/* ESTILOS UNIFICADOS PARA OS FORMULÁRIOS */
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--cor-texto);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Grupos de inputs - estilo consistente */
+.input-group {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.input-group label {
+  display: block;
+  text-align: left;
+  font-size: 1rem;
+  color: var(--cor-texto);
+  font-weight: 500;
+}
+
+/* Asterisco para campos obrigatórios */
+.input-group label.required::after {
+  content: " *";
+  color: #ff4444;
+}
+
+/* Inputs - estilo unificado */
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--cor-texto);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--cor-de-form);
+  color: var(--cor-texto);
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Mensagens de erro */
+.error-message {
+  color: #ff4444;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Mensagens de sucesso */
+.success-message {
+  color: #4CAF50;
+  font-size: 0.9rem;
+  margin: 15px 0;
+  text-align: center;
+}
+
+/* Botão de envio - estilo unificado */
+.btn_enviar {
   width: 100%;
   background-color: var(--cor-de-botao);
   color: white;
   border: none;
-  font-size: 1.1rem;
+  padding: 14px;
   border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  margin-top: 10px;
   transition: all 0.3s ease;
 }
 
-.form-email button:hover,
-.form-senha button:hover {
+.btn_enviar:hover {
   background-color: var(--cor-de-hover);
-  transform: translateY(-2px);
 }
 
-/* Transições */
-.foto-usuario,
-.botao-foto,
-.botao-alterar-dado,
-.botao-excluir,
-.modal-container,
-.btn-primario,
-.btn-secundario {
-  transition: all 0.3s ease;
+.btn_enviar:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-/* Responsividade */
+/* ESTILOS ESPECÍFICOS PARA MODAL */
+.modal-overlay .form-container {
+  width: 100%;
+  padding: 0;
+}
+
+.modal-overlay .input-group {
+  margin-bottom: 15px;
+}
+
+/* RESPONSIVIDADE */
 @media (max-width: 600px) {
   .card-perfil {
     padding: 40px 20px;
@@ -337,7 +454,8 @@
   }
   
   .modal-container {
-    padding: 20px;
+    width: 90%;
+    padding: 15px;
   }
   
   .modal-botoes {
@@ -348,5 +466,13 @@
   .btn-primario,
   .btn-secundario {
     width: 100%;
+  }
+
+  .input-group input {
+    padding: 12px 14px;
+  }
+  
+  .btn_enviar {
+    padding: 12px;
   }
 }

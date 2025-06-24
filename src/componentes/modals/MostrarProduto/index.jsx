@@ -27,16 +27,13 @@ export default function ModalProduto({ produto, onClose }) {
     }
   };
 
-  // Dados principais do produto
+  // Dados principais do produto (incluindo apenas o nome do fornecedor)
   const infoProduto = [
-    { label: 'Código', value: produto.coD_PRODUTO },
+    { label: 'Código', value: produto.coD_PRODUTO || produto.iD_PRODUTO },
     { label: 'Tipo', value: produto.tipO_PRODUTO },
     { label: 'Valor', value: formatarMoeda(produto.valoR_PRODUTO) },
     { label: 'Data de Entrada', value: formatarData(produto.datA_ENTRADA) },
-    { 
-      label: 'Fornecedor', 
-      value: produto.fornecedor?.nomE_FORNECEDOR 
-    }
+    { label: 'Fornecedor', value:  produto.fornecedor?.nomE_FORNECEDOR }
   ];
 
   return (

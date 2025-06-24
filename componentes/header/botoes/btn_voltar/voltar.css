@@ -1,0 +1,72 @@
+/* Container do botão voltar - POSICIONAMENTO FIXO */
+.btn-voltar-container {
+    position: fixed; /* Fixo na tela */
+    top: 20px;
+    left: 20px;
+    z-index: 1000; 
+    padding: 8px;
+    transition: all 0.3s ease;
+
+}
+
+/* Botão principal (mantendo seu estilo original) */
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background-color: rgb(85, 160, 209);
+    border: none;
+    border-radius: 100%;
+    color: var(--cor-texto);
+    height:3rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efeitos de hover e active */
+.btn-voltar:hover {
+    transform: translateX(-3px);
+}
+
+.btn-voltar:active {
+    transform: translateX(0);
+}
+
+/* Ícone */
+.btn-voltar-icone {
+    font-size: 1.5rem; 
+    transition: transform 0.2s;
+}
+
+/* Texto */
+.btn-voltar-texto {
+    line-height: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-voltar-container {
+        top: 15px;
+        left: 15px;
+        padding: 6px;
+    }
+    
+    .btn-voltar {
+        padding: 0.4rem 0.8rem 0.4rem 0.6rem;
+        font-size: 0.8125rem;
+    }
+    
+    .btn-voltar-icone {
+        font-size: 1.2rem;
+    }
+}
+
+/* Garante visibilidade em telas muito pequenas */
+@media (max-width: 480px) {
+    .btn-voltar-container {
+        top: 10px;
+        left: 10px;
+    }
+}

@@ -1,54 +1,396 @@
-/* Adicione esses novos estilos */
+/* Estoque.css */
 
+/* Container principal */
+.container-estoque {
+  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Header do estoque */
 .estoque-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding-top: 15px; /* Espaço para o botão voltar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-top: 15px;
+}
+
+.estoque-titulo h1 {
+  font-size: 24px;
+  color: var(--cor-texto);
+  margin-bottom: 5px;
+}
+
+.estoque-titulo h2 {
+  font-size: 16px;
+  color:  var(--cor-texto);
+  font-weight: normal;
+}
+
+/* Grid de estoques */
+.grid-estoques {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Container de cada estoque */
+.estoque-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+
+
+.estoques-compact-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* espaçamento entre os cards */
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Estilo do card */
+.estoque-compact-card {
+  background-color: var(--cor-de-form);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--sombreamento);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  width: 180px; /* largura fixa para alinhamento */
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.estoque-compact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px var(--sombreamento);
+}
+
+/* Imagem no card */
+.estoque-compact-image {
+  height: 100px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.estoque-compact-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.no-image {
+  font-size: 40px;
+  color: #666;
+}
+
+/* Info dentro do card */
+.estoque-compact-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.estoque-compact-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--cor-texto);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estoque-compact-info p {
+  margin: 0;
+  color: var(--cor-texto);
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: auto;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoque-compact-card {
+    width: 160px;
+    min-height: 200px;
+  }
+
+  .estoque-compact-image {
+    height: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .estoque-compact-card {
+    width: calc(50% - 10px);
+    min-height: 180px;
+  }
+}
+/* listaEstoque.css */
+
+.estoques-compact-container {
+  display: flex;
+  flex-direction:row;
+  gap: 25px;
+  width: 100%;
+  align-items:center;
+}
+
+/* Estilo do card */
+.estoque-compact-card {
+  background-color: var(--cor-de-form);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--sombreamento);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa toda a altura do grid cell */
+  overflow: hidden; /* Mantém o conteúdo dentro do border-radius */
+}
+
+.estoque-compact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px var(--sombreamento);
+}
+
+/* Imagem no card */
+.estoque-compact-image {
+  height: 100px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+
+.estoque-compact-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.no-image {
+  font-size: 40px;
+  color: #666;
+}
+
+/* Info dentro do card */
+.estoque-compact-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.estoque-compact-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--cor-texto);
+  font-weight: 600;
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 36px; /* Altura para 2 linhas */
+}
+
+.estoque-compact-info p {
+  margin: 0;
+  color: var(--cor-texto);
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: auto; /* Empurra para baixo */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoques-compact-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .estoques-compact-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  
+  .estoque-compact-card {
+    min-height: 180px;
+  }
+  
+  .estoque-compact-image {
+    height: 80px;
+  }
+  
+  .estoque-compact-info h4 {
+    font-size: 13px;
+  }
+  
+  .estoque-compact-info p {
+    font-size: 14px;
+  }
+}
+  
+.estoque-container p {
+  color: #7f8c8d;
+  margin-bottom: 15px;
+}
+
+/* Grid de produtos - lado a lado */
+.produtos-container {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Card de produto */
+.produto-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #eee;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-color: #3498db;
+}
+
+.produto-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 5px;
+  background: #fff;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+}
+
+.produto-card h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.produto-card p {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 5px 0;
+}
+
+/* Botão de exportar */
+.exportar-excel-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin:20px 0;
+  gap: 5px;
+}
+
+.exportar-excel-btn:hover {
+  background-color: #1b5e20;
+  transform: translateY(-1px);
+}
+
+.exportar-excel-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.exportar-excel-btn::before {
+  content: "📊";
+  margin-right: 5px;
+}
+
+/* Mensagens */
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: #27ae60;
+  margin-top: 10px;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 30px;
+  color: #7f8c8d;
+}
+
+/* Adicione ao seu Estoque.css */
+
+/* Barra de pesquisa */
+.barra-pesquisa-container {
+  width: 100%;
+  max-width: 600px; /* ou o valor que preferir */
+  margin: 0 auto 25px auto;
+  position: relative;
+}
+
+.barra-pesquisa {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.barra-pesquisa:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoque-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   .exportar-excel-btn {
-    background-color: #2e7d32;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    width: 100%;
+    justify-content: center;
   }
   
-  .exportar-excel-btn:hover {
-    background-color: #1b5e20;
-    transform: translateY(-1px);
+  .produtos-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-  
-  .exportar-excel-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-  }
-  
-  .exportar-excel-btn::before {
-    content: "📊";
-    margin-right: 5px;
-  }
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .estoque-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .exportar-excel-btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
+}

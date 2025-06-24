@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
-import { AuthContext } from '../../autenticação'
+import { AuthContext } from '../../autenticação';
 import LogoTS from './logo/index';
 import BtnTema from "./../botoes/btn_tema";
 import Menu_links from "../menu_/links_menu/index";
@@ -40,11 +40,10 @@ export default function Header() {
 
   const handleLogout = async () => {
     setDropdown(false);
-    await logout(); // Aguarda o logout completar
-    window.location.reload(); // Força recarregar a página para resetar todos os estados
+    await logout();
+    window.location.reload();
   };
 
-  // Se estiver carregando, não renderiza nada ou renderiza um loader
   if (loading) {
     return null;
   }
@@ -65,8 +64,15 @@ export default function Header() {
         {isAuthenticated ? (
           <div className="dropdown-container" ref={dropdownRef}>
             <button className="btn_usuario" onClick={() => setDropdown(!dropdown)}>
-              <FaUserCircle className="icon" />
-             
+              {user?.photo ? (
+                <img 
+                  src={user.photo} 
+         
+                  className="user-avatar"
+                />
+              ) : (
+                <FaUserCircle className="icon" />
+              )}
             </button>
 
             {dropdown && (

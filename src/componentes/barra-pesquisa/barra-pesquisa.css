@@ -1,0 +1,117 @@
+/* barra-pesquisa.css */
+
+.barra-pesquisa-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    width: 100%;
+    max-width: 800px; /* Largura máxima para melhor legibilidade */
+}
+
+.campo-busca {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.campo-busca input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.5rem; /* Mais padding à esquerda para o ícone */
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background-color: var(--cor-de-form);
+    color: var(--cor-de-texto);
+}
+
+.campo-busca input::placeholder {
+    color: rgb(187, 187, 187);
+    opacity: 1;
+}
+
+.campo-busca input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.icone-busca {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 1.25rem;
+  pointer-events: none; /* Permite clicar no input */
+}
+
+.filtro-dropdown {
+    min-width: 200px;
+    position: relative;
+}
+
+.filtro-dropdown select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-right: 2rem; /* Espaço para ícone de seta */
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+    background-color: var(--cor-de-form);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none; /* Remove estilo padrão do select */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--cor-de-texto);
+}
+
+.filtro-dropdown::after {
+    content: "⌄";
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    color: var(--cor-de-texto);
+    pointer-events: none;
+}
+
+.filtro-dropdown select:hover {
+    border-color: #cbd5e1;
+    background-color: var(--cor-de-hover);
+}
+
+.filtro-dropdown select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(0, 3, 8, 0.2);
+    background-color: var(--cor-de-form)
+}
+
+/* Efeitos de hover e foco consistentes */
+.campo-busca:hover input {
+    border-color: #cbd5e1;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+    .barra-pesquisa-container {
+        flex-direction: column;
+    }
+    
+    .campo-busca, .filtro-dropdown {
+        width: 100%;
+    }
+    
+    .campo-busca input {
+        padding: 0.875rem 0.875rem 0.875rem 2.25rem;
+    }
+    
+    .icone-busca {
+        font-size: 1.1rem;
+      
+    }
+}

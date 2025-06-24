@@ -67,6 +67,20 @@
     align-items: center;
 }
 
+.user-avatar {
+ width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid var(--cor-texto);
+  transition: transform 0.2s;
+
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
+}
 /* List items */
 li {
     list-style: none;

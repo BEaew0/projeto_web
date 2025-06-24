@@ -1,0 +1,95 @@
+/* listaEstoque.css */
+
+.estoques-compact-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* espaçamento entre os cards */
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Estilo do card */
+.estoque-compact-card {
+  background-color: var(--cor-de-form);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--sombreamento);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  width: 180px; /* largura fixa para alinhamento */
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.estoque-compact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px var(--sombreamento);
+}
+
+/* Imagem no card */
+.estoque-compact-image {
+  height: 100px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.estoque-compact-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.no-image {
+  font-size: 40px;
+  color: #666;
+}
+
+/* Info dentro do card */
+.estoque-compact-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.estoque-compact-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--cor-texto);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estoque-compact-info p {
+  margin: 0;
+  color: var(--cor-texto);
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: auto;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .estoque-compact-card {
+    width: 160px;
+    min-height: 200px;
+  }
+
+  .estoque-compact-image {
+    height: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .estoque-compact-card {
+    width: calc(50% - 10px);
+    min-height: 180px;
+  }
+}

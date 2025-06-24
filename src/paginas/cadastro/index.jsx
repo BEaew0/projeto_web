@@ -8,10 +8,9 @@ import Logo_ts from "../../assets/Imagens/logo_tcc1.png";
 import Mensagem from "../../componentes/modals/Mensagem/index.jsx";
 import "./cadastro.css";
 
-// Funções de validação
+// Validation functions
 const validarCPF = (cpf) => {
   cpf = cpf.replace(/\D/g, '');
-  
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
   
   let soma = 0;
@@ -39,7 +38,6 @@ const validarCPF = (cpf) => {
 
 const validarCNPJ = (cnpj) => {
   cnpj = cnpj.replace(/\D/g, '');
-  
   if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
   
   let tamanho = cnpj.length - 2;
@@ -96,7 +94,6 @@ export default function Cadastro() {
   const inputChange = (e) => {
     const { name, value } = e.target;
     
-    // Formatação automática
     let formattedValue = value;
     if (name === 'CPF_usuario') {
       formattedValue = value
@@ -129,7 +126,6 @@ export default function Cadastro() {
   const validarForm = () => {
     const Erros = {};
     
-    // Validações básicas
     if (!form.nome_usuario.trim()) Erros.nome_usuario = "Nome é obrigatório";
     if (!form.email_usuario.trim()) Erros.email_usuario = "Email é obrigatório";
     if (!form.senha_cad) Erros.senha_cad = "Senha é obrigatória";
@@ -137,7 +133,6 @@ export default function Cadastro() {
     if (form.email_usuario !== form.conf_email) Erros.conf_email = "Emails não coincidem";
     if (form.senha_cad !== form.senha_conf) Erros.senha_conf = "Senhas não coincidem";
     
-    // Validação de CPF/CNPJ
     if (!form.CPF_usuario && !form.CNPJ_usuario) {
       Erros.CPF_usuario = "CPF ou CNPJ é obrigatório";
     } else {
@@ -178,24 +173,28 @@ export default function Cadastro() {
       const resultado = await cadastrarUser(userData);
       
       if (resultado.success) {
-        navigate("/login", { 
+        navigate(resultado.warning ? "/home?warning=true" : "/home", { 
           state: { 
-            mensagem: "Cadastro realizado com sucesso!",
-            cadastroSucesso: true 
+            mensagem: resultado.message,
+            cadastroSucesso: true,
+            warning: resultado.warning
           }
         });
       } else {
         setApiError(resultado.message || "Erro ao cadastrar");
       }
     } catch (error) {
-      console.error("Erro no cadastro:", error);
-      setApiError(error.message || "Erro ao conectar com o servidor");
+      setApiError("Erro inesperado no sistema. Tente novamente mais tarde.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleSelecionarPlano = (planoId, isPremium) => {
+    if (!planoId) {
+      setApiError("Por favor, selecione um plano antes de continuar");
+      return;
+    }
     setSelectedPlano({ planoId, isPremium });
     setShowModal(true);
   };
@@ -242,7 +241,17 @@ export default function Cadastro() {
             <h2>Escolha seu plano</h2>
             <Card_planos onSelecionarPlano={handleSelecionarPlano} />
             
-            {loading && <div className="loading-indicator">Enviando dados...</div>}
+            {loading && (
+              <div className="loading-overlay">
+                <div className="loading-content">
+                  <div className="spinner"></div>
+                  <p>Finalizando seu cadastro...</p>
+                  {selectedPlano?.isPremium && <p>Ativando assinatura premium...</p>}
+                </div>
+              </div>
+            )}
+            
+            {apiError && <div className="error-message">{apiError}</div>}
           </div>
         )}
       </div>
@@ -250,7 +259,7 @@ export default function Cadastro() {
       {showModal && (
         <Mensagem 
           titulo="Confirmação de Cadastro"
-          texto={`Você está selecionando o plano ${selectedPlano?.isPremium ? 'Premium' : 'Básico'}. Confirmar?`}
+          texto={`Você está selecionando o plano ${selectedPlano?.isPremium ? 'Premium (R$ 50,00/mês)' : 'Básico (Grátis)'}. Confirmar?`}
           botoes={[
             { texto: "Confirmar", tipo: "confirmar" },
             { texto: "Cancelar", tipo: "cancelar" }

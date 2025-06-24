@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { buscarTodosEstoquesUser } from "../../services/estoque";
-import { acharUsuario } from "../../services/usuario";
+//import { buscarTodosEstoquesUser } from "../../services/estoque"; // API comentada
+//import { acharUsuario } from "../../services/usuario"; // API comentada
+import { mockAcharUsuario, mockBuscarTodosEstoques } from "./estoqueMock";
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import GraficosCompactos from "../../componentes/graficos";
 import "./home.css";
@@ -24,16 +25,16 @@ export default function Home() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        // Busca dados do usuário
-        const usuario = await acharUsuario();
+        // Busca dados do usuário (usando mock)
+        const usuario = await mockAcharUsuario();
         setDadosUsuario({
-          nome: usuario.nome || usuario.nomE_USUARIO || "Usuário",
+          nome: usuario.nomE_USUARIO || "Usuário",
           carregando: false,
           erro: null
         });
 
-        // Busca dados de estoques
-        const dadosEstoques = await buscarTodosEstoquesUser();
+        // Busca dados de estoques (usando mock)
+        const dadosEstoques = await mockBuscarTodosEstoques();
         setEstoques({
           dados: dadosEstoques,
           carregando: false,
@@ -41,10 +42,15 @@ export default function Home() {
         });
       } catch (erro) {
         console.error("Erro ao carregar dados:", erro);
+        setDadosUsuario(prev => ({
+          ...prev,
+          carregando: false,
+          erro: erro.message
+        }));
         setEstoques(prev => ({
           ...prev,
           carregando: false,
-          erro
+          erro: erro.message
         }));
       }
     };
@@ -72,22 +78,24 @@ export default function Home() {
       <div className="container-titulo">
         <h1 className="mostrar-nome">
           {dadosUsuario.carregando 
-            ? "Carregando..." : dadosUsuario.erro
-            ? "Erro ao carregar dados": `Bem-vindo, ${dadosUsuario.nome}`}
+            ? "Carregando..." 
+            : dadosUsuario.erro
+              ? "Erro ao carregar dados"
+              : `Bem-vindo, ${dadosUsuario.nome}`}
         </h1>
       </div>
 
       <div className="content-row">
-        <div className="container-estoque-user">
+        <div className="containernpm -user">
+
           <h2>Estoques</h2>
           
           <div className="estoques-grid">
             {estoques.carregando ? (
               <p>Carregando estoques...</p>
             ) : estoques.erro ? (
-              <p>Erro ao carregar estoques</p>
-            ) : 
-            (
+              <p>Erro ao carregar estoques: {estoques.erro}</p>
+            ) : (
               Object.values(estoquesAgrupados).map(estoque => (
                 <div key={estoque.id} className="estoque-card">
                   <div className="estoque-header">
@@ -104,7 +112,10 @@ export default function Home() {
                     />
                     
                     <div className="ver-mais-container">
-                      <button className="ver-mais-btn" onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}>
+                      <button 
+                        className="ver-mais-btn" 
+                        onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}
+                      >
                         Ver itens deste estoque
                       </button>
                     </div>
@@ -120,7 +131,8 @@ export default function Home() {
           <div className="container-gráficos">
             <GraficosCompactos 
               estoques={estoques.dados} 
-              carregando={estoques.carregando}/>
+              carregando={estoques.carregando}
+            />
           </div>
         </div>
       </div>

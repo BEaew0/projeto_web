@@ -1,0 +1,352 @@
+
+/* Estilos principais do card */
+.card-perfil {
+  display: flex;
+  flex-direction: column;
+  padding: 80px;
+  border-radius: 20px;
+  background-color: var(--cor-de-form);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  color: var(--cor-texto);
+  margin: 20px auto;
+  gap: 30px;
+  position: relative;
+}
+
+/* Seção da foto */
+.foto-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.foto-usuario {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4CAF50;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.foto-usuario:hover {
+  transform: scale(1.05);
+}
+
+.foto-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: var(--cor-de-form);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  border: 3px solid #ccc;
+  cursor: pointer;
+}
+
+.botao-foto {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.botao-foto:hover {
+  background-color: #dadada;
+}
+
+/* Seção de dados */
+.dados-container {
+  width: 100%;
+}
+
+.modo-visualizacao, .modo-edicao {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nome {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.dado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  background-color: var(--cor-de-fundo);
+  border-radius: 10px;
+  font-size: 1rem;
+
+}
+
+.icone-dado {
+  margin-right: 10px;
+  color: #666;
+}
+
+.botao-alterar-dado {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.botao-alterar-dado:hover {
+  border-radius: 50%;
+  background-color: #bbbbbb;
+  padding: 5px;
+}
+
+/* Modo edição */
+.modo-edicao {
+  gap: 15px;
+}
+
+.input-container {
+  width: 100%;
+    color: var(--cor-texto);
+}
+
+/* Botão de excluir */
+.botoes {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.botao-excluir {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.botao-excluir:hover {
+  background-color: #cc0000;
+}
+
+/* Modal - Estilos gerais */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-container {
+  background-color: var(--cor-de-fundo);
+  color: var(--cor-texto);
+  padding: 30px;
+  border-radius: 15px;
+  border: solid 1px rgb(192, 192, 192);
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-container input{
+  background-color: var(--cor-de-fundo);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-container h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.5rem;
+  color: var(--cor-texto);
+  text-align: center;
+}
+
+.modal-container p {
+  margin: 0 0 25px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--cor-texto);
+}
+
+/* Estilos específicos para o modal de mensagem */
+.modal-botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-primario {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primario:hover {
+  background-color: #cc0000;
+  transform: translateY(-2px);
+}
+
+.btn-secundario {
+  background-color: var(--cor-de-fundo);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
+  background-color: var(--cor-de-fundo-hover);
+  transform: translateY(-2px);
+}
+
+/* Modal de formulário */
+.modal-content input {
+  background-color: var(--cor-de-form);
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid var(--cor-borda);
+  color: black;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.modal-content input:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+   color: black;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--cor-texto-secundario);
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--cor-texto);
+}
+
+/* Formulários específicos */
+.form-email button,
+.form-senha button {
+  width: 100%;
+  background-color: var(--cor-de-botao);
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-email button:hover,
+.form-senha button:hover {
+  background-color: var(--cor-de-hover);
+  transform: translateY(-2px);
+}
+
+/* Transições */
+.foto-usuario,
+.botao-foto,
+.botao-alterar-dado,
+.botao-excluir,
+.modal-container,
+.btn-primario,
+.btn-secundario {
+  transition: all 0.3s ease;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .card-perfil {
+    padding: 40px 20px;
+    margin: 10px auto;
+  }
+  
+  .foto-usuario,
+  .foto-placeholder {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .modal-container {
+    padding: 20px;
+  }
+  
+  .modal-botoes {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-primario,
+  .btn-secundario {
+    width: 100%;
+  }
+}

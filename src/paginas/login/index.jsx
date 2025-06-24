@@ -5,12 +5,13 @@ import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
-import api from "../../services/api"; // Importe sua instância da API
+// import { loginUser } from "../../services/login"; // Import da API real (comentado)
 import "./login.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
+
   const [showRecovery, setShowRecovery] = useState(false);
   const [formData, setFormData] = useState({ 
     email: "",
@@ -25,69 +26,79 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const formRecovery = useRef();
 
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+  // Validação de e-mail
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorLogin("");
 
     if (showRecovery) {
+      // Lógica de recuperação de senha (mock)
       if (!validateEmail(recoveryData.user_email)) {
-        setErrorLogin("E-mail inválido");
+        setErrorLogin("Por favor, insira um e-mail válido");
         return;
       }
 
       try {
         setLoading(true);
-        
-        // Chamada real para a API de recuperação de senha
-        const response = await api.post('/auth/recuperar-senha', {
-          email: recoveryData.user_email
-        });
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simula delay
+        setEmailEnviado(true); // Mock sempre retorna sucesso
 
-        if (response.data.success) {
+        /* Implementação com API real (comentada):
+        const response = await loginUser(recoveryData.user_email);
+        if (response.success) {
           setEmailEnviado(true);
         } else {
-          setErrorLogin(response.data.message || "Erro ao solicitar recuperação");
+          setErrorLogin(response.message || "Erro ao enviar e-mail de recuperação");
         }
+        */
       } catch (error) {
-        setErrorLogin(error.response?.data?.message || "Erro ao solicitar recuperação");
+        setErrorLogin("Erro ao solicitar recuperação. Tente novamente mais tarde.");
       } finally {
         setLoading(false);
       }
+
     } else {
+      // Lógica de login (mock ou API)
       if (!formData.email || !formData.senha) {
-        setErrorLogin("E-mail e senha são obrigatórios");
+        setErrorLogin("Todos os campos são obrigatórios");
         return;
       }
 
       if (!validateEmail(formData.email)) {
-        setErrorLogin("E-mail inválido");
+        setErrorLogin("Por favor, insira um e-mail válido");
         return;
       }
 
       try {
         setLoading(true);
-        
-        // Chamada real para a API de login
-        const response = await api.post('Usuarios/login', {
-          email: formData.email,
-          password: formData.senha
-        });
 
-        const { token, user } = response.data;
-        
-        if (token && user) {
-          login(token, user); // Usa o contexto de autenticação
-          navigate('/home'); // Redireciona após login
-        } else {
-          setErrorLogin("Credenciais inválidas");
+        // ------------------------
+        // Opção com Contexto (Mock)
+        // ------------------------
+        const result = await login(formData.email, formData.senha);
+
+        if (!result.success) {
+          setErrorLogin(result.message || "E-mail ou senha incorretos");
         }
+
+        /* ------------------------
+        // Opção com API real (comentada)
+        const response = await loginUser(formData.email, formData.senha);
+        if (response.token && response.user) {
+          login(response.token, response.user); // você pode ajustar isso no contexto
+          navigate('/home');
+        } else {
+          setErrorLogin(response.error || "Credenciais inválidas");
+        }
+        ------------------------ */
+        
       } catch (error) {
-        const errorMessage = error.response?.data?.message || 
-                           error.response?.data?.error || 
-                           "Erro no processo de login";
-        setErrorLogin(errorMessage);
+        setErrorLogin("Ocorreu um erro durante o login. Tente novamente.");
       } finally {
         setLoading(false);
       }
@@ -96,9 +107,11 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    showRecovery
-      ? setRecoveryData(prev => ({ ...prev, [name]: value }))
-      : setFormData(prev => ({ ...prev, [name]: value }));
+    if (showRecovery) {
+      setRecoveryData(prev => ({ ...prev, [name]: value }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
 
     if (errorLogin) setErrorLogin("");
   };
@@ -121,9 +134,14 @@ export default function LoginPage() {
         {showRecovery ? (
           <form ref={formRecovery} onSubmit={handleSubmit} className="login_form">
             {emailEnviado ? (
-              <p className="mensagem-sucesso">
-                E-mail de recuperação enviado com sucesso!
-              </p>
+              <div className="recovery-success">
+                <p className="mensagem-sucesso">
+                  E-mail de recuperação enviado com sucesso!
+                </p>
+                <button type="button" className="btn_logar" onClick={toggleForm}>
+                  Voltar para login
+                </button>
+              </div>
             ) : (
               <>
                 <ContactUs formData={recoveryData} onChange={handleChange} />
@@ -131,7 +149,7 @@ export default function LoginPage() {
                 <span onClick={toggleForm} className="link-style">
                   Voltar para login
                 </span>
-                <button type="submit" className="btn_logar" disabled={loading}>
+                <button type="submit" className="btn_logar" disabled={loading} aria-busy={loading}>
                   {loading ? "Enviando..." : "Recuperar Senha"}
                 </button>
               </>
@@ -145,12 +163,13 @@ export default function LoginPage() {
             <span onClick={toggleForm} className="link-style">
               Esqueci minha senha
             </span>
-            <button type="submit" className="btn_logar" disabled={loading}>
+            <button type="submit" className="btn_logar" disabled={loading} aria-busy={loading}>
               {loading ? "Carregando..." : "Login"}
             </button>
-            <p>
+
+            <p className="register-link">
               Não possui conta?{" "}
-              <span onClick={() => navigate("/cadastro")} className="link_cadastro">
+              <span onClick={() => navigate("/cadastro")} className="link_cadastro" role="button" tabIndex="0">
                 Cadastre-se
               </span>
             </p>
