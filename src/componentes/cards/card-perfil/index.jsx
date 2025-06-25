@@ -19,7 +19,7 @@ const modalExclusaoConfig = {
 };
 
 export default function Card_perfil() {
-  const { logout, token } = useAuth();
+  const { logout, token, clearAuth } = useAuth();
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState({ nome: '', email: '', dataNascimento: '' });
   const [loading, setLoading] = useState(true);
@@ -198,15 +198,41 @@ export default function Card_perfil() {
     setLoadingExclusao(true);
     setErroExclusao('');
     try {
-      await DesativarUsuario();
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('userData');
-      sessionStorage.clear();
-      logout();
-      navigate('/', { replace: true });
+      const resultado = await DesativarUsuario(token);
+      
+      if (resultado.success) {
+        // Limpeza completa
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Limpar cookies
+        document.cookie.split(";").forEach((c) => {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+        
+        // Limpar autenticação
+        if (clearAuth) clearAuth();
+        logout();
+        
+        // Redirecionar com mensagem
+        navigate('/', { 
+          replace: true,
+          state: { 
+            contaDesativada: true,
+            mensagem: "Sua conta foi desativada com sucesso."
+          }
+        });
+        
+        // Recarregar para limpeza total
+        window.location.reload();
+      } else {
+        setErroExclusao(resultado.message || 'Erro ao desativar conta');
+      }
     } catch (error) {
       console.error('Erro ao desativar conta:', error);
-      setErroExclusao('Erro inesperado ao excluir conta');
+      setErroExclusao(error.response?.data?.message || 'Erro inesperado ao excluir conta');
     } finally {
       setLoadingExclusao(false);
       setMostrarModalExclusao(false);
@@ -273,9 +299,15 @@ export default function Card_perfil() {
       )}
 
       {mostrarModalExclusao && (
-        <Mensagem titulo={modalExclusaoConfig.titulo} texto={modalExclusaoConfig.texto} botoes={modalExclusaoConfig.botoes} onClose={() => setMostrarModalExclusao(false)} onClick={(botaoTexto) => {
-          if (botaoTexto === "Excluir Conta") confirmarExclusao();
-        }} />
+        <Mensagem 
+          titulo={modalExclusaoConfig.titulo} 
+          texto={modalExclusaoConfig.texto} 
+          botoes={modalExclusaoConfig.botoes} 
+          onClose={() => setMostrarModalExclusao(false)} 
+          onClick={(botaoTexto) => {
+            if (botaoTexto === "Excluir Conta") confirmarExclusao();
+          }} 
+        />
       )}
 
       {erroExclusao && <div className="error-message">{erroExclusao}</div>}

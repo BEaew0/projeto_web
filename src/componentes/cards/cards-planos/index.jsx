@@ -66,10 +66,7 @@ export default function Card_planos({ onSelecionarPlano }) {
 
           <p className="valor">Valor: R$ {plano.valor.toFixed(2).replace('.', ',')}</p>
 
-          <button 
-            className="btn_obter" 
-            onClick={() => handleObterClick(plano.id, plano.valor > 0)}
-          >
+          <button className="btn_obter" onClick={() => handleObterClick(plano.id, plano.valor > 0)}>
             Obter
           </button>
         </div>

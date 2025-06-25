@@ -163,7 +163,7 @@ export default function MudarInfo({ tipo }) {
         )}
 
         <button type="submit" className="btn_enviar"disabled={loading}>
-          {loading ? 'Processando...' : 'Confirmar Alteração'}
+          {loading ? 'Processando...' : 'Alteração Concluída'}
         </button>
       </form>
     </div>

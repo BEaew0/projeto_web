@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { buscarTodosEstoquesUser } from "../../services/estoque"; // API comentada
-//import { acharUsuario } from "../../services/usuario"; // API comentada
-import { mockAcharUsuario, mockBuscarTodosEstoques } from "./estoqueMock";
+import { buscarTodosEstoquesUser } from "../../services/estoque"; // Importando a API real
+import { acharUsuario } from "../../services/usuario"; // Importando a API real
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import GraficosCompactos from "../../componentes/graficos";
 import "./home.css";
@@ -25,16 +24,16 @@ export default function Home() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        // Busca dados do usuário (usando mock)
-        const usuario = await mockAcharUsuario();
+        // Busca dados do usuário (usando API real)
+        const usuario = await acharUsuario();
         setDadosUsuario({
           nome: usuario.nomE_USUARIO || "Usuário",
           carregando: false,
           erro: null
         });
 
-        // Busca dados de estoques (usando mock)
-        const dadosEstoques = await mockBuscarTodosEstoques();
+        // Busca dados de estoques (usando API real)
+        const dadosEstoques = await buscarTodosEstoquesUser();
         setEstoques({
           dados: dadosEstoques,
           carregando: false,
@@ -45,12 +44,12 @@ export default function Home() {
         setDadosUsuario(prev => ({
           ...prev,
           carregando: false,
-          erro: erro.message
+          erro: erro.message || "Erro ao carregar dados do usuário"
         }));
         setEstoques(prev => ({
           ...prev,
           carregando: false,
-          erro: erro.message
+          erro: erro.message || "Erro ao carregar estoques"
         }));
       }
     };
@@ -86,8 +85,7 @@ export default function Home() {
       </div>
 
       <div className="content-row">
-        <div className="containernpm -user">
-
+        <div className="container-user">
           <h2>Estoques</h2>
           
           <div className="estoques-grid">

@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../componentes/autenticação/index";
+import { loginUser } from "../../services/login";
 import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
 import Logo_ts from "./../../assets/Imagens/logo_tcc1.png";
-// import { loginUser } from "../../services/login"; // Import da API real (comentado)
 import "./login.css";
 
 export default function LoginPage() {
@@ -37,7 +37,7 @@ export default function LoginPage() {
     setErrorLogin("");
 
     if (showRecovery) {
-      // Lógica de recuperação de senha (mock)
+      // Lógica de recuperação de senha
       if (!validateEmail(recoveryData.user_email)) {
         setErrorLogin("Por favor, insira um e-mail válido");
         return;
@@ -45,25 +45,16 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simula delay
-        setEmailEnviado(true); // Mock sempre retorna sucesso
-
-        /* Implementação com API real (comentada):
-        const response = await loginUser(recoveryData.user_email);
-        if (response.success) {
-          setEmailEnviado(true);
-        } else {
-          setErrorLogin(response.message || "Erro ao enviar e-mail de recuperação");
-        }
-        */
+        // TODO: Implementar chamada real à API de recuperação de senha
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setEmailEnviado(true);
       } catch (error) {
         setErrorLogin("Erro ao solicitar recuperação. Tente novamente mais tarde.");
       } finally {
         setLoading(false);
       }
-
     } else {
-      // Lógica de login (mock ou API)
+      // Lógica de login usando o serviço loginUser
       if (!formData.email || !formData.senha) {
         setErrorLogin("Todos os campos são obrigatórios");
         return;
@@ -76,27 +67,20 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
+        
+        // Chamada ao serviço loginUser
+        const result = await loginUser({
+          email: formData.email,
+          senha: formData.senha
+        });
 
-        // ------------------------
-        // Opção com Contexto (Mock)
-        // ------------------------
-        const result = await login(formData.email, formData.senha);
-
-        if (!result.success) {
-          setErrorLogin(result.message || "E-mail ou senha incorretos");
-        }
-
-        /* ------------------------
-        // Opção com API real (comentada)
-        const response = await loginUser(formData.email, formData.senha);
-        if (response.token && response.user) {
-          login(response.token, response.user); // você pode ajustar isso no contexto
+        if (result.success) {
+          // Usa o método login do AuthContext para atualizar o estado global
+          login(result.user);
           navigate('/home');
         } else {
-          setErrorLogin(response.error || "Credenciais inválidas");
+          setErrorLogin(result.message || "E-mail ou senha incorretos");
         }
-        ------------------------ */
-        
       } catch (error) {
         setErrorLogin("Ocorreu um erro durante o login. Tente novamente.");
       } finally {
