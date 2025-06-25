@@ -1,17 +1,18 @@
 import { Chart as ChartJS, registerables } from 'chart.js';
+import Produtos from './produto';
 
 // Registrar componentes do Chart.js
 ChartJS.register(...registerables);
 
 /**
- * Gera dados para gráfico de barras
- * @param {Array} dados - Array de produtos
- * @param {string} label - Label do dataset
- * @param {string} bgColor - Cor de fundo (rgba)
- * @param {string} borderColor - Cor da borda (rgba)
- * @returns {object} Configuração para gráfico de barras
+ * Gera dados para gráfico de barras - Quantidade em Estoque
  */
-export const generateBarData = (dados, label, bgColor = 'rgba(54, 162, 235, 0.7)', borderColor = 'rgba(54, 162, 235, 1)') => {
+export const generateBarData = (
+  dados,
+  label,
+  bgColor = 'rgba(54, 162, 235, 0.7)',
+  borderColor = 'rgba(54, 162, 235, 1)'
+) => {
   return {
     labels: dados.map(item => item.nomE_PRODUTO),
     datasets: [{
@@ -25,11 +26,39 @@ export const generateBarData = (dados, label, bgColor = 'rgba(54, 162, 235, 0.7)
 };
 
 /**
+ * Gera dados para gráfico de compras (quantidade comprada)
+ */
+export const generateBarDataCompras = (dados, label = 'Quantidade Comprada') => {
+  return {
+    labels: dados.map(item => item.nomE_PRODUTO),
+    datasets: [{
+      label,
+      data: dados.map(item => item.quantidadE_ITEM_COMPRA || 0),
+      backgroundColor: 'rgba(54, 162, 235, 0.7)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    }]
+  };
+};
+
+/**
+ * Gera dados para gráfico de itens vendidos
+ */
+export const generateBarDataVendas = (dados, label = 'Itens Vendidos') => {
+  return {
+    labels: dados.map(item => item.nomE_PRODUTO),
+    datasets: [{
+      label,
+      data: dados.map(item => item.qtS_ITEM_VENDA || 0),
+      backgroundColor: 'rgba(255, 159, 64, 0.7)',
+      borderColor: 'rgba(255, 159, 64, 1)',
+      borderWidth: 1
+    }]
+  };
+};
+
+/**
  * Gera dados para gráfico de pizza
- * @param {Array} dados - Array de produtos (top 5)
- * @param {Array} bgColors - Cores de fundo (rgba)
- * @param {Array} borderColors - Cores da borda (rgba)
- * @returns {object} Configuração para gráfico de pizza
  */
 export const generatePieData = (dados, bgColors, borderColors) => {
   return {
@@ -44,35 +73,26 @@ export const generatePieData = (dados, bgColors, borderColors) => {
 };
 
 /**
- * Gera dados para gráfico de linha
- * @param {Array} labels - Labels do eixo X
- * @param {Array} values - Valores do eixo Y
- * @param {string} label - Label do dataset
- * @param {string} bgColor - Cor de fundo (rgba)
- * @param {string} borderColor - Cor da borda (rgba)
- * @returns {object} Configuração para gráfico de linha
+ * Gera dados para gráfico de lucro
  */
-export const generateLineData = (
-  labels,
-  datasetsData, // Array de { data: [], label: '', bgColor: '', borderColor: '' }
-) => {
+export const generateBarDataLucro = (dados) => {
+  const labels = dados.map(p => p.nomE_PRODUTO);
+  const lucros = dados.map(p => (p.quantidadE_PRODUTO || 0) * (p.valoR_PRODUTO || 0));
+
   return {
     labels,
-    datasets: datasetsData.map(({ data, label, bgColor, borderColor }) => ({
-      label,
-      data,
-      fill: false,
-      backgroundColor: bgColor,
-      borderColor,
-      tension: 0.1,
-    })),
+    datasets: [{
+      label: 'Lucro Estimado (R$)',
+      data: lucros,
+      backgroundColor: 'rgba(75, 192, 192, 0.7)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1
+    }]
   };
 };
+
 /**
  * Opções padrão para os gráficos
- * @param {string} tooltipSuffix - Sufixo para o tooltip (ex: "unidades")
- * @param {string} chartType - Tipo de gráfico ('bar', 'pie', 'line')
- * @returns {object} Opções de configuração
  */
 export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar') => {
   const options = {
@@ -82,49 +102,107 @@ export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar
       legend: {
         position: chartType === 'pie' ? 'right' : 'top',
         labels: {
-          font: {
-            size: 20,
-          },
-       
+          font: { size: 20 },
           padding: 20,
           usePointStyle: true,
           pointStyle: 'circle',
-          boxWidth: 12,
+          boxWidth: 12
         }
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
-            return `${context.parsed.y ?? context.raw} ${tooltipSuffix}`;
-          }
+          label: context => `${context.parsed.y ?? context.raw} ${tooltipSuffix}`
         }
       }
     },
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
+    scales: chartType === 'pie' ? {} : {
+      y: { beginAtZero: true }
+    },
+    layout: chartType === 'pie' 
+      ? { padding: { right: 12, top: 30 } }
+      : { padding: { bottom: 50 } }
   };
 
-  // Configuração adicional específica para o gráfico de pizza
-  if (chartType === 'pie') {
-    options.layout = {
-      padding: {
-        right: 12, // Espaço extra para acomodar a legenda
-        top:30
+  return options;
+};
 
-      }
-    };
-  }
-  else{
-    options.layout={
-      padding:{
-        bottom:50
-      }
+/**
+ * Gera dados agrupados de compras e vendas por produto
+ */
+export const generateBarDataComprasVendasAgrupado = (dados) => {
+  const agregados = {};
+
+  dados.forEach(item => {
+    const nome = item.nomE_PRODUTO;
+    const compra = Number(item.quantidadE_ITEM_COMPRA) || 0;
+    const venda = Number(item.qtS_ITEM_VENDA) || 0;
+
+    if (!agregados[nome]) {
+      agregados[nome] = { compra: 0, venda: 0 };
     }
 
-  }
+    agregados[nome].compra += compra;
+    agregados[nome].venda += venda;
+  });
 
-  return options;
+  const labels = Object.keys(agregados);
+  const compras = labels.map(nome => agregados[nome].compra);
+  const vendas = labels.map(nome => agregados[nome].venda);
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: 'Compras',
+        data: compras,
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      },
+      {
+        label: 'Vendas',
+        data: vendas,
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }
+    ]
+  };
+};
+
+// ============================
+// FUNÇÕES ASSÍNCRONAS COM API
+// ============================
+
+export const getBarDataCompras = async () => {
+  const dados = await Produtos.getProdutosUsuario();
+  return generateBarDataCompras(dados);
+};
+
+export const getBarDataVendas = async () => {
+  const dados = await Produtos.getProdutosUsuario();
+  return generateBarDataVendas(dados);
+};
+
+export const getBarDataComprasVendasAgrupado = async () => {
+  const dados = await Produtos.getProdutosUsuario();
+  return generateBarDataComprasVendasAgrupado(dados);
+};
+
+/**
+ * Com filtro por tipo (opcional)
+ */
+export const getBarDataComprasPorTipo = async (tipo) => {
+  const dados = await Produtos.filtrarPorTipo(tipo);
+  return generateBarDataCompras(dados, `Compras de ${tipo}`);
+};
+
+export const getBarDataVendasPorTipo = async (tipo) => {
+  const dados = await Produtos.filtrarPorTipo(tipo);
+  return generateBarDataVendas(dados, `Vendas de ${tipo}`);
+};
+
+export const getBarDataComprasVendasAgrupadoPorTipo = async (tipo) => {
+  const dados = await Produtos.filtrarPorTipo(tipo);
+  return generateBarDataComprasVendasAgrupado(dados);
 };

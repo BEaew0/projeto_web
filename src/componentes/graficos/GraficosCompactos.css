@@ -25,10 +25,25 @@
     position: relative;
   }
   
-  .ver-mais-texto {
+.ver-graficos {
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 0;
-    color: #3498db;
-    font-size: 0.85rem;
+    margin: 10px 0;
+    padding: 10px 20px;
+    border-radius: 0.3rem;
+    border: none;
+    font-size: 0.9rem;
+    color: white;
+    background-color: #3498db;
+    transition: all 0.3s ease;
+
   }
+
+  .ver-graficos:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(41, 128, 185, 0.3);
+}
+
+.ver-graficos:active {
+  transform: translateY(0);
+}

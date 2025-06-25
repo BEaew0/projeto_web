@@ -3,19 +3,16 @@ import api from './api.js';
 // Configure request interceptor for authentication
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
-  if (token) 
-    {
-      //pra aceitar texto normal
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
     config.headers.accept = 'text/plain'; 
   }
   return config;
-}, 
-error => {
+}, error => {
   return Promise.reject(error);
 });
 
-const ProdutosService = {
+const Produtos = {
   /**
    * Busca todos os produtos do usuário logado
    * @returns {Promise<Array>} Lista de produtos formatados
@@ -24,10 +21,40 @@ const ProdutosService = {
     try {
       const response = await api.get('Produtos/buscar-todos-produtos-users');
       return response.data.map(produto => this._formatarProduto(produto));
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       console.error('Erro ao buscar produtos:', error);
+      throw this._handleError(error);
+    }
+  },
+
+  /**
+   * Busca os 5 primeiros produtos do usuário logado
+   * @returns {Promise<Array>} Lista com até 5 produtos formatados
+   */
+  async getTop5ProdutosUsuario() {
+    try {
+      const response = await api.get('Produtos/buscar-todos-produtos-users');
+      return response.data.slice(0, 5).map(produto => this._formatarProduto(produto));
+    } catch (error) {
+      console.error('Erro ao buscar os 5 primeiros produtos:', error);
+      throw this._handleError(error);
+    }
+  },
+
+  /**
+   * Filtra produtos por tipo específico
+   * @param {string} tipo - Tipo do produto para filtrar (ex: "eletrônico", "alimento")
+   * @param {Array} [produtos] - Opcional: lista pré-existente para filtrar (evita nova requisição)
+   * @returns {Promise<Array>} Lista de produtos filtrados
+   */
+  async filtrarPorTipo(tipo, produtos = null) {
+    try {
+      const listaProdutos = produtos || await this.getProdutosUsuario();
+      return listaProdutos.filter(produto => 
+        produto.tipo.toLowerCase() === tipo.toLowerCase()
+      );
+    } catch (error) {
+      console.error(`Erro ao filtrar por tipo ${tipo}:`, error);
       throw this._handleError(error);
     }
   },
@@ -43,17 +70,14 @@ const ProdutosService = {
       const response = await api.post('/buscar-produtos-por-campo', {
         campo,
         novoValor: valor
-      }, 
-      {
+      }, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
       
       return response.data.map(produto => this._formatarProduto(produto));
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       console.error(`Erro ao buscar por ${campo}:`, error);
       throw this._handleError(error);
     }
@@ -67,10 +91,8 @@ const ProdutosService = {
   async buscarPorNomeSimilar(nome) {
     try {
       const response = await api.post('/buscar-produtos-por-nome-similar', 
-        `"${nome}"`, // Note the quotes as per your API spec
-        {
-          headers: 
-          {
+        `"${nome}"`, {
+          headers: {
             'Content-Type': 'application/json',
             'accept': '*/*'
           }
@@ -117,8 +139,7 @@ const ProdutosService = {
       } : null
     };
 
-    if (detalhesCompletos) 
-      {
+    if (detalhesCompletos) {
       produtoFormatado.descricao = produto.desC_PRODUTO;
       produtoFormatado.dataCadastro = produto.datA_CADASTRO_PRODUTO;
       produtoFormatado.fornecedor = produto.fornecedor ? this._formatarFornecedor(produto.fornecedor) : null;
@@ -158,14 +179,12 @@ const ProdutosService = {
         default: 
           return new Error(`Erro na requisição: ${error.response.statusText}`);
       }
-    } else if (error.request)
-    {
+    } else if (error.request) {
       return new Error('Sem resposta do servidor. Verifique sua conexão.');
-    } else 
-    {
+    } else {
       return new Error('Erro ao configurar a requisição.');
     }
   }
 };
 
-export default ProdutosService;
+export default Produtos;

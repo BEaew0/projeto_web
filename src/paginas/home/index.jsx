@@ -112,10 +112,7 @@ export default function Home() {
                     />
                     
                     <div className="ver-mais-container">
-                      <button 
-                        className="ver-mais-btn" 
-                        onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}
-                      >
+                      <button className="ver-mais-btn" onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}>
                         Ver itens deste estoque
                       </button>
                     </div>
@@ -127,7 +124,7 @@ export default function Home() {
         </div>
 
         <div className="container-graficos-user">
-          <h2>Gráficos Consolidados</h2>
+          <h2>Relatórios</h2>
           <div className="container-gráficos">
             <GraficosCompactos 
               estoques={estoques.dados} 

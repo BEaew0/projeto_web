@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./modal-produto.css";
+import Produtos from "../../../services/produto";
 
 const DetailRow = ({ label, value }) => (
   <div className="detail-row">
@@ -8,8 +9,27 @@ const DetailRow = ({ label, value }) => (
   </div>
 );
 
-export default function ModalProduto({ produto, onClose }) {
-  if (!produto) return null;
+export default function ModalProduto({ produtoId, onClose }) {
+  const [produto, setProduto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const carregarProduto = async () => {
+      try {
+        const produtoDetalhado = await Produtos.getProdutoDetalhado(produtoId);
+        setProduto(produtoDetalhado);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (produtoId) {
+      carregarProduto();
+    }
+  }, [produtoId]);
 
   const formatarMoeda = (valor) => {
     return valor?.toLocaleString('pt-BR', {
@@ -27,13 +47,18 @@ export default function ModalProduto({ produto, onClose }) {
     }
   };
 
-  // Dados principais do produto (incluindo apenas o nome do fornecedor)
+  if (loading) return <div className="modal-overlay">Carregando...</div>;
+  if (error) return <div className="modal-overlay">Erro: {error}</div>;
+  if (!produto) return null;
+
+  // Dados principais do produto
   const infoProduto = [
-    { label: 'Código', value: produto.coD_PRODUTO || produto.iD_PRODUTO },
-    { label: 'Tipo', value: produto.tipO_PRODUTO },
-    { label: 'Valor', value: formatarMoeda(produto.valoR_PRODUTO) },
-    { label: 'Data de Entrada', value: formatarData(produto.datA_ENTRADA) },
-    { label: 'Fornecedor', value:  produto.fornecedor?.nomE_FORNECEDOR }
+    { label: 'Código', value: produto.codigo },
+    { label: 'Tipo', value: produto.tipo },
+    { label: 'Valor', value: formatarMoeda(produto.valor) },
+    { label: 'Data de Cadastro', value: formatarData(produto.dataCadastro) },
+    { label: 'Fornecedor', value: produto.fornecedor?.nome },
+    { label: 'Descrição', value: produto.descricao }
   ];
 
   return (
@@ -44,15 +69,15 @@ export default function ModalProduto({ produto, onClose }) {
         </button>
         
         <div className="modal-header">
-          <h2>{produto.nomE_PRODUTO}</h2>
+          <h2>{produto.nome}</h2>
         </div>
         
         <div className="modal-content">
           <div className="modal-image">
-            {produto.imG_PRODUTO ? (
+            {produto.imagem ? (
               <img 
-                src={produto.imG_PRODUTO} 
-                alt={produto.nomE_PRODUTO}
+                src={produto.imagem} 
+                alt={produto.nome}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = '/placeholder-produto.png';

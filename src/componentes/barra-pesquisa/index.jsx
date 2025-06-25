@@ -1,49 +1,94 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiSearch } from 'react-icons/fi';
+import Produtos from '../../services/produto';
 import './barra-pesquisa.css';
 
-export default function Barra_pesquisa({ onSearch, onFilterChange, estoques }) {
+export default function Barra_pesquisa({ onSearch, onFilterChange }) {
   const [termoBusca, setTermoBusca] = useState('');
   const [filtroSelecionado, setFiltroSelecionado] = useState('todos');
+  const [produtos, setProdutos] = useState([]);
 
-  // Gera tipos únicos de produtos
-  const tiposProduto = useMemo(() => {
-    const tiposUnicos = new Set();
-    estoques.forEach(produto => {
-      if (produto.tipO_PRODUTO) {
-        tiposUnicos.add(produto.tipO_PRODUTO);
+  // Chamada à API com timeout e fallback
+  useEffect(() => {
+    const carregarProdutos = async () => {
+      try {
+        const timeout = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 3000)
+        );
+
+        const dados = await Promise.race([
+          ProdutosService.getProdutosUsuario(),
+          timeout
+        ]);
+
+        setProdutos(dados);
+      } catch (err) {
+        console.warn('API indisponível. Lista de produtos não será exibida.');
+        setProdutos([]); // fallback vazio
       }
-    });
-    return Array.from(tiposUnicos);
-  }, [estoques]);
+    };
 
+    carregarProdutos();
+  }, []);
+
+  // Busca por nome (enviado pro pai via `onSearch`)
   useEffect(() => {
     const timer = setTimeout(() => {
-      onSearch(termoBusca);
+      if (onSearch) {
+        const resultado = produtos.filter(produto =>
+          produto.nome?.toLowerCase().includes(termoBusca.toLowerCase())
+        );
+        onSearch(resultado);
+      }
     }, 300);
+
     return () => clearTimeout(timer);
-  }, [termoBusca, onSearch]);
+  }, [termoBusca, produtos, onSearch]);
 
-  const handleBuscaChange = (e) => setTermoBusca(e.target.value);
+  // Gera tipos únicos
+  const tiposProduto = useMemo(() => {
+    const tipos = new Set();
+    produtos.forEach(produto => {
+      if (produto.tipo) {
+        tipos.add(produto.tipo);
+      }
+    });
+    return Array.from(tipos);
+  }, [produtos]);
 
-  const handleFiltroChange = (e) => {
-    const valor = e.target.value;
-    setFiltroSelecionado(valor);
-    onFilterChange(valor);
-  };
+  // Filtro por tipo (enviado pro pai via `onFilterChange`)
+  useEffect(() => {
+    if (onFilterChange) {
+      if (filtroSelecionado === 'todos') {
+        onFilterChange(produtos);
+      } else {
+        const filtrados = produtos.filter(p =>
+          p.tipo?.toLowerCase() === filtroSelecionado.toLowerCase()
+        );
+        onFilterChange(filtrados);
+      }
+    }
+  }, [filtroSelecionado, produtos, onFilterChange]);
 
   return (
     <div className="barra-pesquisa-container">
       <div className="campo-busca">
         <FiSearch className="icone-busca" />
-        <input type="text" placeholder="Buscar por nome, localização..." value={termoBusca} onChange={handleBuscaChange} aria-label="Campo de busca" />
+        <input
+          type="text"
+          placeholder="Buscar por nome, localização..."
+          value={termoBusca}
+          onChange={(e) => setTermoBusca(e.target.value)}
+          aria-label="Campo de busca"
+        />
       </div>
 
       <div className="filtro-dropdown">
         <select
           value={filtroSelecionado}
-          onChange={handleFiltroChange}
-          aria-label="Filtrar por tipo de produto">
+          onChange={(e) => setFiltroSelecionado(e.target.value)}
+          aria-label="Filtrar por tipo de produto"
+        >
           <option value="todos">Todos os tipos</option>
           {tiposProduto.map((tipo) => (
             <option key={tipo} value={tipo}>

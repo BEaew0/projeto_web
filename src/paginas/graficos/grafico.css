@@ -3,103 +3,112 @@
   flex-direction: column;
   padding: 30px;
   width: 95%;
-  max-width: 1800px; /* Limite máximo de largura */
+  max-width: 1800px;
   margin: 0 auto;
   gap: 40px;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Evita overflow lateral */
 }
 
 .header-graficos {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px; /* Aumentei o espaçamento */
+  margin-bottom: 40px;
   flex-wrap: wrap;
 }
 
 .graficos-container h1 {
   color: var(--cor-de-texto);
-  margin-bottom: 20px; /* Mais espaçamento */
-  font-size: 2.4rem; /* Título um pouco maior */
+  margin-bottom: 20px;
+  font-size: 2.4rem;
 }
 
 .botoes-exportacao {
   display: flex;
-  gap: 20px; /* Mais espaço entre botões */
+  gap: 20px;
 }
 
 .exportar-excel-btn, .download-btn {
   background-color: #2e7d32;
   color: white;
   border: none;
-  padding: 0.5rem 18px; /* Botões maiores */
+  padding: 0.5rem 18px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s;
 }
 
-.export-btn:hover, .download-btn:hover {
+.exportar-excel-btn:hover, .download-btn:hover {
   background-color: #1a252f;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra no hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .graficos-row {
   display: flex;
-  gap: 40px; /* Aumentei o gap entre gráficos */
-  margin: 40px 0; /* Mais espaçamento vertical */
+  gap: 40px;
+  margin: 40px 0;
   flex-wrap: wrap;
 }
 
 .grafico-section {
   background: white;
-  padding: 30px; /* Padding maior */
-  border-radius: 16px; /* Bordas mais arredondadas */
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-
-  margin-bottom: 30px; /* Espaço abaixo de cada seção */
+  margin-bottom: 30px;
 }
 
 .grafico-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px; /* Mais espaço abaixo do cabeçalho */
+  margin-bottom: 25px;
   flex-wrap: wrap;
-  gap: 20px; /* Espaço entre título e botão */
+  gap: 20px;
 }
 
 .grafico-section h2 {
   color: #34495e;
-  font-size: 1.8rem; /* Título maior */
+  font-size: 1.8rem;
   margin-right: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1; /* Permite que o título ocupe espaço disponível */
+  flex: 1;
 }
 
 .grafico-wrapper {
   height: 700px;
   position: relative;
   flex-grow: 1;
-
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 20px;
 }
 
+/* Limita o tamanho dos gráficos */
+.grafico-wrapper canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Gráfico de pizza em tela cheia */
 #pie-chart {
   width: 100%;
   height: 700px;
 }
 
-
-/* Ajustes para telas grandes */
+/* Responsividade */
 @media (min-width: 1600px) {
   .graficos-row {
-    gap: 50px; /* Espaço ainda maior em telas grandes */
+    gap: 50px;
   }
 }
 
@@ -109,9 +118,9 @@
   }
   
   .grafico-section {
-    flex: 1 1 calc(50% - 30px); /* Dois gráficos por linha com gap */
+    flex: 1 1 calc(50% - 30px);
     height: 650px;
-    box-sizing: border-box; /* Inclui padding na largura */
+    box-sizing: border-box;
   }
 }
 
@@ -135,7 +144,7 @@
   .grafico-section {
     width: 100%;
     height: 550px;
-    margin-bottom: 0; /* Remove margem inferior já que temos gap */
+    margin-bottom: 0;
   }
 }
 
@@ -159,7 +168,7 @@
     min-height: 400px;
   }
   
-  .export-btn, .download-btn {
+  .exportar-excel-btn, .download-btn {
     width: 100%;
     margin-top: 10px;
   }
@@ -177,5 +186,70 @@
   
   .grafico-wrapper {
     min-height: 350px;
+  }
+}
+
+/* Estilos para a seção de resumo financeiro */
+.resumo-financeiro {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.resumo-card {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+
+}
+
+.resumo-card h2 {
+  margin-top: 0;
+  color: #343a40;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.resumo-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.resumo-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.resumo-valor {
+  font-weight: bold;
+  color: #212529;
+}
+
+.resumo-valor.positivo {
+  color: #28a745;
+}
+
+.resumo-valor.negativo {
+  color: #dc3545;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .resumo-card {
+    padding: 15px;
+  }
+  
+  .resumo-item {
+    flex-direction: column;
+  }
+  
+  .resumo-valor {
+    margin-top: 5px;
   }
 }

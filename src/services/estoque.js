@@ -1,57 +1,34 @@
-import api from './api.js';
+// services/estoquesService.js
+import api from './api';
+
+const buscarEstoquesApi = async () => {
+  const response = await api.get('Estoque/buscar-estoques-por-usuario');
+  return response.data;
+};
 
 export const buscarTodosEstoquesUser = async () => {
-    try {
-        const token = localStorage.getItem('accessToken');
-        if (!token) throw new Error('Usuário não autenticado');
+  try {
+    const data = await buscarEstoquesApi();
+    return data.map(item => ({ ...item }));
+  } catch (error) {
+    console.error('Erro ao buscar estoques:', error);
+    throw error;
+  }
+};
 
-        const response = await api.get(
-            'Estoque/buscar-estoques-por-usuario',
-            {
-                headers: {
-                    'accept': '*/*',
-                    'Authorization': `Bearer ${token}`
-                }
-            }
-        );
-
-        // Transforma os dados para formato mais amigável se necessário
-        return response.data.map(item => ({
-            ...item,
-            // Adicione transformações se necessário
-        }));
-        
-    } catch (error) {
-        console.error('Erro ao buscar estoques:', error);
-        
-        let errorMessage = 'Erro ao buscar estoques';
-        let statusCode = null;
-
-        if (error.response) {
-            statusCode = error.response.status;
-            
-            switch(statusCode) {
-                case 401:
-                    errorMessage = 'Não autorizado - faça login novamente';
-                    break;
-                case 403:
-                    errorMessage = 'Acesso negado - sem permissão';
-                    break;
-                case 404:
-                    errorMessage = 'Endpoint não encontrado';
-                    break;
-                case 500:
-                    errorMessage = 'Erro interno no servidor';
-                    break;
-                default:
-                    errorMessage = error.response.data?.message || errorMessage;
-            }
-        } else if (error.request) {
-            errorMessage = 'Sem resposta do servidor - verifique sua conexão';
-        }
-
-        const errorToThrow = new Error(errorMessage);
-        errorToThrow.status = statusCode;
-        throw errorToThrow;
-    }
+export const getResumoFinanceiroEstoque = async () => {
+  try {
+    const data = await buscarEstoquesApi();
+    return data.reduce(
+      (resumo, item) => ({
+        quantidadeTotal: resumo.quantidadeTotal + (item.qtD_TOTAL_ESTOQUE || 0),
+        valorTotalGasto: resumo.valorTotalGasto + (item.valoR_GASTO_TOTAL_ESTOQUE || 0),
+        valorPotencialVenda: resumo.valorPotencialVenda + (item.valoR_POTENCIAL_VENDA_ESTOQUE || 0)
+      }),
+      { quantidadeTotal: 0, valorTotalGasto: 0, valorPotencialVenda: 0 }
+    );
+  } catch (error) {
+    console.error('Erro ao calcular resumo:', error);
+    throw new Error('Falha ao obter dados financeiros do estoque');
+  }
 };

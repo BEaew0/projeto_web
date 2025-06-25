@@ -48,6 +48,21 @@
   object-fit: contain;
 }
 
+.estoque-vazio{
+ display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+
+  font-size: 14px;
+
+}
+.estoque-vazio span{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: red;
+}
 
 
 .no-image {

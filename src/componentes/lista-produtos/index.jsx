@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { mockBuscarTodosEstoques } from "../../paginas/home/estoqueMock";
+import Produtos from "../../services/produto";
 import Barra_pesquisa from "../barra-pesquisa";
 import { exportToExcel } from "../../services/excel";
 import "./listaEstoque.css";
@@ -10,74 +10,74 @@ export default function ListaEstoquesCompacta({
   onCardClick,
   onExportClick,
   onQuantidadeFiltradaChange,
-  filtroEstoqueId // para filtrar produtos por ID do estoque
+  filtroEstoqueId
 }) {
-  const [estoques, setEstoques] = useState([]); // aqui são os produtos do mock
+  const [estoques, setEstoques] = useState([]);
   const [estoquesFiltrados, setEstoquesFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [termoBusca, setTermoBusca] = useState('');
-  const [filtroSelecionado, setFiltroSelecionado] = useState('todos');
+  const [erro, setErro] = useState(null); // ⬅️ novo estado para erro
   const navigate = useNavigate();
 
   useEffect(() => {
     const carregarEstoques = async () => {
+      setLoading(true);
+      setErro(null); // limpa erro anterior
+      const controller = new AbortController();
+
+      const timeout = setTimeout(() => {
+        controller.abort();
+      }, 3000); // timeout em 3s
+
       try {
-        setLoading(true);
-        const dados = await mockBuscarTodosEstoques();
+        const produtos = await Produtos.getProdutosUsuario();
 
-        // mockBuscarTodosEstoques pode retornar array ou objeto?
-        // Seu código tratava array, vou manter assim:
-        const produtosArray = Array.isArray(dados) ? dados : [];
+        const produtosFormatados = produtos.map(p => ({
+          ...p,
+          iD_ESTOQUE: p.estoque?.id,
+          iD_PRODUTO: p.id,
+          nomE_PRODUTO: p.nome,
+          valoR_PRODUTO: p.valor,
+          tipO_PRODUTO: p.tipo,
+          imG_PRODUTO: p.imagem,
+          quantidadE_PRODUTO: p.quantidade || 0,
+          localizacao: p.localizacao || ''
+        }));
 
-        setEstoques(produtosArray);
-        setEstoquesFiltrados(produtosArray);
+        setEstoques(produtosFormatados);
+        setEstoquesFiltrados(produtosFormatados);
 
         if (onQuantidadeFiltradaChange) {
-          onQuantidadeFiltradaChange(produtosArray.length);
+          onQuantidadeFiltradaChange(produtosFormatados.length);
         }
       } catch (err) {
-        console.error("Erro ao buscar estoques:", err);
-        if (err.status === 401) navigate("/login");
+        console.warn("Erro ao carregar produtos:", err.message);
+        setErro("Erro ao carregar produtos. Tente novamente mais tarde.");
         setEstoques([]);
         setEstoquesFiltrados([]);
+
         if (onQuantidadeFiltradaChange) {
           onQuantidadeFiltradaChange(0);
         }
       } finally {
+        clearTimeout(timeout);
         setLoading(false);
       }
     };
 
     carregarEstoques();
-  }, [navigate, onQuantidadeFiltradaChange]);
-
-  useEffect(() => {
-    const filtrados = estoques.filter((produto) => {
-      // Filtra pelo estoque se filtroEstoqueId estiver definido
-      const estoqueMatch = !filtroEstoqueId || produto.iD_ESTOQUE === filtroEstoqueId;
-      
-      // Filtra pelo termo de busca (nome do produto ou localização)
-      const nomeMatch = produto.nomE_PRODUTO.toLowerCase().includes(termoBusca.toLowerCase()) ||
-                        (produto.localizacao?.toLowerCase().includes(termoBusca.toLowerCase()) ?? false);
-      
-      // Filtra por tipo do produto (ou todos)
-      const tipoMatch = filtroSelecionado === 'todos' || produto.tipO_PRODUTO === filtroSelecionado;
-      
-      return estoqueMatch && nomeMatch && tipoMatch;
-    });
-
-    setEstoquesFiltrados(filtrados);
-
-    if (onQuantidadeFiltradaChange) {
-      onQuantidadeFiltradaChange(filtrados.length);
-    }
-  }, [termoBusca, filtroSelecionado, estoques, filtroEstoqueId, onQuantidadeFiltradaChange]);
-
-  const handleSearch = (termo) => setTermoBusca(termo);
-  const handleFilter = (tipo) => setFiltroSelecionado(tipo);
+  }, [onQuantidadeFiltradaChange]);
 
   const handleExportExcel = async () => {
-    const sucesso = await exportToExcel(estoquesFiltrados, 'relatorio_estoque_filtrado');
+    const dadosParaExportar = estoquesFiltrados.map(p => ({
+      'ID': p.iD_PRODUTO,
+      'Nome': p.nomE_PRODUTO,
+      'Tipo': p.tipO_PRODUTO,
+      'Valor': p.valoR_PRODUTO,
+      'Quantidade': p.quantidadE_PRODUTO,
+      'Localização': p.localizacao || 'N/A'
+    }));
+
+    const sucesso = await exportToExcel(dadosParaExportar, 'relatorio_produtos_filtrados');
     if (onExportClick) {
       onExportClick(sucesso);
     }
@@ -87,28 +87,34 @@ export default function ListaEstoquesCompacta({
     <div>
       {mostrarTodos && (
         <div className="header-completo">
-          <Barra_pesquisa
+          <Barra_pesquisa 
             estoques={estoques}
-            onSearch={handleSearch}
-            onFilterChange={handleFilter}
+            onSearchResults={(resultados) => {
+              setEstoquesFiltrados(resultados);
+              if (onQuantidadeFiltradaChange) {
+                onQuantidadeFiltradaChange(resultados.length);
+              }
+            }}
           />
           <button 
-            className="exportar-excel-btn" 
-            onClick={handleExportExcel}
-            disabled={estoquesFiltrados.length === 0 || loading}
-          >
+            className="exportar-excel-btn"  
+            onClick={handleExportExcel} 
+            disabled={estoquesFiltrados.length === 0 || loading}>
             {loading ? 'Carregando...' : 'Exportar para Excel'}
           </button>
+
+          {/* Mensagem de erro amigável */}
+          {erro && <div className="erro-msg">{erro}</div>}
         </div>
       )}
 
       {loading ? (
-        <div className="loading-compact">Carregando estoques...</div>
+        <div className="loading-compact">Carregando produtos...</div>
       ) : !mostrarTodos ? (
         <ul className="lista-compacta-simples">
           {estoquesFiltrados.slice(0, 4).map((produto) => (
-            <li key={produto.id}>
-              <strong>{produto.nomE_PRODUTO}</strong> — {produto.nomE_ESTOQUE}
+            <li key={produto.iD_PRODUTO}>
+              <strong>{produto.nomE_PRODUTO}</strong>
             </li>
           ))}
         </ul>
@@ -117,7 +123,7 @@ export default function ListaEstoquesCompacta({
           {estoquesFiltrados.length > 0 ? (
             estoquesFiltrados.map((produto) => (
               <div 
-                key={produto.id}
+                key={produto.iD_PRODUTO}
                 className="estoque-compact-card"
                 onClick={() => onCardClick && onCardClick(produto)}
                 style={{ cursor: onCardClick ? "pointer" : "default" }}
@@ -129,11 +135,14 @@ export default function ListaEstoquesCompacta({
                 <div className="produto-info">
                   <p><strong>Quantidade:</strong> {produto.quantidadE_PRODUTO}</p>
                   <p><strong>Valor:</strong> R$ {produto.valoR_PRODUTO.toFixed(2)}</p>
+                  <p><strong>Tipo:</strong> {produto.tipO_PRODUTO}</p>
                 </div>
               </div>
             ))
           ) : (
-            <div className="empty-compact">Nenhum produto encontrado</div>
+            <div className="estoque-vazio">
+              <span>Nenhum produto encontrado</span>
+            </div>
           )}
         </div>
       )}
