@@ -2,7 +2,7 @@
 import api from './api';
 
 const buscarEstoquesApi = async () => {
-  const response = await api.get('Estoque/buscar-estoques-por-usuario');
+  const response = await api.get('/Estoque/buscar-estoques-por-usuario');
   return response.data;
 };
 

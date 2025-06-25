@@ -8,7 +8,7 @@ import api from './api';
  */
 export const criarLucro = async (idsItens) => {
   try {
-    const response = await api.post('Lucro/criar-lucro', {
+    const response = await api.post('/Lucro/criar-lucro', {
       itens: idsItens.map(id => ({ iD_ITEM: id }))
     });
     return response.data;
