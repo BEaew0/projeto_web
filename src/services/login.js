@@ -1,13 +1,27 @@
 import api from './api.js';
 
 export const loginUser = async (userData) => {
+  // Limpa credenciais antigas antes de tentar novo login
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("userData");
+
   try {
-    // Validação básica dos campos de entrada
-    if (!userData.email || !userData.senha) {
-      return {
-        success: false,
-        message: "Email e senha são obrigatórios",
-        status: 400
+    // Validação robusta dos campos de entrada
+    if (!userData.email?.trim()) {
+      throw {
+        response: {
+          status: 400,
+          data: { message: "O email é obrigatório" }
+        }
+      };
+    }
+
+    if (!userData.senha) {
+      throw {
+        response: {
+          status: 400,
+          data: { message: "A senha é obrigatória" }
+        }
       };
     }
 
@@ -16,77 +30,92 @@ export const loginUser = async (userData) => {
       senhA_USUARIO: userData.senha
     };
 
-    const response = await api.post('/Usuarios/login', credentials, {
+    const response = await api.post('/api/Usuarios/login', credentials, {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      timeout: 10000 // 10 segundos de timeout
+      timeout: 10000
     });
 
-    console.log("Resposta completa do login:", response);
-
+    // Verificação completa da resposta
     if (!response.data?.token) {
-      return {
-        success: false,
-        message: "Autenticação falhou - token não recebido",
-        status: 401
+      throw {
+        response: {
+          status: 401,
+          data: { message: "Autenticação falhou: token não recebido" }
+        }
       };
     }
 
-    // Armazenamento seguro do token
+    // Construção do objeto do usuário com fallbacks seguros
+    const user = {
+      email: userData.email.trim(),
+      nomE_USUARIO: response.data.nomE_USUARIO || userData.email.split('@')[0],
+      role: response.data.role || 'user',
+      ...(response.data.id && { id: response.data.id }),
+      ...(response.data.photo && { photo: response.data.photo })
+    };
+
+    // Armazenamento seguro
     localStorage.setItem("accessToken", response.data.token);
-    
-    // Se houver dados do usuário na resposta
-    if (response.data.user) {
-      localStorage.setItem("userData", JSON.stringify(response.data.user));
-    }
+    localStorage.setItem("userData", JSON.stringify(user));
 
     return {
       success: true,
-      user: response.data.user || null,
-      accessToken: response.data.token,
-      status: response.status
+      user,
+      token: response.data.token,
+      status: response.status,
+      message: response.data.message || "Login realizado com sucesso"
     };
 
   } catch (error) {
-    console.error("Erro detalhado no login:", error);
+    console.error("Erro no serviço de login:", {
+      error: error.response?.data || error.message,
+      status: error.response?.status,
+      config: error.config
+    });
 
-    // Tratamento de erros aprimorado
-    let errorMessage = "Erro ao conectar com o servidor";
-    let statusCode = 500;
-    let serverMessage = null;
+    // Padronização do objeto de erro
+    const defaultError = {
+      success: false,
+      message: "Erro durante a autenticação",
+      status: error.response?.status || 500,
+      details: null
+    };
 
+    // Mapeamento de erros específicos
     if (error.code === 'ECONNABORTED') {
-      errorMessage = "Tempo de conexão esgotado";
-    } else if (error.response) {
-      statusCode = error.response.status;
-      serverMessage = error.response.data?.message || error.response.statusText;
-
-      const errorMessages = {
-        400: "Dados de login inválidos",
-        401: "Credenciais inválidas",
-        403: "Acesso não autorizado",
-        404: "Endpoint não encontrado",
-        429: "Muitas tentativas. Tente novamente mais tarde",
-        500: "Erro interno no servidor"
-      };
-
-      errorMessage = errorMessages[statusCode] || serverMessage || "Erro desconhecido";
-    } else if (error.request) {
-      errorMessage = "Servidor não respondeu";
+      defaultError.message = "Timeout: Servidor não respondeu a tempo";
+      defaultError.details = "Tente novamente mais tarde";
+    } else if (!error.response) {
+      defaultError.message = "Erro de conexão";
+      defaultError.details = "Verifique sua conexão com a internet";
+    } else {
+      switch (error.response.status) {
+        case 400:
+          defaultError.message = error.response.data?.message || "Dados inválidos";
+          break;
+        case 401:
+          defaultError.message = error.response.data?.message || "Credenciais inválidas";
+          break;
+        case 403:
+          defaultError.message = "Acesso não autorizado";
+          defaultError.details = "Você não tem permissão para acessar";
+          break;
+        case 404:
+          defaultError.message = "Serviço não encontrado";
+          defaultError.details = "Endpoint não existe";
+          break;
+        case 500:
+          defaultError.message = "Erro interno no servidor";
+          defaultError.details = "Tente novamente mais tarde";
+          break;
+        default:
+          defaultError.message = error.response.data?.message || "Erro desconhecido";
+      }
     }
 
-    // Limpar credenciais em caso de erro
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userData");
-
-    return {
-      success: false,
-      message: errorMessage,
-      status: statusCode,
-      serverMessage: serverMessage,
-      error: error.message
-    };
+    return defaultError;
   }
 };

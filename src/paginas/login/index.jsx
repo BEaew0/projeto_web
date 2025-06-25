@@ -26,7 +26,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const formRecovery = useRef();
 
-  // Validação de e-mail
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -37,7 +36,6 @@ export default function LoginPage() {
     setErrorLogin("");
 
     if (showRecovery) {
-      // Lógica de recuperação de senha
       if (!validateEmail(recoveryData.user_email)) {
         setErrorLogin("Por favor, insira um e-mail válido");
         return;
@@ -45,7 +43,7 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
-        // TODO: Implementar chamada real à API de recuperação de senha
+        // Simula envio (substituir por chamada real à API no futuro)
         await new Promise(resolve => setTimeout(resolve, 1000));
         setEmailEnviado(true);
       } catch (error) {
@@ -54,7 +52,6 @@ export default function LoginPage() {
         setLoading(false);
       }
     } else {
-      // Lógica de login usando o serviço loginUser
       if (!formData.email || !formData.senha) {
         setErrorLogin("Todos os campos são obrigatórios");
         return;
@@ -67,18 +64,11 @@ export default function LoginPage() {
 
       try {
         setLoading(true);
-        
-        // Chamada ao serviço loginUser
-        const result = await loginUser({
-          email: formData.email,
-          senha: formData.senha
-        });
 
-        if (result.success) {
-          // Usa o método login do AuthContext para atualizar o estado global
-          login(result.user);
-          navigate('/home');
-        } else {
+        // Usa o método login do AuthContext — ele faz a chamada à API e redireciona se for sucesso
+        const result = await login(formData.email, formData.senha);
+
+        if (!result.success) {
           setErrorLogin(result.message || "E-mail ou senha incorretos");
         }
       } catch (error) {

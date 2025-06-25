@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {loginUser} from "../../services/login";
+import { loginUser } from '../../services/login';
 
 export const AuthContext = createContext();
 
@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
       try {
         const storedUser = localStorage.getItem('userData');
         const storedToken = localStorage.getItem('accessToken');
-        
+
         if (storedUser && storedToken) {
           setUser(JSON.parse(storedUser));
         }
@@ -51,48 +51,40 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      // Substituído o mock por chamada real à API
-      /* Mock comentado
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const user = MOCK_USERS.find(u => u.email === email && u.senha === password);
-      if (user) {
-        const mockToken = "mock-jwt-token";
-        localStorage.setItem('token', mockToken);
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
-        navigate('/home');
-        return { success: true };
-      }
-      return { success: false, message: "Credenciais inválidas" };
-      */
-      
-      // Implementação real
-      const result = await loginUser({
-        email: email,
-        senha: password
-      });
+      const result = await loginUser({ email, senha: password });
 
-      if (result.success) {
-        setUser(result.user);
-        navigate('/home');
+      console.log('Resposta completa do login:', result);
+
+      // A API retorna: { mensagem, token }
+      if (result.token) {
+        const userData = { email }; // Adicione outros dados se a API retornar
+
+        localStorage.setItem('accessToken', result.token);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        setUser(userData);
+
+        navigate('/home'); // Redirecionamento após login
+        return {
+          success: true,
+          message: result.mensagem || 'Login bem-sucedido',
+        };
       }
 
       return {
-        success: result.success,
-        message: result.message || (result.success ? 'Login bem-sucedido' : 'Credenciais inválidas')
+        success: false,
+        message: result.mensagem || 'Credenciais inválidas',
       };
     } catch (error) {
       console.error('Erro no login:', error);
       return {
         success: false,
-        message: 'Erro ao conectar com o servidor'
+        message: 'Erro ao conectar com o servidor',
       };
     }
   };
 
   const logout = async () => {
     try {
-      // Implementação real (não havia mock aqui)
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userData');
       setUser(null);
@@ -105,16 +97,6 @@ export function AuthProvider({ children }) {
 
   const updateUserPhoto = async (newPhoto) => {
     try {
-      // Mock comentado - implementação real deve chamar a API
-      /*
-      await new Promise(resolve => setTimeout(resolve, 800));
-      const updatedUser = { ...user, photo: newPhoto };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      return { success: true, user: updatedUser };
-      */
-      
-      // Implementação real (substitua por chamada à API quando disponível)
       const updatedUser = { ...user, photo: newPhoto };
       setUser(updatedUser);
       localStorage.setItem('userData', JSON.stringify(updatedUser));
@@ -133,7 +115,7 @@ export function AuthProvider({ children }) {
         login,
         logout,
         loading,
-        updateUserPhoto
+        updateUserPhoto,
       }}
     >
       {!loading && children}
