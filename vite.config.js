@@ -3,29 +3,28 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // Essencial para funcionar na LocaWeb
+  base: './', // Mantido para LocaWeb (caminhos relativos)
 
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    assetsInlineLimit: 0, // Garante arquivos separados
-    copyPublicDir: true, // Copia _redirects corretamente
+    assetsInlineLimit: 0, // Força arquivos separados (melhor para cache)
+    copyPublicDir: true, // Importante para _redirects e assets públicos
 
+    // Configurações otimizadas para hospedagem compartilhada
     rollupOptions: {
       output: {
-        // Organização otimizada para LocaWeb
         assetFileNames: (assetInfo) => {
-          const extType = assetInfo.name.split('.').at(1);
-          if (extType === 'css') {
-            return 'assets/css/[name].[hash][extname]';
-          }
+          const extType = assetInfo.name.split('.')[1];
+          // Remove [hash] para evitar problemas de cache na LocaWeb
+          if (extType === 'css') return 'assets/css/[name][extname]';
           if (['png', 'jpe?g', 'gif', 'svg', 'webp'].includes(extType)) {
-            return 'assets/img/[name].[hash][extname]';
+            return 'assets/img/[name][extname]';
           }
-          return 'assets/[name].[hash][extname]';
+          return 'assets/[name][extname]';
         },
-        entryFileNames: 'assets/js/[name].[hash].js',
-        chunkFileNames: 'assets/js/[name].[hash].js'
+        entryFileNames: 'assets/js/[name].js',
+        chunkFileNames: 'assets/js/[name].js'
       }
     }
   },
@@ -33,28 +32,32 @@ export default defineConfig({
   server: {
     open: true,
     port: 5173,
-    host: true // Permite acesso em rede local
+    host: true
   },
 
+  // Configurações essenciais para LocaWeb
   preview: {
+    port: 4173, // Porta diferente do dev server
     headers: {
-      'Cache-Control': 'public, max-age=0',
-      'Accept-Ranges': 'none'
+      'Cache-Control': 'public, max-age=3600' // Cache controlado
     }
   },
 
-  // Otimizações extras para LocaWeb
+  // Aliases ajustados para evitar conflitos
   resolve: {
-    alias: {
-      '@': '/src',
-      '@assets': '/src/assets'
-    }
+    alias: [
+      { find: '@', replacement: '/src' },
+      { find: '@assets', replacement: '/src/assets' }
+    ]
   },
+
+  // Otimizações para produção
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom'
-    ]
+    ],
+    force: true // Força pré-empacotamento
   }
 });
