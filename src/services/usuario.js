@@ -6,7 +6,7 @@ export const acharUsuario = async () => {
   if (!token) throw new Error('Usuário não autenticado');
 
   try {
-    const response = await api.get('buscar-dados-usuario', {
+    const response = await api.get('/buscar-dados-usuario', {
       headers: {
         'accept': 'text/plain',
         'Authorization': `Bearer ${token}`,
@@ -25,7 +25,7 @@ export const buscarImagemUsuario = async () => {
   if (!token) throw new Error('Usuário não autenticado');
 
   try {
-    const response = await api.get('/Usuarios/Buscar-Imagem', {
+    const response = await api.get('api/Usuarios/Buscar-Imagem', {
       headers: {
         'accept': 'text/plain',
         'Authorization': `Bearer ${token}`,

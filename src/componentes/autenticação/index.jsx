@@ -1,10 +1,12 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/login';
+import { alterarImagemUsuario } from '../../services/alterardados'; // Função real da API
 
 export const AuthContext = createContext();
 
-/* Mock comentado - agora usando a API real
+// MOCK ANTIGO COMENTADO
+/*
 export const MOCK_USERS = [
   {
     id: 1,
@@ -55,15 +57,13 @@ export function AuthProvider({ children }) {
 
       console.log('Resposta completa do login:', result);
 
-      // A API retorna: { mensagem, token }
       if (result.token) {
-        const userData = { email }; // Adicione outros dados se a API retornar
-
+        const userData = { email }; // Pode incluir mais dados se a API retornar
         localStorage.setItem('accessToken', result.token);
         localStorage.setItem('userData', JSON.stringify(userData));
         setUser(userData);
+        navigate('/home');
 
-        navigate('/home'); // Redirecionamento após login
         return {
           success: true,
           message: result.mensagem || 'Login bem-sucedido',
@@ -83,7 +83,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     try {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userData');
@@ -91,7 +91,6 @@ export function AuthProvider({ children }) {
       navigate('/login');
     } catch (error) {
       console.error('Erro no logout:', error);
-      throw error;
     }
   };
 
@@ -107,6 +106,28 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // ✅ Usa a API real para alterar imagem e atualiza o contexto
+  const updateUserImage = async (imagemBase64) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return {
+        success: false,
+        message: 'Usuário não autenticado',
+        status: 401,
+      };
+    }
+
+    const resultado = await alterarImagemUsuario(imagemBase64, token);
+
+    if (resultado.success) {
+      const updatedUser = { ...user, photo: imagemBase64 };
+      setUser(updatedUser);
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+    }
+
+    return resultado;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -116,6 +137,7 @@ export function AuthProvider({ children }) {
         logout,
         loading,
         updateUserPhoto,
+        updateUserImage, // ✅ agora disponível globalmente
       }}
     >
       {!loading && children}

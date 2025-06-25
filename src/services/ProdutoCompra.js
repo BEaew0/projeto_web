@@ -6,7 +6,7 @@ export const getQuantidadeCompradaPorProduto = async () => {
     if (!token) throw new Error('Usuário não autenticado');
 
     // 1. Buscar todos os pedidos
-    const pedidosResponse = await api.get('/PedidoCompra/buscar-pedidos-usuario', {
+    const pedidosResponse = await api.get('/api/PedidoCompra/buscar-pedidos-usuario', {
       headers: {
         Authorization: `Bearer ${token}`,
         accept: '*/*'
@@ -18,7 +18,7 @@ export const getQuantidadeCompradaPorProduto = async () => {
 
     // 2. Para cada pedido, buscar os itens
     for (const pedido of pedidos) {
-      const itensResponse = await api.get(`/PedidoCompra/Itens/${pedido.iD_PEDIDO}`, {
+      const itensResponse = await api.get(`/api/PedidoCompra/Itens/${pedido.iD_PEDIDO}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           accept: '*/*'

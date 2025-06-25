@@ -8,7 +8,7 @@ const PedidoVendaService = {
    */
   async getItensVendaPorUsuario() {
     try {
-      const response = await api.get('/PedidoVenda/buscar-itens-venda-por-usuario');
+      const response = await api.get('api/PedidoVenda/buscar-itens-venda-por-usuario');
       return response.data.item.map(item => this._formatarItemVenda(item));
     } catch (error) {
       console.error('Erro ao buscar itens de venda:', error);

@@ -8,7 +8,7 @@ import api from './api';
  */
 export const criarLucro = async (idsItens) => {
   try {
-    const response = await api.post('/Lucro/criar-lucro', {
+    const response = await api.post('api/Lucro/criar-lucro', {
       itens: idsItens.map(id => ({ iD_ITEM: id }))
     });
     return response.data;
@@ -24,7 +24,7 @@ export const criarLucro = async (idsItens) => {
  */
 export const buscarLucroTotalUsuario = async () => {
   try {
-    const response = await api.get('/Lucro/buscar-lucro-total-usuario');
+    const response = await api.get('api/Lucro/buscar-lucro-total-usuario');
     return Number(response.data);
   } catch (error) {
     console.error('Erro ao buscar lucro total:', error);
@@ -38,7 +38,7 @@ export const buscarLucroTotalUsuario = async () => {
  */
 export const buscarLucroTotalPorItem = async () => {
   try {
-    const response = await api.get('Lucro/buscar-lucro-total-item-usuario');
+    const response = await api.get('api/Lucro/buscar-lucro-total-item-usuario');
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar lucro por item:', error);

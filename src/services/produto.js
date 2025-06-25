@@ -19,7 +19,7 @@ const Produtos = {
    */
   async getProdutosUsuario() {
     try {
-      const response = await api.get('/Produtos/buscar-todos-produtos-users');
+      const response = await api.get('api/Produtos/buscar-todos-produtos-users');
       return response.data.map(produto => this._formatarProduto(produto));
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);

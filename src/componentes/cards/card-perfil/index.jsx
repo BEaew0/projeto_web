@@ -5,7 +5,7 @@ import MudarInfo from '../../modals/MudarDados';
 import Mensagem from '../../modals/Mensagem';
 import { FaUser, FaEdit, FaTrash, FaCamera, FaEnvelope, FaLock, FaCalendar } from 'react-icons/fa';
 import { acharUsuario, buscarImagemUsuario } from '../../../services/usuario';
-import { alterarImagemUsuario, alterarEmailUsuario, alterarSenhaUsuario } from '../../../services/alterardados';
+import { alterarEmailUsuario, alterarSenhaUsuario } from '../../../services/alterardados';
 import { DesativarUsuario } from '../../../services/Desativar';
 import './card-perfil.css';
 
@@ -19,7 +19,7 @@ const modalExclusaoConfig = {
 };
 
 export default function Card_perfil() {
-  const { logout, token, clearAuth } = useAuth();
+  const { logout, clearAuth, updateUserImage } = useAuth();
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState({ nome: '', email: '', dataNascimento: '' });
   const [loading, setLoading] = useState(true);
@@ -107,13 +107,15 @@ export default function Card_perfil() {
       try {
         setUploadingFoto(true);
         setFotoError('');
-        const result = await alterarImagemUsuario(base64Image, token);
+
+        const result = await updateUserImage(base64Image);
+
         if (result.success) {
           setFoto(base64Image);
           setModalSuccess('Imagem atualizada com sucesso!');
           setTimeout(() => setModalSuccess(''), 3000);
         } else {
-          setFotoError(result.message);
+          setFotoError(result.message || 'Erro ao atualizar imagem');
         }
       } catch (error) {
         console.error('Erro ao atualizar imagem:', error);
@@ -159,7 +161,7 @@ export default function Card_perfil() {
           setModalError('Os emails não coincidem');
           return;
         }
-        const result = await alterarEmailUsuario(modalValues.novoEmail, token);
+        const result = await alterarEmailUsuario(modalValues.novoEmail, localStorage.getItem('accessToken'));
         if (result.success) {
           setUsuario(prev => ({ ...prev, email: modalValues.novoEmail }));
           setModalSuccess('Email atualizado com sucesso!');
@@ -180,7 +182,7 @@ export default function Card_perfil() {
           setModalError('As senhas não coincidem');
           return;
         }
-        const result = await alterarSenhaUsuario(modalValues.novaSenha, token);
+        const result = await alterarSenhaUsuario(modalValues.novaSenha, localStorage.getItem('accessToken'));
         if (result.success) {
           setModalSuccess('Senha atualizada com sucesso!');
           setTimeout(fecharModal, 2000);
@@ -198,33 +200,33 @@ export default function Card_perfil() {
     setLoadingExclusao(true);
     setErroExclusao('');
     try {
-      const resultado = await DesativarUsuario(token);
-      
+      const resultado = await DesativarUsuario(localStorage.getItem('accessToken'));
+
       if (resultado.success) {
         // Limpeza completa
         localStorage.clear();
         sessionStorage.clear();
-        
+
         // Limpar cookies
         document.cookie.split(";").forEach((c) => {
           document.cookie = c
             .replace(/^ +/, "")
             .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
         });
-        
+
         // Limpar autenticação
         if (clearAuth) clearAuth();
         logout();
-        
+
         // Redirecionar com mensagem
-        navigate('/', { 
+        navigate('/', {
           replace: true,
-          state: { 
+          state: {
             contaDesativada: true,
             mensagem: "Sua conta foi desativada com sucesso."
           }
         });
-        
+
         // Recarregar para limpeza total
         window.location.reload();
       } else {
