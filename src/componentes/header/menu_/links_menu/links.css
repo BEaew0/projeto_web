@@ -14,9 +14,10 @@ a {
 }
 
 #itens_h:hover {
-    background-color: var(--cor-hover);
+    background-color: var(--cor-de-hover);
     padding:  0.2rem 1.2rem;
     margin: 0;
+
     border-radius: 0.5rem;
 }
 
