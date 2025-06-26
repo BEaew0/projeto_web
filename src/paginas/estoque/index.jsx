@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import ModalProduto from "../../componentes/modals/MostrarProduto";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
-// import { mockBuscarTodosEstoques } from "../home/estoqueMock"; // ❌ Comentado
-import Produtos from "../../services/produto"; // ✅ Importa o serviço real
+// import Produtos from "../../services/produto"; // ❌ Comentado
 import "./estoque.css";
 
 export default function Estoque() {
@@ -16,14 +15,42 @@ export default function Estoque() {
   const [quantidadeFiltrada, setQuantidadeFiltrada] = useState(0);
   const navigate = useNavigate();
 
+  // ✅ Mock de produtos
+  const mockProdutos = [
+    {
+      id: 1,
+      nome: "Arroz",
+      valor: 5.5,
+      tipo: "Alimento",
+      imagem: "https://via.placeholder.com/100",
+      quantidade: 20
+    },
+    {
+      id: 2,
+      nome: "Feijão",
+      valor: 7.9,
+      tipo: "Alimento",
+      imagem: "https://via.placeholder.com/100",
+      quantidade: 15
+    },
+    {
+      id: 3,
+      nome: "Sabão",
+      valor: 2.5,
+      tipo: "Limpeza",
+      imagem: "",
+      quantidade: 8
+    }
+  ];
+
   useEffect(() => {
     const carregarProdutos = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // ✅ Busca os produtos reais pela API
-        const produtosCarregados = await Produtos.getProdutosUsuario();
+        // const produtosCarregados = await Produtos.getProdutosUsuario(); // ❌ Comentado
+        const produtosCarregados = mockProdutos; // ✅ Usando mock local
 
         const formatados = produtosCarregados.map(p => ({
           id: p.id,

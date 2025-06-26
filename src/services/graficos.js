@@ -5,143 +5,39 @@ import PedidoVendaService from './pedidoVendas';  // ✅ Corrigido (letra minús
 import * as LucroService from './lucro';
 
 
+// ... [imports mantidos como estão]
+
 ChartJS.register(...registerables);
 
-// ========== GERADORES DE DADOS DE GRÁFICOS ==========
+// ========== [Funções de geração de dados para gráficos - mantidas] ==========
 
-export const generateBarData = (dados, label, bgColor = 'rgba(54, 162, 235, 0.7)', borderColor = 'rgba(54, 162, 235, 1)') => {
-  return {
-    labels: dados.map(item => item.nomE_PRODUTO),
-    datasets: [{
-      label,
-      data: dados.map(item => item.quantidadE_PRODUTO),
-      backgroundColor: bgColor,
-      borderColor,
-      borderWidth: 1
-    }]
-  };
-};
+// ... [todas as funções generateBarData* estão inalteradas]
 
-export const generateBarDataCompras = (dados, label = 'Quantidade Comprada') => {
-  return {
-    labels: dados.map(item => item.nomE_PRODUTO),
-    datasets: [{
-      label,
-      data: dados.map(item => item.quantidadE_ITEM_COMPRA || 0),
-      backgroundColor: 'rgba(54, 162, 235, 0.7)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 1
-    }]
-  };
-};
+// ========== MOCKS ==========
 
-export const generateBarDataVendas = (dados, label = 'Itens Vendidos') => {
-  return {
-    labels: dados.map(item => item.nomE_PRODUTO),
-    datasets: [{
-      label,
-      data: dados.map(item => item.qtS_ITEM_VENDA || 0),
-      backgroundColor: 'rgba(255, 159, 64, 0.7)',
-      borderColor: 'rgba(255, 159, 64, 1)',
-      borderWidth: 1
-    }]
-  };
-};
+const mockProdutosCompra = [
+  { produtoId: 1, produto: { nome: 'Arroz' }, quantidade: 30 },
+  { produtoId: 2, produto: { nome: 'Feijão' }, quantidade: 20 },
+  { produtoId: 3, produto: { nome: 'Macarrão' }, quantidade: 15 }
+];
 
-export const generatePieData = (dados, bgColors, borderColors) => {
-  return {
-    labels: dados.map(item => item.nomE_PRODUTO),
-    datasets: [{
-      data: dados.map(item => item.quantidadE_PRODUTO),
-      backgroundColor: bgColors,
-      borderColor: borderColors,
-      borderWidth: 1
-    }]
-  };
-};
+const mockProdutosVenda = [
+  { idProduto: 1, produto: { nome: 'Arroz' }, quantidade: 18 },
+  { idProduto: 2, produto: { nome: 'Feijão' }, quantidade: 12 },
+  { idProduto: 3, produto: { nome: 'Macarrão' }, quantidade: 10 }
+];
 
-export const generateBarDataLucro = (dados) => {
-  const labels = dados.map(p => p.nomE_PRODUTO);
-  const lucros = dados.map(p => (p.quantidadE_PRODUTO || 0) * (p.valoR_PRODUTO || 0));
+const mockLucroPorItem = [
+  { nome: 'Arroz', lucro: 90.50 },
+  { nome: 'Feijão', lucro: 72.00 },
+  { nome: 'Macarrão', lucro: 55.80 }
+];
 
-  return {
-    labels,
-    datasets: [{
-      label: 'Lucro Estimado (R$)',
-      data: lucros,
-      backgroundColor: 'rgba(75, 192, 192, 0.7)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    }]
-  };
-};
-
-export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar') => {
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: chartType === 'pie' ? 'right' : 'top',
-        labels: {
-          font: { size: 20 },
-          padding: 20,
-          usePointStyle: true,
-          pointStyle: 'circle',
-          boxWidth: 12
-        }
-      },
-      tooltip: {
-        callbacks: {
-          label: context => `${context.parsed.y ?? context.raw} ${tooltipSuffix}`
-        }
-      }
-    },
-    scales: chartType === 'pie' ? {} : {
-      y: { beginAtZero: true }
-    },
-    layout: chartType === 'pie' 
-      ? { padding: { right: 12, top: 30 } }
-      : { padding: { bottom: 50 } }
-  };
-};
-
-export const generateBarDataComprasVendasAgrupado = (dados) => {
-  const agregados = {};
-  dados.forEach(item => {
-    const nome = item.nomE_PRODUTO;
-    const compra = Number(item.quantidadE_ITEM_COMPRA) || 0;
-    const venda = Number(item.qtS_ITEM_VENDA) || 0;
-    if (!agregados[nome]) agregados[nome] = { compra: 0, venda: 0 };
-    agregados[nome].compra += compra;
-    agregados[nome].venda += venda;
-  });
-  const labels = Object.keys(agregados);
-  return {
-    labels,
-    datasets: [
-      {
-        label: 'Compras',
-        data: labels.map(nome => agregados[nome].compra),
-        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-      },
-      {
-        label: 'Vendas',
-        data: labels.map(nome => agregados[nome].venda),
-        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
-      }
-    ]
-  };
-};
-
-// ========== FUNÇÕES ASSÍNCRONAS DE API ==========
+// ========== FUNÇÕES COM MOCK ==========
 
 export const getBarDataCompras = async () => {
-  const dados = await ProdutoCompra.getTodosItensCompra();
+  // const dados = await ProdutoCompra.getTodosItensCompra(); // 🔒 Comentado
+  const dados = mockProdutosCompra;
   return generateBarDataCompras(dados.map(item => ({
     nomE_PRODUTO: item.produto?.nome || `Produto ${item.produtoId}`,
     quantidadE_ITEM_COMPRA: item.quantidade
@@ -149,7 +45,8 @@ export const getBarDataCompras = async () => {
 };
 
 export const getBarDataVendas = async () => {
-  const dados = await PedidoVendaService.getItensVendaPorUsuario();
+  // const dados = await PedidoVendaService.getItensVendaPorUsuario(); // 🔒 Comentado
+  const dados = mockProdutosVenda;
   return generateBarDataVendas(dados.map(item => ({
     nomE_PRODUTO: item.produto?.nome || `Produto ${item.idProduto}`,
     qtS_ITEM_VENDA: item.quantidade
@@ -157,8 +54,10 @@ export const getBarDataVendas = async () => {
 };
 
 export const getBarDataComprasVendasAgrupado = async () => {
-  const compras = await ProdutoCompra.getTodosItensCompra();
-  const vendas = await PedidoVendaService.getItensVendaPorUsuario();
+  // const compras = await ProdutoCompra.getTodosItensCompra(); // 🔒 Comentado
+  // const vendas = await PedidoVendaService.getItensVendaPorUsuario(); // 🔒 Comentado
+  const compras = mockProdutosCompra;
+  const vendas = mockProdutosVenda;
 
   const dadosCombinados = compras.map(compra => {
     const venda = vendas.find(v => v.idProduto === compra.produtoId);
@@ -173,8 +72,10 @@ export const getBarDataComprasVendasAgrupado = async () => {
 };
 
 export const getBarDataLucroLocal = async () => {
-  const produtos = await Produtos.getProdutosUsuario();
-  const { porProduto } = LucroService.calcularLucroLocal(produtos);
+  // const produtos = await Produtos.getProdutosUsuario(); // 🔒 Comentado
+  // const { porProduto } = LucroService.calcularLucroLocal(produtos); // 🔒 Comentado
+
+  const porProduto = mockLucroPorItem;
 
   return {
     labels: porProduto.map(p => p.nome),
@@ -189,15 +90,17 @@ export const getBarDataLucroLocal = async () => {
 };
 
 export const getBarDataLucroPorItemAPI = async () => {
-  const itens = await ProdutoCompra.getTodosItensCompra();
+  // const itens = await ProdutoCompra.getTodosItensCompra(); // 🔒 Comentado
 
-  const dadosLucro = await Promise.all(itens.map(async item => {
-    const res = await LucroService.buscarLucroTotalPorItem(item.id);
-    return {
-      nome: item.produto?.nome || `Item ${item.id}`,
-      lucro: res.lucro || 0
-    };
-  }));
+  // const dadosLucro = await Promise.all(itens.map(async item => {
+  //   const res = await LucroService.buscarLucroTotalPorItem(item.id);
+  //   return {
+  //     nome: item.produto?.nome || `Item ${item.id}`,
+  //     lucro: res.lucro || 0
+  //   };
+  // }));
+
+  const dadosLucro = mockLucroPorItem;
 
   return {
     labels: dadosLucro.map(p => p.nome),

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import Produtos from '../../services/produto';
+// import Produtos from '../../services/produto'; // ❌ Comentado
 import './barra-pesquisa.css';
 
 export default function Barra_pesquisa({ onSearch, onFilterChange }) {
@@ -8,30 +8,40 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
   const [filtroSelecionado, setFiltroSelecionado] = useState('todos');
   const [produtos, setProdutos] = useState([]);
 
-  // Carrega produtos da API com timeout e fallback
+  // ✅ Mock local de produtos
+  const mockProdutos = [
+    { id: 1, nome: 'Arroz', tipo: 'Alimento' },
+    { id: 2, nome: 'Feijão', tipo: 'Alimento' },
+    { id: 3, nome: 'Detergente', tipo: 'Limpeza' },
+    { id: 4, nome: 'Shampoo', tipo: 'Higiene' },
+    { id: 5, nome: 'Café', tipo: 'Bebida' }
+  ];
+
+  // Simula carregamento com mock
   useEffect(() => {
     const carregarProdutos = async () => {
       try {
-        const timeout = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout')), 3000)
-        );
+        // const timeout = new Promise((_, reject) =>
+        //   setTimeout(() => reject(new Error('Timeout')), 3000)
+        // );
 
-        const dados = await Promise.race([
-          Produtos.getProdutosUsuario(),
-          timeout
-        ]);
+        // const dados = await Promise.race([
+        //   Produtos.getProdutosUsuario(),
+        //   timeout
+        // ]);
 
+        const dados = mockProdutos; // ✅ Usando mock diretamente
         setProdutos(dados);
       } catch (err) {
         console.warn('API indisponível. Lista de produtos não será exibida.');
-        setProdutos([]); // fallback vazio
+        setProdutos([]);
       }
     };
 
     carregarProdutos();
   }, []);
 
-  // Busca por nome (dispara onSearch com resultados filtrados)
+  // Busca por nome
   useEffect(() => {
     const timer = setTimeout(() => {
       if (onSearch) {
@@ -45,7 +55,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
     return () => clearTimeout(timer);
   }, [termoBusca, produtos, onSearch]);
 
-  // Gera lista única de tipos dos produtos
+  // Lista única de tipos
   const tiposProduto = useMemo(() => {
     const tipos = new Set();
     produtos.forEach(produto => {
@@ -54,7 +64,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
     return Array.from(tipos);
   }, [produtos]);
 
-  // Filtra produtos por tipo (dispara onFilterChange)
+  // Filtro por tipo
   useEffect(() => {
     if (onFilterChange) {
       if (filtroSelecionado === 'todos') {

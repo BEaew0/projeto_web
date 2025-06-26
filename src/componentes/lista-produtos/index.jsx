@@ -1,9 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Produtos from "../../services/produto";
+// import Produtos from "../../services/produto"; // Comentado
 import Barra_pesquisa from "../barra-pesquisa";
 import { exportToExcel } from "../../services/excel";
 import "./listaEstoque.css";
+
+// MOCK DE PRODUTOS
+const produtosMock = [
+  {
+    id: 1,
+    nome: "Produto A",
+    valor: 25.5,
+    tipo: "Tipo 1",
+    imagem: "/imagem-padrao.png",
+    quantidade: 10
+  },
+  {
+    id: 2,
+    nome: "Produto B",
+    valor: 40.0,
+    tipo: "Tipo 2",
+    imagem: "/imagem-padrao.png",
+    quantidade: 5
+  },
+  {
+    id: 3,
+    nome: "Produto C",
+    valor: 12.99,
+    tipo: "Tipo 3",
+    imagem: "/imagem-padrao.png",
+    quantidade: 15
+  },
+  {
+    id: 4,
+    nome: "Produto D",
+    valor: 18.75,
+    tipo: "Tipo 1",
+    imagem: "/imagem-padrao.png",
+    quantidade: 0
+  },
+  {
+    id: 5,
+    nome: "Produto E",
+    valor: 60.0,
+    tipo: "Tipo 2",
+    imagem: "/imagem-padrao.png",
+    quantidade: 8
+  }
+];
 
 export default function ListaProdutosCompacta({
   modoCompacto = false,
@@ -23,9 +67,13 @@ export default function ListaProdutosCompacta({
       setErro(null);
 
       try {
+        // const produtosData = modoCompacto
+        //   ? await Produtos.getTop5ProdutosUsuario()
+        //   : await Produtos.getProdutosUsuario();
+
         const produtosData = modoCompacto
-          ? await Produtos.getTop5ProdutosUsuario()
-          : await Produtos.getProdutosUsuario();
+          ? produtosMock.slice(0, 5)
+          : produtosMock;
 
         const produtosFormatados = produtosData.map(p => ({
           id: p.id,
@@ -46,9 +94,9 @@ export default function ListaProdutosCompacta({
         console.error("Erro ao carregar produtos:", err.message);
         setErro(err.message || "Erro ao carregar produtos");
 
-        if (err.message.includes('autenticado')) {
-          navigate("/login");
-        }
+        // if (err.message.includes('autenticado')) {
+        //   navigate("/login");
+        // }
       } finally {
         setLoading(false);
       }
@@ -83,9 +131,12 @@ export default function ListaProdutosCompacta({
 
   const handleSearch = async (termo) => {
     try {
+      // Simulação de busca com filtro simples
       let resultados = termo.trim() === ''
-        ? (modoCompacto ? await Produtos.getTop5ProdutosUsuario() : await Produtos.getProdutosUsuario())
-        : await Produtos.buscarPorNomeSimilar(termo);
+        ? (modoCompacto ? produtosMock.slice(0, 5) : produtosMock)
+        : produtosMock.filter(p =>
+            p.nome.toLowerCase().includes(termo.toLowerCase())
+          );
 
       const resultadosFormatados = resultados.map(p => ({
         id: p.id,

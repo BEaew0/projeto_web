@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./modal-produto.css";
-import Produtos from "../../../services/produto";
+// import Produtos from "../../../services/produto"; // ❌ Comentado
 
 const DetailRow = ({ label, value }) => (
   <div className="detail-row">
@@ -14,10 +14,43 @@ export default function ModalProduto({ produtoId, onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ✅ Mock de dados de produtos detalhados
+  const mockProdutosDetalhados = [
+    {
+      id: 1,
+      codigo: "A001",
+      nome: "Arroz",
+      tipo: "Alimento",
+      valor: 5.5,
+      dataCadastro: "2024-05-10",
+      fornecedor: { nome: "Fornecedor A" },
+      descricao: "Pacote de arroz 5kg",
+      imagem: "https://via.placeholder.com/150"
+    },
+    {
+      id: 2,
+      codigo: "B002",
+      nome: "Feijão",
+      tipo: "Alimento",
+      valor: 7.8,
+      dataCadastro: "2024-04-20",
+      fornecedor: { nome: "Fornecedor B" },
+      descricao: "Feijão carioca 1kg",
+      imagem: ""
+    }
+    // Adicione mais mocks conforme necessário
+  ];
+
   useEffect(() => {
     const carregarProduto = async () => {
       try {
-        const produtoDetalhado = await Produtos.getProdutoDetalhado(produtoId);
+        setLoading(true);
+        setError(null);
+
+        // const produtoDetalhado = await Produtos.getProdutoDetalhado(produtoId); // ❌ Comentado
+        const produtoDetalhado = mockProdutosDetalhados.find(p => p.id === produtoId); // ✅ Mock usado
+
+        if (!produtoDetalhado) throw new Error("Produto não encontrado.");
         setProduto(produtoDetalhado);
       } catch (err) {
         setError(err.message);
@@ -51,7 +84,6 @@ export default function ModalProduto({ produtoId, onClose }) {
   if (error) return <div className="modal-overlay">Erro: {error}</div>;
   if (!produto) return null;
 
-  // Dados principais do produto
   const infoProduto = [
     { label: 'Código', value: produto.codigo },
     { label: 'Tipo', value: produto.tipo },
@@ -67,16 +99,16 @@ export default function ModalProduto({ produtoId, onClose }) {
         <button className="modal-close-btn" onClick={onClose}>
           ×
         </button>
-        
+
         <div className="modal-header">
           <h2>{produto.nome}</h2>
         </div>
-        
+
         <div className="modal-content">
           <div className="modal-image">
             {produto.imagem ? (
-              <img 
-                src={produto.imagem} 
+              <img
+                src={produto.imagem}
                 alt={produto.nome}
                 onError={(e) => {
                   e.target.onerror = null;
@@ -87,7 +119,7 @@ export default function ModalProduto({ produtoId, onClose }) {
               <div className="no-image">📦</div>
             )}
           </div>
-          
+
           <div className="modal-details">
             <div className="detail-section">
               {infoProduto.map((item, index) => (
