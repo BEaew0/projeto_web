@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { buscarTodosEstoquesUser } from "../../services/estoque"; // Importando a API real
-import { acharUsuario } from "../../services/usuario"; // Importando a API real
+import { buscarTodosEstoquesUser } from "../../services/estoque"; // API real
+import { acharUsuario } from "../../services/usuario"; // API real
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import GraficosCompactos from "../../componentes/graficos";
 import "./home.css";
@@ -12,7 +12,7 @@ export default function Home() {
     carregando: true,
     erro: null
   });
-  
+
   const [estoques, setEstoques] = useState({
     dados: [],
     carregando: true,
@@ -24,21 +24,13 @@ export default function Home() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        // Busca dados do usuário (usando API real)
         const usuario = await acharUsuario();
-        setDadosUsuario({
-          nome: usuario.nomE_USUARIO || "Usuário",
-          carregando: false,
-          erro: null
-        });
+        const nomeUsuario = usuario.nomE_USUARIO?.trim() || "Usuário";
+        setDadosUsuario({ nome: nomeUsuario, carregando: false, erro: null });
 
-        // Busca dados de estoques (usando API real)
         const dadosEstoques = await buscarTodosEstoquesUser();
-        setEstoques({
-          dados: dadosEstoques,
-          carregando: false,
-          erro: null
-        });
+        setEstoques({ dados: dadosEstoques, carregando: false, erro: null });
+
       } catch (erro) {
         console.error("Erro ao carregar dados:", erro);
         setDadosUsuario(prev => ({
@@ -57,27 +49,12 @@ export default function Home() {
     carregarDados();
   }, []);
 
-  // Agrupa produtos por estoque
-  const estoquesAgrupados = estoques.dados.reduce((acumulador, produto) => {
-    const idEstoque = produto.iD_ESTOQUE;
-    if (!acumulador[idEstoque]) {
-      acumulador[idEstoque] = {
-        id: idEstoque,
-        nome: produto.nomE_ESTOQUE,
-        localizacao: produto.localizacao,
-        produtos: []
-      };
-    }
-    acumulador[idEstoque].produtos.push(produto);
-    return acumulador;
-  }, {});
-
   return (
     <div className="container-home">
       <div className="container-titulo">
         <h1 className="mostrar-nome">
-          {dadosUsuario.carregando 
-            ? "Carregando..." 
+          {dadosUsuario.carregando
+            ? "Carregando..."
             : dadosUsuario.erro
               ? "Erro ao carregar dados"
               : `Bem-vindo, ${dadosUsuario.nome}`}
@@ -86,46 +63,38 @@ export default function Home() {
 
       <div className="content-row">
         <div className="container-user">
-          <h2>Estoques</h2>
-          
-          <div className="estoques-grid">
-            {estoques.carregando ? (
-              <p>Carregando estoques...</p>
-            ) : estoques.erro ? (
-              <p>Erro ao carregar estoques: {estoques.erro}</p>
-            ) : (
-              Object.values(estoquesAgrupados).map(estoque => (
-                <div key={estoque.id} className="estoque-card">
-                  <div className="estoque-header">
-                    <h3>{estoque.nome}</h3>
-                    <p className="estoque-localizacao">{estoque.localizacao}</p>
-                  </div>
-                  
-                  <div className="container-lista">
-                    <ListaEstoquesCompacta 
-                      estoques={estoque.produtos} 
-                      carregando={estoques.carregando} 
-                      erro={estoques.erro}  
-                      mostrarTodos={false}
-                    />
-                    
-                    <div className="ver-mais-container">
-                      <button className="ver-mais-btn" onClick={() => navigate("/estoque", { state: { estoques: estoque.produtos } })}>
-                        Ver itens deste estoque
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+          <h2>Produtos</h2>
+
+          {estoques.carregando ? (
+            <p>Carregando produtos...</p>
+          ) : estoques.erro ? (
+            <p>Erro ao carregar produtos: {estoques.erro}</p>
+          ) : (
+            <div className="estoques-grid">
+              <ListaEstoquesCompacta
+                estoques={estoques.dados}
+                carregando={estoques.carregando}
+                erro={estoques.erro}
+                mostrarTodos={true}
+              />
+
+              <div className="ver-mais-container">
+                <button
+                  className="ver-mais-btn"
+                  onClick={() => navigate("/estoque", { state: { estoques: estoques.dados } })}
+                >
+                  Ver todos os produtos
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="container-graficos-user">
           <h2>Relatórios</h2>
           <div className="container-gráficos">
-            <GraficosCompactos 
-              estoques={estoques.dados} 
+            <GraficosCompactos
+              estoques={estoques.dados}
               carregando={estoques.carregando}
             />
           </div>

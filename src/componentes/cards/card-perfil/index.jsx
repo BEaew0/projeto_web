@@ -1,10 +1,11 @@
+// components/Card_perfil/Card_perfil.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../autenticação';
 import MudarInfo from '../../modals/MudarDados';
 import Mensagem from '../../modals/Mensagem';
 import { FaUser, FaEdit, FaTrash, FaCamera, FaEnvelope, FaLock, FaCalendar } from 'react-icons/fa';
-import { acharUsuario, buscarImagemUsuario } from '../../../services/usuario';
+import { acharUsuario } from '../../../services/usuario';
 import { alterarEmailUsuario, alterarSenhaUsuario } from '../../../services/alterardados';
 import { DesativarUsuario } from '../../../services/Desativar';
 import './card-perfil.css';
@@ -21,7 +22,15 @@ const modalExclusaoConfig = {
 export default function Card_perfil() {
   const { logout, clearAuth, updateUserImage } = useAuth();
   const navigate = useNavigate();
-  const [usuario, setUsuario] = useState({ nome: '', email: '', dataNascimento: '' });
+
+  const [usuario, setUsuario] = useState({
+    nome: '',
+    email: '',
+    dataNascimento: '',
+    cpf: '',
+    imagem: null
+  });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [foto, setFoto] = useState(null);
@@ -50,22 +59,22 @@ export default function Card_perfil() {
       try {
         setLoading(true);
         const dados = await acharUsuario();
-        const imagem = await buscarImagemUsuario();
 
         setUsuario({
-          nome: dados.nomE_USUARIO || 'Nome não informado',
-          email: dados.emaiL_USUARIO || 'Email não informado',
-          dataNascimento: dados.datA_NASC_USUARIO || 'Data não informada'
+          nome: dados.nome || 'Nome não informado',
+          email: dados.email || 'Email não informado',
+          dataNascimento: dados.dataNascimento || 'Data não informada',
+          cpf: dados.cpf || 'Não informado',
+          imagem: dados.imagem || null
         });
+
+        setFoto(dados.imagem || null);
 
         setModalValues(prev => ({
           ...prev,
-          emailRecuperacao: dados.emaiL_USUARIO || ''
+          emailRecuperacao: dados.email || ''
         }));
 
-        if (imagem) {
-          setFoto(imagem);
-        }
       } catch (err) {
         console.error('Erro ao carregar dados do usuário:', err);
         setError(err.message || 'Erro ao carregar dados do usuário');
@@ -84,7 +93,8 @@ export default function Card_perfil() {
   const dadosUsuario = [
     { icone: <FaEnvelope className="icone-dado" />, valor: usuario.email, tipo: 'email', mostraBotao: true },
     { icone: <FaLock className="icone-dado" />, valor: '********', tipo: 'senha', mostraBotao: true },
-    { icone: <FaCalendar className="icone-dado" />, valor: usuario.dataNascimento ? new Date(usuario.dataNascimento).toLocaleDateString('pt-BR') : 'Data não informada', tipo: 'dataNascimento', mostraBotao: false }
+    { icone: <FaCalendar className="icone-dado" />, valor: usuario.dataNascimento ? new Date(usuario.dataNascimento).toLocaleDateString('pt-BR') : 'Data não informada', tipo: 'dataNascimento', mostraBotao: false },
+    { icone: <FaUser className="icone-dado" />, valor: usuario.cpf, tipo: 'cpf', mostraBotao: false }
   ];
 
   const handleFotoChange = async (e) => {
@@ -203,22 +213,16 @@ export default function Card_perfil() {
       const resultado = await DesativarUsuario(localStorage.getItem('accessToken'));
 
       if (resultado.success) {
-        // Limpeza completa
         localStorage.clear();
         sessionStorage.clear();
-
-        // Limpar cookies
         document.cookie.split(";").forEach((c) => {
           document.cookie = c
             .replace(/^ +/, "")
             .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
         });
 
-        // Limpar autenticação
         if (clearAuth) clearAuth();
         logout();
-
-        // Redirecionar com mensagem
         navigate('/', {
           replace: true,
           state: {
@@ -227,7 +231,6 @@ export default function Card_perfil() {
           }
         });
 
-        // Recarregar para limpeza total
         window.location.reload();
       } else {
         setErroExclusao(resultado.message || 'Erro ao desativar conta');

@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ListaEstoquesCompacta from "../../componentes/lista-produtos";
 import ModalProduto from "../../componentes/modals/MostrarProduto";
 import BtnVoltar from "../../componentes/header/botoes/btn_voltar";
-import { mockBuscarTodosEstoques } from "../home/estoqueMock";
+// import { mockBuscarTodosEstoques } from "../home/estoqueMock"; // ❌ Comentado
+import Produtos from "../../services/produto"; // ✅ Importa o serviço real
 import "./estoque.css";
 
 export default function Estoque() {
@@ -12,7 +13,7 @@ export default function Estoque() {
   const [modalAberto, setModalAberto] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [quantidadeFiltrada, setQuantidadeFiltrada] = useState(0); // 👈 Novo estado
+  const [quantidadeFiltrada, setQuantidadeFiltrada] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,9 +21,22 @@ export default function Estoque() {
       try {
         setLoading(true);
         setError(null);
-        const produtosCarregados = await mockBuscarTodosEstoques();
-        setProdutos(produtosCarregados);
+
+        // ✅ Busca os produtos reais pela API
+        const produtosCarregados = await Produtos.getProdutosUsuario();
+
+        const formatados = produtosCarregados.map(p => ({
+          id: p.id,
+          nome: p.nome,
+          valor: p.valor,
+          tipo: p.tipo,
+          imagem: p.imagem,
+          quantidade: p.quantidade || 0
+        }));
+
+        setProdutos(formatados);
       } catch (err) {
+        console.error("Erro ao carregar produtos:", err);
         setError(err.message || "Erro ao carregar produtos");
         if (err.message.includes("401")) {
           navigate("/login");
@@ -57,7 +71,7 @@ export default function Estoque() {
         loadingExternamente={loading}
         errorExternamente={error}
         onCardClick={handleCardClick}
-        onQuantidadeFiltradaChange={setQuantidadeFiltrada} // 👈 Envia o setter
+        onQuantidadeFiltradaChange={setQuantidadeFiltrada}
       />
 
       {modalAberto && (

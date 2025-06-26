@@ -60,8 +60,7 @@ export default function MudarInfo({ tipo }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues(prev => ({ ...prev, [name]: value }));
-    
-    // Limpa erros quando o usuário digita
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -69,62 +68,66 @@ export default function MudarInfo({ tipo }) {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (tipo === 'email') {
       if (!values.novoEmail) {
         newErrors.novoEmail = 'Email é obrigatório';
       } else if (!/\S+@\S+\.\S+/.test(values.novoEmail)) {
         newErrors.novoEmail = 'Email inválido';
       }
-      
+
       if (values.novoEmail !== values.confirmarEmail) {
         newErrors.confirmarEmail = 'Emails não coincidem';
       }
     }
-    
+
     if (tipo === 'senha') {
       if (!values.senhaAtual) {
         newErrors.senhaAtual = 'Senha atual é obrigatória';
       }
-      
+
       if (!values.novaSenha) {
         newErrors.novaSenha = 'Nova senha é obrigatória';
       } else if (values.novaSenha.length < 8) {
         newErrors.novaSenha = 'Senha deve ter no mínimo 8 caracteres';
       }
-      
+
       if (values.novaSenha !== values.confirmarNovaSenha) {
         newErrors.confirmarNovaSenha = 'Senhas não coincidem';
       }
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setLoading(true);
     setSuccess(false);
-    
+    setErrors(prev => ({ ...prev, form: '' }));
+
     try {
       let response;
-      
+
       if (tipo === 'email') {
+        // Passa o token para autenticar a requisição
         response = await alterarEmailUsuario(values.novoEmail, token);
       } else if (tipo === 'senha') {
+        // No seu serviço, a senha atual não está sendo enviada, 
+        // mas se necessário, ajuste a API para receber e validar.
         response = await alterarSenhaUsuario(values.novaSenha, token);
       }
-      
+
       if (response.success) {
         setSuccess(true);
         setValues({});
         setTimeout(() => setSuccess(false), 3000);
       } else {
-        setErrors(prev => ({ ...prev, form: response.message }));
+        setErrors(prev => ({ ...prev, form: response.message || 'Erro desconhecido' }));
       }
     } catch (error) {
       setErrors(prev => ({ ...prev, form: 'Erro ao processar requisição' }));
@@ -134,7 +137,7 @@ export default function MudarInfo({ tipo }) {
   };
 
   return (
-    <div className={`form-container${tipo}`}>
+    <div className={`form-container ${tipo}`}>
       <form onSubmit={handleSubmit}>
         {camposFormulario[tipo]?.map((input, index) => (
           <div key={index} className="input-group">
@@ -162,7 +165,7 @@ export default function MudarInfo({ tipo }) {
           </div>
         )}
 
-        <button type="submit" className="btn_enviar"disabled={loading}>
+        <button type="submit" className="btn_enviar" disabled={loading}>
           {loading ? 'Processando...' : 'Alteração Concluída'}
         </button>
       </form>

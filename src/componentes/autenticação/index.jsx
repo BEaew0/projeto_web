@@ -1,48 +1,29 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+// AuthContext.jsx
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../services/login';
-import { alterarImagemUsuario } from '../../services/alterardados'; // Função real da API
+import { loginUser as apiLogin } from '../../services/login';
+import { alterarImagemUsuario } from '../../services/alterardados';
 
 export const AuthContext = createContext();
-
-// MOCK ANTIGO COMENTADO
-/*
-export const MOCK_USERS = [
-  {
-    id: 1,
-    nomE_USUARIO: "Usuário Teste",
-    email: "teste@example.com",
-    senha: "123456",
-    photo: "https://example.com/user.jpg",
-    role: "user"
-  },
-  {
-    id: 2,
-    nomE_USUARIO: "Admin Teste",
-    email: "admin@example.com",
-    senha: "admin123",
-    photo: "https://example.com/admin.jpg",
-    role: "admin"
-  }
-];
-*/
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Verificação inicial de autenticação ao carregar o app
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const token = localStorage.getItem('accessToken');
         const storedUser = localStorage.getItem('userData');
-        const storedToken = localStorage.getItem('accessToken');
 
-        if (storedUser && storedToken) {
+        if (token && storedUser) {
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        console.error('Erro ao verificar autenticação:', error);
+        console.error('Erro ao carregar dados do usuário:', error);
+        logout();
       } finally {
         setLoading(false);
       }
@@ -51,81 +32,65 @@ export function AuthProvider({ children }) {
     checkAuth();
   }, []);
 
+  // Função de login completa
   const login = async (email, password) => {
     try {
-      const result = await loginUser({ email, senha: password });
+      setLoading(true);
 
-      console.log('Resposta completa do login:', result);
+      const result = await apiLogin({ email, senha: password });
 
-      if (result.token) {
-        const userData = { email }; // Pode incluir mais dados se a API retornar
-        localStorage.setItem('accessToken', result.token);
-        localStorage.setItem('userData', JSON.stringify(userData));
-        setUser(userData);
-        navigate('/home');
-
-        return {
-          success: true,
-          message: result.mensagem || 'Login bem-sucedido',
-        };
+      if (!result.success) {
+        return result;
       }
 
+      // Salva o token e os dados do usuário
+      localStorage.setItem('accessToken', result.token);
+      localStorage.setItem('userData', JSON.stringify(result.user));
+      setUser(result.user);
+
       return {
-        success: false,
-        message: result.mensagem || 'Credenciais inválidas',
+        success: true,
+        user: result.user,
+        message: result.message || 'Login realizado com sucesso'
       };
     } catch (error) {
       console.error('Erro no login:', error);
       return {
         success: false,
-        message: 'Erro ao conectar com o servidor',
+        message: error.message || 'Erro durante o login'
       };
+    } finally {
+      setLoading(false);
     }
   };
 
-  const logout = () => {
-    try {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('userData');
-      setUser(null);
-      navigate('/login');
-    } catch (error) {
-      console.error('Erro no logout:', error);
-    }
-  };
+  // Função para logout
+  const logout = useCallback(() => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userData');
+    setUser(null);
+    navigate('/login');
+  }, [navigate]);
 
-  const updateUserPhoto = async (newPhoto) => {
-    try {
-      const updatedUser = { ...user, photo: newPhoto };
-      setUser(updatedUser);
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-      return { success: true, user: updatedUser };
-    } catch (error) {
-      console.error('Erro ao atualizar foto:', error);
-      return { success: false, error: 'Falha ao atualizar foto' };
-    }
-  };
-
-  // ✅ Usa a API real para alterar imagem e atualiza o contexto
+  // Atualização da imagem de perfil do usuário
   const updateUserImage = async (imagemBase64) => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
+    try {
+      const resultado = await alterarImagemUsuario(imagemBase64);
+
+      if (resultado.success) {
+        const updatedUser = { ...user, imagem: imagemBase64 };
+        setUser(updatedUser);
+        localStorage.setItem('userData', JSON.stringify(updatedUser));
+      }
+
+      return resultado;
+    } catch (error) {
+      console.error('Erro ao atualizar imagem:', error);
       return {
         success: false,
-        message: 'Usuário não autenticado',
-        status: 401,
+        message: 'Erro ao atualizar imagem'
       };
     }
-
-    const resultado = await alterarImagemUsuario(imagemBase64, token);
-
-    if (resultado.success) {
-      const updatedUser = { ...user, photo: imagemBase64 };
-      setUser(updatedUser);
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-    }
-
-    return resultado;
   };
 
   return (
@@ -133,18 +98,21 @@ export function AuthProvider({ children }) {
       value={{
         user,
         isAuthenticated: !!user,
+        isLoading: loading,
         login,
         logout,
-        loading,
-        updateUserPhoto,
-        updateUserImage, // ✅ agora disponível globalmente
+        updateUserImage
       }}
     >
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+  }
+  return context;
 }

@@ -8,7 +8,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
   const [filtroSelecionado, setFiltroSelecionado] = useState('todos');
   const [produtos, setProdutos] = useState([]);
 
-  // Chamada à API com timeout e fallback
+  // Carrega produtos da API com timeout e fallback
   useEffect(() => {
     const carregarProdutos = async () => {
       try {
@@ -17,7 +17,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
         );
 
         const dados = await Promise.race([
-          ProdutosService.getProdutosUsuario(),
+          Produtos.getProdutosUsuario(),
           timeout
         ]);
 
@@ -31,7 +31,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
     carregarProdutos();
   }, []);
 
-  // Busca por nome (enviado pro pai via `onSearch`)
+  // Busca por nome (dispara onSearch com resultados filtrados)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (onSearch) {
@@ -45,18 +45,16 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
     return () => clearTimeout(timer);
   }, [termoBusca, produtos, onSearch]);
 
-  // Gera tipos únicos
+  // Gera lista única de tipos dos produtos
   const tiposProduto = useMemo(() => {
     const tipos = new Set();
     produtos.forEach(produto => {
-      if (produto.tipo) {
-        tipos.add(produto.tipo);
-      }
+      if (produto.tipo) tipos.add(produto.tipo);
     });
     return Array.from(tipos);
   }, [produtos]);
 
-  // Filtro por tipo (enviado pro pai via `onFilterChange`)
+  // Filtra produtos por tipo (dispara onFilterChange)
   useEffect(() => {
     if (onFilterChange) {
       if (filtroSelecionado === 'todos') {
@@ -90,7 +88,7 @@ export default function Barra_pesquisa({ onSearch, onFilterChange }) {
           aria-label="Filtrar por tipo de produto"
         >
           <option value="todos">Todos os tipos</option>
-          {tiposProduto.map((tipo) => (
+          {tiposProduto.map(tipo => (
             <option key={tipo} value={tipo}>
               {tipo}
             </option>

@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../componentes/autenticação/index";
-import { loginUser } from "../../services/login";
 import LoginForm from "../../componentes/forms/login";
 import { ContactUs } from "../../componentes/forms/Recuperação";
 import BtnVoltar from '../../componentes/header/botoes/btn_voltar';
@@ -10,7 +9,7 @@ import "./login.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
 
   const [showRecovery, setShowRecovery] = useState(false);
   const [formData, setFormData] = useState({ 
@@ -22,79 +21,92 @@ export default function LoginPage() {
     message: "Por favor, redefina minha senha"
   });
   const [emailEnviado, setEmailEnviado] = useState(false);
-  const [errorLogin, setErrorLogin] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const formRecovery = useRef();
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorLogin("");
+    setError("");
 
     if (showRecovery) {
-      if (!validateEmail(recoveryData.user_email)) {
-        setErrorLogin("Por favor, insira um e-mail válido");
-        return;
-      }
-
-      try {
-        setLoading(true);
-        // Simula envio (substituir por chamada real à API no futuro)
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setEmailEnviado(true);
-      } catch (error) {
-        setErrorLogin("Erro ao solicitar recuperação. Tente novamente mais tarde.");
-      } finally {
-        setLoading(false);
-      }
+      handleRecoverySubmit();
     } else {
-      if (!formData.email || !formData.senha) {
-        setErrorLogin("Todos os campos são obrigatórios");
+      handleLoginSubmit();
+    }
+  };
+
+  const handleLoginSubmit = async () => {
+    if (!formData.email || !formData.senha) {
+      setError("Todos os campos são obrigatórios");
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      setError("Por favor, insira um e-mail válido");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const result = await login(formData.email, formData.senha);
+
+      if (!result.success) {
+        setError(result.message || "Credenciais inválidas");
         return;
       }
 
-      if (!validateEmail(formData.email)) {
-        setErrorLogin("Por favor, insira um e-mail válido");
-        return;
-      }
+      navigate("/home");
+    } catch (err) {
+      setError("Ocorreu um erro durante o login");
+      console.error("Login error:", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-      try {
-        setLoading(true);
+  const handleRecoverySubmit = async () => {
+    if (!validateEmail(recoveryData.user_email)) {
+      setError("Por favor, insira um e-mail válido");
+      return;
+    }
 
-        // Usa o método login do AuthContext — ele faz a chamada à API e redireciona se for sucesso
-        const result = await login(formData.email, formData.senha);
-
-        if (!result.success) {
-          setErrorLogin(result.message || "E-mail ou senha incorretos");
-        }
-      } catch (error) {
-        setErrorLogin("Ocorreu um erro durante o login. Tente novamente.");
-      } finally {
-        setLoading(false);
-      }
+    try {
+      setSubmitting(true);
+      // Substitua por chamada real à API de recuperação
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setEmailEnviado(true);
+    } catch (err) {
+      setError("Erro ao solicitar recuperação");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (showRecovery) {
-      setRecoveryData(prev => ({ ...prev, [name]: value }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-
-    if (errorLogin) setErrorLogin("");
+    const setData = showRecovery ? setRecoveryData : setFormData;
+    setData(prev => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const toggleForm = () => {
     setShowRecovery(!showRecovery);
     setEmailEnviado(false);
-    setErrorLogin("");
+    setError("");
   };
+
+  if (isLoading) {
+    return (
+      <div className="container_pg_login">
+        <div className="loading-spinner">
+          <p>Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container_pg_login">
@@ -112,19 +124,28 @@ export default function LoginPage() {
                 <p className="mensagem-sucesso">
                   E-mail de recuperação enviado com sucesso!
                 </p>
-                <button type="button" className="btn_logar" onClick={toggleForm}>
+                <button 
+                  type="button" 
+                  className="btn_logar" 
+                  onClick={toggleForm}
+                >
                   Voltar para login
                 </button>
               </div>
             ) : (
               <>
                 <ContactUs formData={recoveryData} onChange={handleChange} />
-                {errorLogin && <p className="error_message">{errorLogin}</p>}
+                {error && <p className="error_message">{error}</p>}
                 <span onClick={toggleForm} className="link-style">
                   Voltar para login
                 </span>
-                <button type="submit" className="btn_logar" disabled={loading} aria-busy={loading}>
-                  {loading ? "Enviando..." : "Recuperar Senha"}
+                <button 
+                  type="submit" 
+                  className="btn_logar" 
+                  disabled={submitting}
+                  aria-busy={submitting}
+                >
+                  {submitting ? "Enviando..." : "Recuperar Senha"}
                 </button>
               </>
             )}
@@ -132,18 +153,28 @@ export default function LoginPage() {
         ) : (
           <form className="login_form" onSubmit={handleSubmit}>
             <LoginForm formData={formData} onChange={handleChange} />
-            {errorLogin && <p className="error_message">{errorLogin}</p>}
+            {error && <p className="error_message">{error}</p>}
 
             <span onClick={toggleForm} className="link-style">
               Esqueci minha senha
             </span>
-            <button type="submit" className="btn_logar" disabled={loading} aria-busy={loading}>
-              {loading ? "Carregando..." : "Login"}
+            <button 
+              type="submit" 
+              className="btn_logar" 
+              disabled={submitting}
+              aria-busy={submitting}
+            >
+              {submitting ? "Entrando..." : "Login"}
             </button>
 
             <p className="register-link">
               Não possui conta?{" "}
-              <span onClick={() => navigate("/cadastro")} className="link_cadastro" role="button" tabIndex="0">
+              <span 
+                onClick={() => navigate("/cadastro")} 
+                className="link_cadastro" 
+                role="button" 
+                tabIndex="0"
+              >
                 Cadastre-se
               </span>
             </p>

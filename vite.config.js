@@ -1,63 +1,71 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  plugins: [react()],
-  base: './', // Mantido para LocaWeb (caminhos relativos)
+  plugins: [
+    react(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: '.htaccess',     // Garante que o .htaccess seja copiado para /dist
+          dest: '.',
+        },
+        {
+          src: '_redirects',    // Garante que o _redirects seja copiado para /dist
+          dest: '.',
+        },
+      ],
+    }),
+  ],
+
+  // Caminhos relativos (importante para funcionar em subdomínios ou Locaweb)
+  base: './',
 
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    assetsInlineLimit: 0, // Força arquivos separados (melhor para cache)
-    copyPublicDir: true, // Importante para _redirects e assets públicos
-
-    // Configurações otimizadas para hospedagem compartilhada
+    assetsInlineLimit: 0,       // Evita inline de imagens base64 — melhora cache
+    copyPublicDir: true,        // Copia a pasta /public inteira para dist
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          const extType = assetInfo.name.split('.')[1];
-          // Remove [hash] para evitar problemas de cache na LocaWeb
-          if (extType === 'css') return 'assets/css/[name][extname]';
-          if (['png', 'jpe?g', 'gif', 'svg', 'webp'].includes(extType)) {
+          const ext = path.extname(assetInfo.name).slice(1);
+          if (ext === 'css') return 'assets/css/[name][extname]';
+          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
             return 'assets/img/[name][extname]';
           }
           return 'assets/[name][extname]';
         },
         entryFileNames: 'assets/js/[name].js',
-        chunkFileNames: 'assets/js/[name].js'
-      }
-    }
+        chunkFileNames: 'assets/js/[name].js',
+      },
+    },
   },
 
   server: {
     open: true,
     port: 5173,
-    host: true
+    host: true,
   },
 
-  // Configurações essenciais para LocaWeb
   preview: {
-    port: 4173, // Porta diferente do dev server
+    port: 4173,
     headers: {
-      'Cache-Control': 'public, max-age=3600' // Cache controlado
-    }
+      'Cache-Control': 'public, max-age=3600',
+    },
   },
 
-  // Aliases ajustados para evitar conflitos
   resolve: {
-    alias: [
-      { find: '@', replacement: '/src' },
-      { find: '@assets', replacement: '/src/assets' }
-    ]
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+    },
   },
 
-  // Otimizações para produção
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom'
-    ],
-    force: true // Força pré-empacotamento
-  }
+    include: ['react', 'react-dom', 'react-router-dom'],
+    force: true,
+  },
 });

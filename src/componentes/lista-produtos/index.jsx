@@ -5,145 +5,205 @@ import Barra_pesquisa from "../barra-pesquisa";
 import { exportToExcel } from "../../services/excel";
 import "./listaEstoque.css";
 
-export default function ListaEstoquesCompacta({ 
-  mostrarTodos = false, 
+export default function ListaProdutosCompacta({
+  modoCompacto = false,
   onCardClick,
   onExportClick,
-  onQuantidadeFiltradaChange,
-  filtroEstoqueId
+  onQuantidadeFiltradaChange
 }) {
-  const [estoques, setEstoques] = useState([]);
-  const [estoquesFiltrados, setEstoquesFiltrados] = useState([]);
+  const [produtos, setProdutos] = useState([]);
+  const [produtosFiltrados, setProdutosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState(null); // ⬅️ novo estado para erro
+  const [erro, setErro] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const carregarEstoques = async () => {
+    const carregarProdutos = async () => {
       setLoading(true);
-      setErro(null); // limpa erro anterior
-      const controller = new AbortController();
-
-      const timeout = setTimeout(() => {
-        controller.abort();
-      }, 3000); // timeout em 3s
+      setErro(null);
 
       try {
-        const produtos = await Produtos.getProdutosUsuario();
+        const produtosData = modoCompacto
+          ? await Produtos.getTop5ProdutosUsuario()
+          : await Produtos.getProdutosUsuario();
 
-        const produtosFormatados = produtos.map(p => ({
-          ...p,
-          iD_ESTOQUE: p.estoque?.id,
-          iD_PRODUTO: p.id,
-          nomE_PRODUTO: p.nome,
-          valoR_PRODUTO: p.valor,
-          tipO_PRODUTO: p.tipo,
-          imG_PRODUTO: p.imagem,
-          quantidadE_PRODUTO: p.quantidade || 0,
-          localizacao: p.localizacao || ''
+        const produtosFormatados = produtosData.map(p => ({
+          id: p.id,
+          nome: p.nome,
+          valor: p.valor,
+          tipo: p.tipo,
+          imagem: p.imagem,
+          quantidade: p.quantidade || 0
         }));
 
-        setEstoques(produtosFormatados);
-        setEstoquesFiltrados(produtosFormatados);
+        setProdutos(produtosFormatados);
+        setProdutosFiltrados(produtosFormatados);
 
         if (onQuantidadeFiltradaChange) {
           onQuantidadeFiltradaChange(produtosFormatados.length);
         }
       } catch (err) {
-        console.warn("Erro ao carregar produtos:", err.message);
-        setErro("Erro ao carregar produtos. Tente novamente mais tarde.");
-        setEstoques([]);
-        setEstoquesFiltrados([]);
+        console.error("Erro ao carregar produtos:", err.message);
+        setErro(err.message || "Erro ao carregar produtos");
 
-        if (onQuantidadeFiltradaChange) {
-          onQuantidadeFiltradaChange(0);
+        if (err.message.includes('autenticado')) {
+          navigate("/login");
         }
       } finally {
-        clearTimeout(timeout);
         setLoading(false);
       }
     };
 
-    carregarEstoques();
-  }, [onQuantidadeFiltradaChange]);
+    carregarProdutos();
+  }, [modoCompacto, navigate, onQuantidadeFiltradaChange]);
 
   const handleExportExcel = async () => {
-    const dadosParaExportar = estoquesFiltrados.map(p => ({
-      'ID': p.iD_PRODUTO,
-      'Nome': p.nomE_PRODUTO,
-      'Tipo': p.tipO_PRODUTO,
-      'Valor': p.valoR_PRODUTO,
-      'Quantidade': p.quantidadE_PRODUTO,
-      'Localização': p.localizacao || 'N/A'
-    }));
+    try {
+      const dadosParaExportar = produtosFiltrados.map(p => ({
+        'ID': p.id,
+        'Nome': p.nome,
+        'Tipo': p.tipo,
+        'Valor': p.valor,
+        'Quantidade': p.quantidade
+      }));
 
-    const sucesso = await exportToExcel(dadosParaExportar, 'relatorio_produtos_filtrados');
-    if (onExportClick) {
-      onExportClick(sucesso);
+      const sucesso = await exportToExcel(
+        dadosParaExportar,
+        modoCompacto ? 'produtos_compacto' : 'produtos_completo'
+      );
+
+      if (onExportClick) {
+        onExportClick(sucesso);
+      }
+    } catch (error) {
+      console.error("Erro ao exportar para Excel:", error);
+      setErro("Erro ao exportar dados");
     }
   };
 
-  return (
-    <div>
-      {mostrarTodos && (
-        <div className="header-completo">
-          <Barra_pesquisa 
-            estoques={estoques}
-            onSearchResults={(resultados) => {
-              setEstoquesFiltrados(resultados);
-              if (onQuantidadeFiltradaChange) {
-                onQuantidadeFiltradaChange(resultados.length);
-              }
-            }}
+  const handleSearch = async (termo) => {
+    try {
+      let resultados = termo.trim() === ''
+        ? (modoCompacto ? await Produtos.getTop5ProdutosUsuario() : await Produtos.getProdutosUsuario())
+        : await Produtos.buscarPorNomeSimilar(termo);
+
+      const resultadosFormatados = resultados.map(p => ({
+        id: p.id,
+        nome: p.nome,
+        valor: p.valor,
+        tipo: p.tipo,
+        imagem: p.imagem,
+        quantidade: p.quantidade || 0
+      }));
+
+      setProdutosFiltrados(resultadosFormatados);
+
+      if (onQuantidadeFiltradaChange) {
+        onQuantidadeFiltradaChange(resultadosFormatados.length);
+      }
+    } catch (error) {
+      console.error("Erro na busca:", error);
+      setErro(error.message);
+    }
+  };
+
+  const renderProdutoCompacto = (produto) => (
+    <li
+      key={produto.id}
+      onClick={() => onCardClick && onCardClick(produto)}
+      className="produto-compacto-item"
+    >
+      <div className="produto-info-compacto">
+        <strong>{produto.nome}</strong>
+        <span>{produto.quantidade} un.</span>
+      </div>
+      {produto.imagem && (
+        <img
+          src={produto.imagem}
+          alt={produto.nome}
+          className="produto-img-compacto"
+          onError={(e) => e.target.src = '/imagem-padrao.png'}
+        />
+      )}
+    </li>
+  );
+
+  const renderProdutoCompleto = (produto) => (
+    <div
+      key={produto.id}
+      className="produto-completo-card"
+      onClick={() => onCardClick && onCardClick(produto)}
+    >
+      <div className="produto-header">
+        {produto.imagem && (
+          <img
+            src={produto.imagem}
+            alt={produto.nome}
+            onError={(e) => e.target.src = '/imagem-padrao.png'}
           />
-          <button 
-            className="exportar-excel-btn"  
-            onClick={handleExportExcel} 
-            disabled={estoquesFiltrados.length === 0 || loading}>
-            {loading ? 'Carregando...' : 'Exportar para Excel'}
+        )}
+        <div className="produto-titulo">
+          <h3>{produto.nome}</h3>
+        </div>
+      </div>
+      <div className="produto-info">
+        <div className="info-row">
+          <span>Quantidade: {produto.quantidade}</span>
+        </div>
+        <div className="info-row">
+          <span>Valor: R$ {produto.valor.toFixed(2)}</span>
+        </div>
+        <div className="info-row">
+          <span>Tipo: {produto.tipo}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={`lista-container ${modoCompacto ? 'modo-compacto' : 'modo-completo'}`}>
+      {!modoCompacto && (
+        <div className="header-completo">
+          <Barra_pesquisa
+            onSearch={handleSearch}
+            placeholder="Buscar produtos..."
+          />
+
+          <button
+            className="exportar-excel-btn"
+            onClick={handleExportExcel}
+            disabled={produtosFiltrados.length === 0 || loading}
+          >
+            {loading ? 'Processando...' : 'Exportar Excel'}
           </button>
 
-          {/* Mensagem de erro amigável */}
           {erro && <div className="erro-msg">{erro}</div>}
         </div>
       )}
 
       {loading ? (
-        <div className="loading-compact">Carregando produtos...</div>
-      ) : !mostrarTodos ? (
-        <ul className="lista-compacta-simples">
-          {estoquesFiltrados.slice(0, 4).map((produto) => (
-            <li key={produto.iD_PRODUTO}>
-              <strong>{produto.nomE_PRODUTO}</strong>
-            </li>
-          ))}
+        <div className="loading-indicator">
+          <div className="spinner"></div>
+          <span>Carregando...</span>
+        </div>
+      ) : erro ? (
+        <div className="erro-carregamento">
+          <p>{erro}</p>
+          <button onClick={() => window.location.reload()}>
+            Tentar novamente
+          </button>
+        </div>
+      ) : produtosFiltrados.length === 0 ? (
+        <div className="sem-resultados">
+          Nenhum produto encontrado
+        </div>
+      ) : modoCompacto ? (
+        <ul className="lista-compacta">
+          {produtosFiltrados.map(renderProdutoCompacto)}
         </ul>
       ) : (
-        <div className="estoques-compact-container">
-          {estoquesFiltrados.length > 0 ? (
-            estoquesFiltrados.map((produto) => (
-              <div 
-                key={produto.iD_PRODUTO}
-                className="estoque-compact-card"
-                onClick={() => onCardClick && onCardClick(produto)}
-                style={{ cursor: onCardClick ? "pointer" : "default" }}
-              >
-                <div className="produto-header">
-                  <h3>{produto.nomE_PRODUTO}</h3>
-                  {produto.imG_PRODUTO && <img src={produto.imG_PRODUTO} alt={produto.nomE_PRODUTO} />}
-                </div>
-                <div className="produto-info">
-                  <p><strong>Quantidade:</strong> {produto.quantidadE_PRODUTO}</p>
-                  <p><strong>Valor:</strong> R$ {produto.valoR_PRODUTO.toFixed(2)}</p>
-                  <p><strong>Tipo:</strong> {produto.tipO_PRODUTO}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="estoque-vazio">
-              <span>Nenhum produto encontrado</span>
-            </div>
-          )}
+        <div className="grade-produtos">
+          {produtosFiltrados.map(renderProdutoCompleto)}
         </div>
       )}
     </div>

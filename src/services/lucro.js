@@ -1,4 +1,3 @@
-// services/lucro.js
 import api from './api';
 
 /**
@@ -8,9 +7,20 @@ import api from './api';
  */
 export const criarLucro = async (idsItens) => {
   try {
-    const response = await api.post('api/Lucro/criar-lucro', {
-      itens: idsItens.map(id => ({ iD_ITEM: id }))
-    });
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('Usuário não autenticado');
+
+    const response = await api.post(
+      '/api/Lucro/criar-lucro',
+      {
+        itens: idsItens.map(id => ({ iD_ITEM: id }))
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Erro ao criar lucro:', error);
@@ -24,7 +34,14 @@ export const criarLucro = async (idsItens) => {
  */
 export const buscarLucroTotalUsuario = async () => {
   try {
-    const response = await api.get('api/Lucro/buscar-lucro-total-usuario');
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('Usuário não autenticado');
+
+    const response = await api.get('/api/Lucro/buscar-lucro-total-usuario', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return Number(response.data);
   } catch (error) {
     console.error('Erro ao buscar lucro total:', error);
@@ -34,11 +51,21 @@ export const buscarLucroTotalUsuario = async () => {
 
 /**
  * Busca lucro total por item
- * @returns {Promise<Array<{ iD_ITEM: number, lucro: number }>>}
+ * @param {number} idItem - ID do item a ser consultado
+ * @returns {Promise<{ iD_ITEM: number, lucro: number }>}
  */
-export const buscarLucroTotalPorItem = async () => {
+export const buscarLucroTotalPorItem = async (idItem) => {
   try {
-    const response = await api.get('api/Lucro/buscar-lucro-total-item-usuario');
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('Usuário não autenticado');
+
+    const response = await api.get('/api/Lucro/buscar-lucro-total-item-usuario', {
+      params: { idItem },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar lucro por item:', error);

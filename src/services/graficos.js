@@ -1,18 +1,15 @@
 import { Chart as ChartJS, registerables } from 'chart.js';
 import Produtos from './produto';
+import * as ProdutoCompra from './ProdutoCompra'; // ✅ Corrigido
+import PedidoVendaService from './pedidoVendas';  // ✅ Corrigido (letra minúscula se seu arquivo for "produtoVenda.js")
+import * as LucroService from './lucro';
 
-// Registrar componentes do Chart.js
+
 ChartJS.register(...registerables);
 
-/**
- * Gera dados para gráfico de barras - Quantidade em Estoque
- */
-export const generateBarData = (
-  dados,
-  label,
-  bgColor = 'rgba(54, 162, 235, 0.7)',
-  borderColor = 'rgba(54, 162, 235, 1)'
-) => {
+// ========== GERADORES DE DADOS DE GRÁFICOS ==========
+
+export const generateBarData = (dados, label, bgColor = 'rgba(54, 162, 235, 0.7)', borderColor = 'rgba(54, 162, 235, 1)') => {
   return {
     labels: dados.map(item => item.nomE_PRODUTO),
     datasets: [{
@@ -25,9 +22,6 @@ export const generateBarData = (
   };
 };
 
-/**
- * Gera dados para gráfico de compras (quantidade comprada)
- */
 export const generateBarDataCompras = (dados, label = 'Quantidade Comprada') => {
   return {
     labels: dados.map(item => item.nomE_PRODUTO),
@@ -41,9 +35,6 @@ export const generateBarDataCompras = (dados, label = 'Quantidade Comprada') => 
   };
 };
 
-/**
- * Gera dados para gráfico de itens vendidos
- */
 export const generateBarDataVendas = (dados, label = 'Itens Vendidos') => {
   return {
     labels: dados.map(item => item.nomE_PRODUTO),
@@ -57,9 +48,6 @@ export const generateBarDataVendas = (dados, label = 'Itens Vendidos') => {
   };
 };
 
-/**
- * Gera dados para gráfico de pizza
- */
 export const generatePieData = (dados, bgColors, borderColors) => {
   return {
     labels: dados.map(item => item.nomE_PRODUTO),
@@ -72,9 +60,6 @@ export const generatePieData = (dados, bgColors, borderColors) => {
   };
 };
 
-/**
- * Gera dados para gráfico de lucro
- */
 export const generateBarDataLucro = (dados) => {
   const labels = dados.map(p => p.nomE_PRODUTO);
   const lucros = dados.map(p => (p.quantidadE_PRODUTO || 0) * (p.valoR_PRODUTO || 0));
@@ -91,11 +76,8 @@ export const generateBarDataLucro = (dados) => {
   };
 };
 
-/**
- * Opções padrão para os gráficos
- */
 export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar') => {
-  const options = {
+  return {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -122,46 +104,32 @@ export const defaultChartOptions = (tooltipSuffix = 'unidades', chartType = 'bar
       ? { padding: { right: 12, top: 30 } }
       : { padding: { bottom: 50 } }
   };
-
-  return options;
 };
 
-/**
- * Gera dados agrupados de compras e vendas por produto
- */
 export const generateBarDataComprasVendasAgrupado = (dados) => {
   const agregados = {};
-
   dados.forEach(item => {
     const nome = item.nomE_PRODUTO;
     const compra = Number(item.quantidadE_ITEM_COMPRA) || 0;
     const venda = Number(item.qtS_ITEM_VENDA) || 0;
-
-    if (!agregados[nome]) {
-      agregados[nome] = { compra: 0, venda: 0 };
-    }
-
+    if (!agregados[nome]) agregados[nome] = { compra: 0, venda: 0 };
     agregados[nome].compra += compra;
     agregados[nome].venda += venda;
   });
-
   const labels = Object.keys(agregados);
-  const compras = labels.map(nome => agregados[nome].compra);
-  const vendas = labels.map(nome => agregados[nome].venda);
-
   return {
     labels,
     datasets: [
       {
         label: 'Compras',
-        data: compras,
+        data: labels.map(nome => agregados[nome].compra),
         backgroundColor: 'rgba(54, 162, 235, 0.7)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1
       },
       {
         label: 'Vendas',
-        data: vendas,
+        data: labels.map(nome => agregados[nome].venda),
         backgroundColor: 'rgba(255, 99, 132, 0.7)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1
@@ -170,39 +138,75 @@ export const generateBarDataComprasVendasAgrupado = (dados) => {
   };
 };
 
-// ============================
-// FUNÇÕES ASSÍNCRONAS COM API
-// ============================
+// ========== FUNÇÕES ASSÍNCRONAS DE API ==========
 
 export const getBarDataCompras = async () => {
-  const dados = await Produtos.getProdutosUsuario();
-  return generateBarDataCompras(dados);
+  const dados = await ProdutoCompra.getTodosItensCompra();
+  return generateBarDataCompras(dados.map(item => ({
+    nomE_PRODUTO: item.produto?.nome || `Produto ${item.produtoId}`,
+    quantidadE_ITEM_COMPRA: item.quantidade
+  })));
 };
 
 export const getBarDataVendas = async () => {
-  const dados = await Produtos.getProdutosUsuario();
-  return generateBarDataVendas(dados);
+  const dados = await PedidoVendaService.getItensVendaPorUsuario();
+  return generateBarDataVendas(dados.map(item => ({
+    nomE_PRODUTO: item.produto?.nome || `Produto ${item.idProduto}`,
+    qtS_ITEM_VENDA: item.quantidade
+  })));
 };
 
 export const getBarDataComprasVendasAgrupado = async () => {
-  const dados = await Produtos.getProdutosUsuario();
-  return generateBarDataComprasVendasAgrupado(dados);
+  const compras = await ProdutoCompra.getTodosItensCompra();
+  const vendas = await PedidoVendaService.getItensVendaPorUsuario();
+
+  const dadosCombinados = compras.map(compra => {
+    const venda = vendas.find(v => v.idProduto === compra.produtoId);
+    return {
+      nomE_PRODUTO: compra.produto?.nome || `Produto ${compra.produtoId}`,
+      quantidadE_ITEM_COMPRA: compra.quantidade,
+      qtS_ITEM_VENDA: venda?.quantidade || 0
+    };
+  });
+
+  return generateBarDataComprasVendasAgrupado(dadosCombinados);
 };
 
-/**
- * Com filtro por tipo (opcional)
- */
-export const getBarDataComprasPorTipo = async (tipo) => {
-  const dados = await Produtos.filtrarPorTipo(tipo);
-  return generateBarDataCompras(dados, `Compras de ${tipo}`);
+export const getBarDataLucroLocal = async () => {
+  const produtos = await Produtos.getProdutosUsuario();
+  const { porProduto } = LucroService.calcularLucroLocal(produtos);
+
+  return {
+    labels: porProduto.map(p => p.nome),
+    datasets: [{
+      label: 'Lucro Estimado (Local)',
+      data: porProduto.map(p => p.lucro),
+      backgroundColor: 'rgba(153, 102, 255, 0.7)',
+      borderColor: 'rgba(153, 102, 255, 1)',
+      borderWidth: 1
+    }]
+  };
 };
 
-export const getBarDataVendasPorTipo = async (tipo) => {
-  const dados = await Produtos.filtrarPorTipo(tipo);
-  return generateBarDataVendas(dados, `Vendas de ${tipo}`);
-};
+export const getBarDataLucroPorItemAPI = async () => {
+  const itens = await ProdutoCompra.getTodosItensCompra();
 
-export const getBarDataComprasVendasAgrupadoPorTipo = async (tipo) => {
-  const dados = await Produtos.filtrarPorTipo(tipo);
-  return generateBarDataComprasVendasAgrupado(dados);
+  const dadosLucro = await Promise.all(itens.map(async item => {
+    const res = await LucroService.buscarLucroTotalPorItem(item.id);
+    return {
+      nome: item.produto?.nome || `Item ${item.id}`,
+      lucro: res.lucro || 0
+    };
+  }));
+
+  return {
+    labels: dadosLucro.map(p => p.nome),
+    datasets: [{
+      label: 'Lucro Real por Item (API)',
+      data: dadosLucro.map(p => p.lucro),
+      backgroundColor: 'rgba(255, 206, 86, 0.7)',
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 1
+    }]
+  };
 };
